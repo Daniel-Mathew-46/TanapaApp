@@ -82,7 +82,7 @@ const FormShughuli = ({ route }) => {
         }}
       >
         <FormsHeader
-          title={`Fomu shughuli za kikundi`}
+          title={`Fomu Shughuli Za Kikundi`}
           subTitle={"Fomu shughuli za kikundi"}
         />
       </View>
