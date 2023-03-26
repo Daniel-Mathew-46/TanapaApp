@@ -10,7 +10,7 @@ import { submitMembersData } from "../context/submits";
 import { KatibuDataContext } from "../context/MemberStackProvide";
 
 const RegisterMwanachama = ({ route }) => {
-  const { katibuData } = useContext(KatibuDataContext);
+  const { states, dispatch } = useContext(KatibuDataContext);
   const kikundi_ = route.params?.kikundi;
   const data = route.params?.data;
   var jina = "" || data?.["Jina la Mwanachama"];
@@ -32,6 +32,16 @@ const RegisterMwanachama = ({ route }) => {
       "Namba Ya Simu": nambaSimu,
       Anuani: anuani,
     };
+    let currMembers = states?.members;
+    if (route.params?.edit) {
+      var _currMembers = [...currMembers].filter(
+        (item) => item?.["Barua Pepe"] !== data?.["Barua Pepe"]
+      );
+      _currMembers.unshift({
+        ...formData,
+        "Kikundi Chake": data?.["Kikundi Chake"],
+      });
+    } else currMembers.unshift({ ...formData, "Kikundi Chake": kikundi });
     setLoading(true);
     if (route.params?.edit) {
       submitMembersData(
@@ -43,6 +53,14 @@ const RegisterMwanachama = ({ route }) => {
         .then(() => {
           setLoading(false);
           alert("Umefanikiwa Kukusanya Taarifa.");
+          setJinaMwanachama("");
+          setBaruaPepe("");
+          setNambaSimu("");
+          setAnuani("");
+          dispatch({
+            type: "UPDATE_MEMBER",
+            payload: _currMembers,
+          });
         })
         .catch((e) => {
           setLoading(false);
@@ -57,6 +75,10 @@ const RegisterMwanachama = ({ route }) => {
           setBaruaPepe("");
           setNambaSimu("");
           setAnuani("");
+          dispatch({
+            type: "ADD_NEW_MEMBER",
+            payload: currMembers,
+          });
         })
         .catch((e) => {
           setLoading(false);

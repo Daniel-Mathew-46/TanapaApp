@@ -34,43 +34,11 @@ const MemberStackProvider = ({ route }) => {
 //   console.log("Current watu!", vikundis);
 // });
 
-const MembersStackComponent = ({ katibuEmail }) => {
-  const [loading, setLoading] = useState(false);
-  const { getKikundiChaKatibu, members, setMembers, setKikundi, kikundi } =
-    useContext(KatibuDataContext);
-  useEffect(() => {
-    setLoading(true);
-    getKikundiChaKatibu(katibuEmail)
-      .then((docs) => {
-        let doc = docs.docs[0].data();
-        setKikundi(doc);
-        let getKikundiMembers = async (kikundiName) => {
-          let members_ = [];
-          try {
-            const q = query(
-              collection(db, "KikundiMembers"),
-              where("Kikundi Chake", "==", kikundiName)
-            );
-            const docs = await getDocs(q);
-            docs.forEach((doc) => {
-              members_.push(doc.data());
-            });
-            setMembers([...members_]);
-            setLoading(false);
-          } catch (e) {
-            alert(e.message);
-          }
-        };
-        getKikundiMembers(doc.name);
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert(e.message);
-      });
-  }, []);
+const MembersStackComponent = ({}) => {
+  const { states } = useContext(KatibuDataContext);
   return (
     <>
-      {loading && members.length == 0 ? (
+      {states?.loading && states?.members.length == 0 ? (
         <View
           style={{
             alignItems: "center",
@@ -88,7 +56,7 @@ const MembersStackComponent = ({ katibuEmail }) => {
           <MemberStack.Screen
             name="Members"
             component={Members}
-            initialParams={{ kikundi, members }}
+            initialParams={{ kikundi: states?.kikundi }}
           />
           <MemberStack.Screen name="MemberData" component={MemberData} />
           <MemberStack.Screen

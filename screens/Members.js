@@ -5,17 +5,19 @@ import {
   FlatList,
   StatusBar,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { COLORS, SIZES, assets } from "../constants";
-
 import { MemberCard } from "../components";
+import { KatibuDataContext } from "../context/MemberStackProvide";
 import { onSnapshot, collection, db, query, where } from "../context/firebase";
 
 const Members = ({ navigation, route }) => {
-  const members = route.params?.members;
+  // const members = route.params?.members;
   const kikundi = route.params?.kikundi;
-  const [vikundi, setVikundi] = useState(members);
+  const { states } = useContext(KatibuDataContext);
+  const [vikundi, setVikundi] = useState(states?.members);
 
   return (
     <SafeAreaView style={{}}>

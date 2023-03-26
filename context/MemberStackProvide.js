@@ -1,22 +1,65 @@
-import React, { createContext, useState } from "react";
-import { query, collection, where, getDocs, db } from "./firebase";
+import React, { createContext, useState, useEffect, useReducer } from "react";
+import { query, collection, where, getDocs, db, onSnapshot } from "./firebase";
 
 export const KatibuDataContext = createContext(null);
 
 const MemberStackProvide = (props) => {
   const katibuEmail = props?.katibuEmail;
-  const [katibuData, setKatibuData] = useState(katibuEmail);
-  const [kikundi, setKikundi] = useState({});
-  const [members, setMembers] = useState([]);
+  // const [katibuData, setKatibuData] = useState(katibuEmail);
+  // const [kikundi, setKikundi] = useState({});
+  // const [members, setMembers] = useState([]);
+  // const [newMember, setNewMember] = useState({});
+  // const [loading, setLoading] = useState(false);
 
-  const katibuContext = React.useMemo(() => ({
-    katibuData,
-    kikundi,
-    members,
-    setMembers,
-    setKatibuData,
-    setKikundi,
-    getKikundiChaKatibu: async (email) => {
+  const initialStates = {
+    katibuData: katibuEmail,
+    kikundi: {},
+    members: [],
+    loading: false,
+    deleteFlag: false,
+  };
+
+  const statesReducer = (prevStates, action) => {
+    switch (action.type) {
+      case "ACTIVATE_LOADING":
+        return {
+          ...prevStates,
+          loading: action.loading,
+        };
+      case "SET_KIKUNDI":
+        return {
+          ...prevStates,
+          kikundi: action.payload,
+        };
+      case "SET_MEMBERS":
+        return {
+          ...prevStates,
+          members: [...action.payload],
+          loading: false,
+        };
+      case "ADD_NEW_MEMBER":
+        return {
+          ...prevStates,
+          members: action.payload,
+        };
+      case "DELETE_MEMBER":
+        return {
+          ...prevStates,
+          deleteFlag: true,
+          members: action.payload,
+        };
+      case "UPDATE_MEMBER":
+        return {
+          ...prevStates,
+          members: action.payload,
+        };
+    }
+  };
+
+  const [states, dispatch] = useReducer(statesReducer, initialStates);
+  useEffect(() => {
+    dispatch({ type: "ACTIVATE_LOADING", loading: true });
+    const getKikundiChaKatibu = async (email) => {
       try {
         return getDocs(
           query(collection(db, "Vikundi"), where("Katibu", "==", email))
@@ -24,7 +67,41 @@ const MemberStackProvide = (props) => {
       } catch (e) {
         alert(e.message);
       }
-    },
+    };
+    getKikundiChaKatibu(katibuEmail)
+      .then((docs) => {
+        let doc = docs.docs[0].data();
+        dispatch({ type: "SET_KIKUNDI", payload: doc });
+        let getKikundiMembers = async (kikundiName) => {
+          let members_ = [];
+          try {
+            const q = query(
+              collection(db, "KikundiMembers"),
+              where("Kikundi Chake", "==", kikundiName)
+            );
+            const docs = await getDocs(q);
+            docs.forEach((doc) => {
+              members_.unshift(doc.data());
+            });
+            dispatch({ type: "SET_MEMBERS", payload: members_ });
+          } catch (e) {
+            alert(e.message);
+          }
+        };
+        getKikundiMembers(doc.name);
+      })
+      .catch((e) => {
+        dispatch({ type: "ACTIVATE_LOADING", loading: false });
+        alert(e.message);
+      });
+    return () => {
+      dispatch({ type: "ACTIVATE_LOADING", loading: false });
+    };
+  }, []);
+
+  const katibuContext = React.useMemo(() => ({
+    states,
+    dispatch,
   }));
   return (
     <KatibuDataContext.Provider value={katibuContext}>

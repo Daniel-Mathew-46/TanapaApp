@@ -1,10 +1,12 @@
 import { View, Text, SafeAreaView, StatusBar, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { COLORS, SIZES } from "../constants";
 import { Button } from "../components";
 import { deleteMember } from "../context/submits";
+import { KatibuDataContext } from "../context/MemberStackProvide";
 
 const MemberData = ({ route }) => {
+  const { states, dispatch } = useContext(KatibuDataContext);
   const data = route.params?.data;
   const deleteParam = route.params?.delete;
   const [loading, setLoading] = useState(false);
@@ -22,10 +24,18 @@ const MemberData = ({ route }) => {
 
     const onDeleteConfirm = () => {
       setLoading(true);
+      let currMembers = states?.members;
+      currMembers = currMembers.filter(
+        (item) => item["Barua Pepe"] !== data?.["Barua Pepe"]
+      );
       deleteMember(data?.["Barua Pepe"])
         .then(() => {
-          setLoading(false);
           alert("Umefanikiwa Kufuta Taarifa.");
+          setLoading(false);
+          dispatch({
+            type: "DELETE_MEMBER",
+            payload: currMembers,
+          });
         })
         .catch((e) => {
           setLoading(false);
@@ -74,56 +84,58 @@ const MemberData = ({ route }) => {
       </View>
 
       {/* Render Card */}
-      <View
-        style={{
-          width: "100%",
-          paddingHorizontal: SIZES.medium,
-          paddingTop: SIZES.extraLarge,
-        }}
-      >
+      {!states?.deleteFlag && (
         <View
           style={{
-            paddingHorizontal: SIZES.font,
-            paddingVertical: SIZES.font,
-            backgroundColor: COLORS.darkWhite,
-            borderRadius: 10,
-            shadowColor: COLORS.gray,
-            shadowOffset: {
-              width: 5,
-              height: 5,
-            },
-            shadowOpacity: 0.75,
-            elevation: 9,
+            width: "100%",
+            paddingHorizontal: SIZES.medium,
+            paddingTop: SIZES.extraLarge,
           }}
         >
-          {Object.keys(data).map((item, index) => {
-            if (item !== "Kikundi Chake") {
-              return (
-                <Text
-                  key={index}
-                  style={{
-                    fontSize: SIZES.medium,
-                    marginTop: SIZES.small,
-                  }}
-                >
-                  {item}:{" "}
+          <View
+            style={{
+              paddingHorizontal: SIZES.font,
+              paddingVertical: SIZES.font,
+              backgroundColor: COLORS.darkWhite,
+              borderRadius: 10,
+              shadowColor: COLORS.gray,
+              shadowOffset: {
+                width: 5,
+                height: 5,
+              },
+              shadowOpacity: 0.75,
+              elevation: 9,
+            }}
+          >
+            {Object.keys(data).map((item, index) => {
+              if (item !== "Kikundi Chake") {
+                return (
                   <Text
+                    key={index}
                     style={{
-                      fontWeight: "bold",
                       fontSize: SIZES.medium,
-                      color: COLORS.gray,
-                      marginBottom: SIZES.medium,
+                      marginTop: SIZES.small,
                     }}
                   >
-                    {data[item]}
+                    {item}:{" "}
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: SIZES.medium,
+                        color: COLORS.gray,
+                        marginBottom: SIZES.medium,
+                      }}
+                    >
+                      {data[item]}
+                    </Text>
                   </Text>
-                </Text>
-              );
-            }
-          })}
+                );
+              }
+            })}
+          </View>
         </View>
-      </View>
-      {deleteParam && (
+      )}
+      {deleteParam && !states?.deleteFlag && (
         <Button
           text={"Futa Mwanachama"}
           loading={loading}
