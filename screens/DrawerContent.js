@@ -21,7 +21,7 @@ const DrawerContent = (props) => {
             <View>
               <Avatar.Image source={assets.person01} size={70} />
               <View>
-                <Title style={styles.title}>Zaidu Nyoni</Title>
+                <Title style={styles.title}>{props?.user}</Title>
                 <Caption style={styles.caption}>{props?.role}</Caption>
               </View>
             </View>

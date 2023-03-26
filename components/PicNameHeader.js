@@ -43,7 +43,7 @@ const PicNameHeader = ({ username, role }) => {
             textAlign: "left",
           }}
         >
-          {username}
+          {username?.split("@")[0]}
         </Text>
         <Text
           style={{

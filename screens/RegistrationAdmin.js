@@ -27,9 +27,9 @@ const RegistrationAdmin = ({ route }) => {
   const [submit, setSubmit] = useState(false);
 
   const submitToFirebase = () => {
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
-        setLoading(false);
         const user = userCredentials.user;
         // setUserDetails(user)
         const addData = async (user) => {
@@ -43,10 +43,12 @@ const RegistrationAdmin = ({ route }) => {
               role: "CF",
             });
           } catch (e) {
+            setLoading(false);
             alert(e.message);
           }
         };
         addData(user);
+        setLoading(false);
         alert("Umefanikiwa Kusajili");
       })
       .catch((error) => {

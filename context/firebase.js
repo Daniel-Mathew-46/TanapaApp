@@ -16,6 +16,13 @@ import {
   where,
   addDoc,
   Timestamp,
+  setDoc,
+  doc,
+  getDoc,
+  runTransaction,
+  updateDoc,
+  onSnapshot,
+  deleteDoc,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -54,4 +61,11 @@ export {
   addDoc,
   db,
   Timestamp,
+  setDoc,
+  doc,
+  getDoc,
+  runTransaction,
+  updateDoc,
+  onSnapshot,
+  deleteDoc,
 };

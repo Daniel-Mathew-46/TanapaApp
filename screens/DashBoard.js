@@ -15,6 +15,7 @@ import { COLORS } from "../constants";
 
 const DashBoard = ({ navigation, route }) => {
   role = route.params?.role;
+  const userEmail = route.params?.user;
   return (
     <SafeAreaView
       style={{
@@ -27,10 +28,10 @@ const DashBoard = ({ navigation, route }) => {
         {/* <Header text={role} color={COLORS.primary} /> */}
 
         {/* HeaderUser */}
-        <PicNameHeader username={"Hassan Juma"} role={role} />
+        <PicNameHeader username={userEmail} role={role} />
 
         {/* HelloText */}
-        <HelloText username={"Hassan Juma"} />
+        <HelloText username={userEmail} />
 
         {/* TaskText */}
         {(role == "Admin" || role == "CF") && (

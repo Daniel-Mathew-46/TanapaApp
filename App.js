@@ -16,7 +16,7 @@ import {
   RegisterKikundi,
   RegisterKatibu,
   MakatibuRecords,
-  CFStackRegistrations,
+  MemberStackProvider,
 } from "./screens";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import AuthProvider from "./context/AuthProvider";
 import { auth, onAuthStateChanged, signOut } from "./context/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import MembersStackComponent from "./screens/MembersStackComponent";
 
 const Drawer = createDrawerNavigator();
 
@@ -69,6 +70,7 @@ export default function App() {
             drawerContent={(props) => (
               <DrawerContent
                 {...props}
+                user={userToken?.user}
                 role={userToken?.role}
                 data={userToken?.roles}
                 setUserToken={setUserToken}
@@ -90,7 +92,10 @@ export default function App() {
                       fontSize: SIZES.large,
                     },
                   }}
-                  initialParams={{ role: userToken?.role }}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
+                  }}
                 />
                 <Drawer.Screen
                   name="CFRecords"
@@ -143,7 +148,10 @@ export default function App() {
                 <Drawer.Screen
                   name="Dashboard"
                   component={DashBoard}
-                  initialParams={{ role: userToken?.role }}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
+                  }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.darkWhite },
                     headerTitleAlign: "center",
@@ -254,10 +262,13 @@ export default function App() {
                 />
                 <Drawer.Screen
                   name="Wanachama"
-                  component={Members}
-                  initialParams={{ role: userToken?.role }}
+                  component={MemberStackProvider}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
+                  }}
                   options={{
-                    headerStyle: { backgroundColor: COLORS.darkWhite },
+                    headerStyle: { backgroundColor: COLORS.primary },
                     headerTitleAlign: "center",
                     headerTitle: "",
                     headerTitleStyle: {

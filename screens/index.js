@@ -25,6 +25,8 @@ import CFStackRegistrations from "./CFStackRegistrations";
 import KatibuList from "./KatibuList";
 import VikundiList from "./VikundiList";
 import MakatibuRecords from "./MakatibuRecords";
+import RegisterMwanachama from "./RegisterMwanachama";
+import MemberStackProvider from "./MembersStackComponent";
 
 export {
   Login,
@@ -54,4 +56,6 @@ export {
   KatibuList,
   VikundiList,
   MakatibuRecords,
+  RegisterMwanachama,
+  MemberStackProvider,
 };

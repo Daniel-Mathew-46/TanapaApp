@@ -1,12 +1,72 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Button, CustomInput, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { submitFormData } from "../context/submits";
 
-const FormWakopaji = () => {
+const FormWakopaji = ({ route }) => {
+  const katibuEmail = route.params?.katibuEmail;
+
+  const [jinaMkopaji, setJinaMkopaji] = useState("");
+  const [kiasiMkopo, setKiasiMkopo] = useState("");
+  const [riba, setRiba] = useState("");
+  const [bima, setBima] = useState("");
+  const [moja, setMoja] = useState("");
+  const [mbili, setMbili] = useState("");
+  const [tatu, setTatu] = useState("");
+  const [nne, setNne] = useState("");
+  const [tano, setTano] = useState("");
+  const [jumla, setJumla] = useState("");
+  const [jumlaKuu, setJumlaKuu] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    const formData = {
+      "Jina la Mkopaji": jinaMkopaji,
+      "Kiasi cha Mkopo": kiasiMkopo,
+      Riba: riba,
+      Bima: bima,
+      Moja: moja,
+      Mbili: mbili,
+      Tatu: tatu,
+      Nne: nne,
+      Tano: tano,
+      Jumla: jumla,
+      "Jumla Kuu": jumlaKuu,
+    };
+    setLoading(true);
+    submitFormData(
+      "FormDocs",
+      katibuEmail,
+      "Shughuli ya Wakopaji na Marejesho",
+      "Shughuli ya Wakopaji na Marejesho_week_1",
+      formData
+    )
+      .then(() => {
+        setLoading(false);
+        alert("Umefanikiwa Kukusanya Taarifa.");
+        setJinaMkopaji("");
+        setKiasiMkopo("");
+        setRiba("");
+        setBima("");
+        setMoja("");
+        setMbili("");
+        setTatu("");
+        setNne("");
+        setTano("");
+        setJumla("");
+        setJumlaKuu("");
+      })
+      .catch((e) => {
+        setLoading(false);
+        alert(e.message);
+        console.log(e.message);
+      });
+  };
+
   return (
     <ScrollView>
       <View
@@ -34,7 +94,8 @@ const FormWakopaji = () => {
             icon={<Icon name="person" size={25} color={COLORS.primary} />}
             label="Jina la Mkopaji"
             placeholder={"Ingiza jina kamili la mkopaji"}
-            onChangeFunc={() => {}}
+            value={jinaMkopaji}
+            onChangeText={(text) => setJinaMkopaji(text)}
           />
           <CustomInput
             icon={
@@ -42,16 +103,18 @@ const FormWakopaji = () => {
             }
             label="Kiasi cha Mkopo"
             placeholder={"Ingiza kiasi cha mkopo"}
-            onChangeFunc={() => {}}
+            onChangeText={(text) => setKiasiMkopo(text)}
             isNumber={true}
+            value={kiasiMkopo}
           />
           <CustomInput
             icon={
               <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
             }
-            label="riba"
+            label="Riba"
             placeholder={"Ingiza riba"}
-            onChangeFunc={() => {}}
+            value={riba}
+            onChangeText={(text) => setRiba(text)}
             isNumber={true}
           />
           <CustomInput
@@ -60,7 +123,8 @@ const FormWakopaji = () => {
             }
             label="Bima"
             placeholder={"Ingiza Bima"}
-            onChangeFunc={() => {}}
+            value={bima}
+            onChangeText={(text) => setBima(text)}
           />
           <CustomInput
             icon={
@@ -68,7 +132,8 @@ const FormWakopaji = () => {
             }
             label="1"
             placeholder={"Ingiza 1"}
-            onChangeFunc={() => {}}
+            value={moja}
+            onChangeText={(text) => setMoja(text)}
           />
           <CustomInput
             icon={
@@ -76,7 +141,8 @@ const FormWakopaji = () => {
             }
             label="2"
             placeholder={"Ingiza 2"}
-            onChangeFunc={() => {}}
+            value={mbili}
+            onChangeText={(text) => setMbili(text)}
           />
           <CustomInput
             icon={
@@ -84,7 +150,8 @@ const FormWakopaji = () => {
             }
             label="3"
             placeholder={"Ingiza 3"}
-            onChangeFunc={() => {}}
+            value={tatu}
+            onChangeText={(text) => setTatu(text)}
           />
           <CustomInput
             icon={
@@ -92,7 +159,8 @@ const FormWakopaji = () => {
             }
             label="4"
             placeholder={"Ingiza 4"}
-            onChangeFunc={() => {}}
+            value={nne}
+            onChangeText={(text) => setNne(text)}
           />
           <CustomInput
             icon={
@@ -100,7 +168,8 @@ const FormWakopaji = () => {
             }
             label="5"
             placeholder={"Ingiza 5"}
-            onChangeFunc={() => {}}
+            value={tano}
+            onChangeText={(text) => setTano(text)}
             isNumber={true}
           />
 
@@ -110,7 +179,8 @@ const FormWakopaji = () => {
             }
             label="Jumla"
             placeholder={"Weka Jumla"}
-            onChangeFunc={() => {}}
+            value={jumla}
+            onChangeText={(text) => setJumla(text)}
             isNumber={true}
           />
           <CustomInput
@@ -119,7 +189,8 @@ const FormWakopaji = () => {
             }
             label="Jumla Kuu"
             placeholder={"Weka Jumla kuu"}
-            onChangeFunc={() => {}}
+            value={jumlaKuu}
+            onChangeText={(text) => setJumlaKuu(text)}
             isNumber={true}
           />
           <View
@@ -130,7 +201,11 @@ const FormWakopaji = () => {
               marginBottom: SIZES.base,
             }}
           >
-            <Button text={"Kusanya Taarifa"} />
+            <Button
+              text={"Kusanya Taarifa"}
+              loading={loading}
+              onPress={handleSubmit}
+            />
           </View>
         </View>
       </KeyboardAwareScrollView>

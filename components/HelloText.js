@@ -27,7 +27,7 @@ const HelloText = ({ username }) => {
           fontSize: SIZES.extraLarge,
         }}
       >
-        {username?.split(" ")[0]}!
+        {username?.split("@")[0]} !
       </Text>
     </View>
   );

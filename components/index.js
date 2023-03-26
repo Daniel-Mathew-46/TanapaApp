@@ -16,6 +16,7 @@ import KatibuTasks from "./KatibuTasks";
 import ListHeader from "./ListHeader";
 import LoaderComponent from "./LoaderComponent";
 import LongCard from "./LongCard";
+import MemberCard from "./MemberCard";
 import PicNameHeader from "./PicNameHeader";
 import RadioComponent from "./RadioComponent";
 import SectionTitle from "./SectionTitle";
@@ -54,4 +55,5 @@ export {
   LoaderComponent,
   HorizontalListAdmin,
   CustomKatibuDataCard,
+  MemberCard,
 };

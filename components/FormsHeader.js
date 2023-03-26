@@ -12,9 +12,11 @@ const FormsHeader = ({ title, subTitle }) => {
         }}
       >
         <View
-          style={{
-            marginTop: SIZES.small,
-          }}
+          style={
+            {
+              // marginTop: SIZES.small,
+            }
+          }
         >
           <Text
             style={{

@@ -5,11 +5,13 @@ import { COLORS, SIZES } from "../constants";
 const CustomInput = ({
   placeholder,
   label,
+  value,
   icon,
   isPassword,
   onChangeText,
   isNumber,
   multiLine,
+  editable,
 }) => {
   return (
     <View style={{ marginBottom: SIZES.medium }}>
@@ -42,6 +44,8 @@ const CustomInput = ({
             fontSize: SIZES.large,
             overflow: "hidden",
           }}
+          editable={editable}
+          value={value}
           multiline={multiLine ? true : false}
           onChangeText={onChangeText}
           secureTextEntry={isPassword}

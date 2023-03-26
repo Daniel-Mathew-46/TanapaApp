@@ -21,7 +21,7 @@ const KatibuStackComponent = ({ route }) => {
       <KatibuStack.Screen
         name="KatibuDashboard"
         component={DashBoard}
-        initialParams={{ role }}
+        initialParams={{ role, user: katibuEmail }}
       />
       <KatibuStack.Screen
         name="SHUGHULI"
