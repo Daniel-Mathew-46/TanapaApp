@@ -1,10 +1,56 @@
 import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
-import { FormCard, FormDataCard } from "../components";
+import { FormCard } from "../components";
 
-const FormsRecord = ({ navigation, route }) => {
-  const data = route.params?.data;
+const WeeksRecords = ({ navigation, route }) => {
+  const formRecords = [
+    {
+      id: 1,
+      week: 1,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 2,
+      week: 2,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 3,
+      week: 3,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 4,
+      week: 4,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 5,
+      week: 5,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 6,
+      week: 6,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 7,
+      week: 7,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 8,
+      week: 8,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+    {
+      id: 9,
+      week: 9,
+      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
+    },
+  ];
 
   return (
     <SafeAreaView style={{}}>
@@ -39,7 +85,7 @@ const FormsRecord = ({ navigation, route }) => {
                   fontSize: SIZES.extraLarge,
                 }}
               >
-                {`Fomu Za Week Ya ${data?.week} ulizotuma`}
+                Fomu ulizotuma
               </Text>
             </View>
             <View
@@ -53,7 +99,7 @@ const FormsRecord = ({ navigation, route }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                {`Rekodi za Fomu Ulizopakia Week Ya ${data?.week}`}
+                Rekodi za Fomu Ulizopakia
               </Text>
             </View>
           </View>
@@ -69,10 +115,18 @@ const FormsRecord = ({ navigation, route }) => {
         }}
       >
         <FlatList
-          data={data?.forms}
+          data={formRecords.reverse()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
-            <FormDataCard text={item} data={item} navigation={navigation} />
+            <FormCard
+              text={`Week ${item.week}`}
+              data={item}
+              navigation={navigation}
+              options={{
+                angalia: "Angalia",
+                badilisha: "Pakua",
+              }}
+            />
           )}
           ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
           keyExtractor={(item) => item.id}
@@ -84,9 +138,7 @@ const FormsRecord = ({ navigation, route }) => {
                 marginTop: 10,
                 height: 200,
               }}
-            >
-              {/* <Button text={"Pakua"} /> */}
-            </View>
+            ></View>
           }
           ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
         />
@@ -96,4 +148,4 @@ const FormsRecord = ({ navigation, route }) => {
   );
 };
 
-export default FormsRecord;
+export default WeeksRecords;

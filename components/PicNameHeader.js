@@ -11,7 +11,6 @@ const PicNameHeader = ({ username, role }) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
-        marginTop: SIZES.font,
       }}
     >
       <View

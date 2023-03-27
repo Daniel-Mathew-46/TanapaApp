@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   CustomInput,
@@ -10,8 +10,78 @@ import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { submitFormData } from "../context/submits";
 
-const FormTaarifaMwezi = () => {
+const FormTaarifaMwezi = ({ route }) => {
+  const katibuEmail = route.params?.katibuEmail;
+  const week = route.params?.week;
+  const weekNumber = week ? Number(week) : null;
+
+  const [wanachamaKiume, setWanachamaKiume] = useState("");
+  const [wanachamaKike, setWanachamaKike] = useState("");
+  const [asilimiaMahudhurio, setAsilimiaMahudhurio] = useState("");
+  const [nyongezaMkopo, setNyongezaMkopo] = useState("");
+  const [kiasiMarejesho, setKiasiMarejesho] = useState("");
+  const [kiwangoMkopoJuu, setKiwangoMkopoChaJuu] = useState("");
+  const [wanachamaKopeshwa, setIdadiWanachamaKopeshwa] = useState("");
+  const [thamaniMiradi, setThamaniMiradi] = useState("");
+  const [mafunzo, setMafunzo] = useState("");
+  const [jinaTembelewa, setJinaTembelewa] = useState("");
+  const [maoni, setMaoni] = useState("");
+  const [changamoto, setChangamoto] = useState("");
+  const [radioAnswerMafunzo, setRadioAnswerMafunzo] = useState("");
+  const [radioAnswerMtembelewa, setRadioAnswerMtembelewa] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    const docName =
+      "Taarifa_Ya_Mwezi_" + katibuEmail?.split("@")[0] + "_week_" + weekNumber;
+    const formData = {
+      "Idadi ya Wanachama wa Kiume": wanachamaKiume,
+      "Idadi ya Wanachama wa Kike": wanachamaKike,
+      "Asilimia Mahudhurio kwa Mwezi": asilimiaMahudhurio,
+      "Nyongeza ya Mkopo/Bei ya Mkopo": nyongezaMkopo,
+      "Kiasi cha Marejesho kilichopokelewa": kiasiMarejesho,
+      "Kiwango cha Mkopo cha Juu Kilichotolewa": kiwangoMkopoJuu,
+      "Idadi ya Wanachama waliokopeshwa": wanachamaKopeshwa,
+      "Thamani ya Miradi ya Pamoja": thamaniMiradi,
+      "Mlitembelewa na mtu/shirika/taasisi?": radioAnswerMtembelewa,
+      "Kuna Mafunzo Yoyote Mliyopata Kipindi Hiki?": radioAnswerMafunzo,
+      "Kama ndio nani alitoa?": mafunzo,
+      "Kama ndio andika jina lake": jinaTembelewa,
+      "Changamoto zozote?": changamoto,
+      "Maoni Yako": maoni,
+    };
+    setLoading(true);
+    submitFormData(
+      "FormDocs",
+      katibuEmail,
+      "Taarifa ya Mwezi Ya Kikundi",
+      docName,
+      weekNumber,
+      formData
+    )
+      .then(() => {
+        setLoading(false);
+        setWanachamaKiume("");
+        setWanachamaKike("");
+        setAsilimiaMahudhurio("");
+        setNyongezaMkopo("");
+        setKiasiMarejesho("");
+        setKiwangoMkopoChaJuu("");
+        setIdadiWanachamaKopeshwa("");
+        setThamaniMiradi("");
+        setMafunzo("");
+        setJinaTembelewa("");
+        setMaoni("");
+        setChangamoto("");
+        alert("Umefanikiwa Kukusanya Taarifa.");
+      })
+      .catch((e) => {
+        setLoading(false);
+        alert(e.message);
+      });
+  };
   return (
     <ScrollView>
       <View
@@ -41,7 +111,8 @@ const FormTaarifaMwezi = () => {
             }
             label="Idadi ya Wanachama wa Kiume"
             placeholder={"Ingiza idadi ya waume"}
-            onChangeFunc={() => {}}
+            value={wanachamaKiume}
+            onChangeText={(text) => setWanachamaKiume(text)}
             isNumber={true}
           />
           <CustomInput
@@ -50,16 +121,18 @@ const FormTaarifaMwezi = () => {
             }
             label="Idadi ya Wanachama wa Kike"
             placeholder={"Ingiza mahudhurio ya wake"}
-            onChangeFunc={() => {}}
+            value={wanachamaKike}
+            onChangeText={(text) => setWanachamaKike(text)}
             isNumber={true}
           />
           <CustomInput
             icon={
               <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
             }
-            label="Asilimiaya mahudhurio kwa mwezi"
+            label="Asilimia ya mahudhurio kwa mwezi"
             placeholder={"Ingiza asilimia ya mahudhurio"}
-            onChangeFunc={() => {}}
+            value={asilimiaMahudhurio}
+            onChangeText={(text) => setAsilimiaMahudhurio(text)}
             isNumber={true}
           />
           <CustomInput
@@ -68,7 +141,8 @@ const FormTaarifaMwezi = () => {
             }
             label="Nyongeza ya Mkopo/Bei ya Mkopo"
             placeholder={"Ingiza nyongeza/bei ya mkopo"}
-            onChangeFunc={() => {}}
+            value={nyongezaMkopo}
+            onChangeText={(text) => setNyongezaMkopo(text)}
             isNumber={true}
           />
           <CustomInput
@@ -77,7 +151,8 @@ const FormTaarifaMwezi = () => {
             }
             label="Kiasi cha marejesho kilichopokelewa"
             placeholder={"Ingiza kiasi kilichopokelewa"}
-            onChangeFunc={() => {}}
+            value={kiasiMarejesho}
+            onChangeText={(text) => setKiasiMarejesho(text)}
             isNumber={true}
           />
           <CustomInput
@@ -86,7 +161,8 @@ const FormTaarifaMwezi = () => {
             }
             label="Kiwango cha mkopo cha juu kilichotolewa"
             placeholder={"Ingiza kiwango chajuu kilichotolewa"}
-            onChangeFunc={() => {}}
+            value={kiwangoMkopoJuu}
+            onChangeText={(text) => setKiwangoMkopoChaJuu(text)}
             isNumber={true}
           />
           <CustomInput
@@ -95,7 +171,8 @@ const FormTaarifaMwezi = () => {
             }
             label="Idadi ya Wanachama waliokopeshwa"
             placeholder={"Ingiza idadi"}
-            onChangeFunc={() => {}}
+            value={wanachamaKopeshwa}
+            onChangeText={(text) => setIdadiWanachamaKopeshwa(text)}
             isNumber={true}
           />
           <CustomInput
@@ -104,7 +181,8 @@ const FormTaarifaMwezi = () => {
             }
             label="Thamani ya Miradi ya Pamoja"
             placeholder={"Ingiza thamani ya miradi"}
-            onChangeFunc={() => {}}
+            value={thamaniMiradi}
+            onChangeText={(text) => setThamaniMiradi(text)}
             isNumber={true}
           />
           <RadioComponent
@@ -112,6 +190,9 @@ const FormTaarifaMwezi = () => {
             hasDependentInput={true}
             dependentText={"Kama ndio andika jina lake"}
             dependentPlaceHolder={"Ingiza jina kamili"}
+            onchangeText={(text) => setJinaTembelewa(text)}
+            radioAnswer={radioAnswerMtembelewa}
+            setRadioAnswer={setRadioAnswerMtembelewa}
           />
           <RadioComponent
             label={"Kuna Mafunzo Yoyote Mliyopata Kipindi Hiki?"}
@@ -119,23 +200,28 @@ const FormTaarifaMwezi = () => {
             dependentText={"Kama ndio nani alitoa?"}
             dependentPlaceHolder={"Ingiza taarifa kamili"}
             multiLine={true}
+            onchangeText={(text) => setMafunzo(text)}
+            radioAnswer={radioAnswerMafunzo}
+            setRadioAnswer={setRadioAnswerMafunzo}
           />
           <CustomInput
             icon={
               <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
             }
-            label="Kuna changamoto zozote?"
+            label="Changamoto zozote?"
             placeholder={"Taja changamoto"}
-            onChangeFunc={() => {}}
+            value={changamoto}
+            onChangeText={(text) => setChangamoto(text)}
             multiLine={true}
           />
           <CustomInput
             icon={
               <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
             }
-            label="Kuna Maoni Yako"
-            placeholder={"Toa maoni"}
-            onChangeFunc={() => {}}
+            label="Maoni Yako"
+            placeholder={"Toa maoni yako"}
+            value={maoni}
+            onChangeText={(text) => setMaoni(text)}
             multiLine={true}
           />
           <View
@@ -146,7 +232,11 @@ const FormTaarifaMwezi = () => {
               marginBottom: SIZES.base,
             }}
           >
-            <Button text={"Kusanya Taarifa"} />
+            <Button
+              text={"Kusanya Taarifa"}
+              loading={loading}
+              onPress={handleSubmit}
+            />
           </View>
         </View>
       </KeyboardAwareScrollView>

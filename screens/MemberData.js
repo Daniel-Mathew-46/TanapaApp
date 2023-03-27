@@ -34,7 +34,7 @@ const MemberData = ({ route }) => {
           setLoading(false);
           dispatch({
             type: "DELETE_MEMBER",
-            payload: currMembers,
+            remMembers: currMembers,
           });
         })
         .catch((e) => {

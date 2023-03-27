@@ -19,7 +19,7 @@ const MemberStackProvide = (props) => {
     deleteFlag: false,
   };
 
-  const statesReducer = (prevStates, action) => {
+  const statesReducer_ = (prevStates, action) => {
     switch (action.type) {
       case "ACTIVATE_LOADING":
         return {
@@ -46,17 +46,17 @@ const MemberStackProvide = (props) => {
         return {
           ...prevStates,
           deleteFlag: true,
-          members: action.payload,
+          members: action.remMembers,
         };
       case "UPDATE_MEMBER":
         return {
           ...prevStates,
-          members: action.payload,
+          members: action.data,
         };
     }
   };
 
-  const [states, dispatch] = useReducer(statesReducer, initialStates);
+  const [states, dispatch] = useReducer(statesReducer_, initialStates);
   useEffect(() => {
     dispatch({ type: "ACTIVATE_LOADING", loading: true });
     const getKikundiChaKatibu = async (email) => {

@@ -19,6 +19,7 @@ export const submitFormData = async (
   userSubmitted,
   formName,
   docName,
+  week,
   formData
 ) => {
   //   try {
@@ -28,6 +29,35 @@ export const submitFormData = async (
     formData,
     submitDate: Timestamp.fromDate(new Date()),
   });
+  const docs = await getDocs(
+    query(
+      collection(db, "WeeksForms"),
+      where("Katibu", "==", userSubmitted),
+      where("week", "==", week)
+    )
+  );
+  if (docs.docs.length === 0) {
+    // means there is no week submission by this Katibu
+    await addDoc(collection(db, "WeeksForms"), {
+      Katibu: userSubmitted,
+      forms: [docName],
+      week,
+    });
+  } else {
+    const doc_ = docs.docs[0];
+    let docId = doc_.id;
+    let forms_ = doc_.data().forms;
+    forms_ = [...forms_, docName];
+    await updateDoc(doc(db, "WeeksForms", docId), {
+      Katibu: userSubmitted,
+      forms: forms_,
+      week,
+    });
+  }
+  // })
+  // .catch(e => {
+  //   alert(e.message)
+  // })
 };
 
 //Submit Members Data
@@ -35,7 +65,9 @@ export const submitMembersData = async (
   formerEmail = null,
   kikundi,
   formData,
-  update = false
+  update = false,
+  dispatch,
+  currMembers
 ) => {
   if (update == true) {
     const docs = await getDocs(
@@ -50,6 +82,10 @@ export const submitMembersData = async (
         await updateDoc(doc(db, "KikundiMembers", docId), {
           "Kikundi Chake": kikundi,
           ...formData,
+        });
+        await dispatch({
+          type: "UPDATE_MEMBER",
+          data: currMembers,
         });
       } catch (e) {
         alert(e.message);

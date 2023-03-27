@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Members from "./Members";
@@ -7,7 +7,6 @@ import RegisterMwanachama from "./RegisterMwanachama";
 import MemberStackProvide, {
   KatibuDataContext,
 } from "../context/MemberStackProvide";
-import { query, collection, where, getDocs, db } from "../context/firebase";
 import { COLORS } from "../constants";
 
 const MemberStack = createNativeStackNavigator();
@@ -20,19 +19,6 @@ const MemberStackProvider = ({ route }) => {
     </MemberStackProvide>
   );
 };
-
-// const q = query(
-//   collection(db, "KikundiMembers"),
-//   where("Kikundi Chake", "==", kikundi?.name)
-// );
-// onSnapshot(q, (querySnapshot) => {
-//   let vikundis = [];
-//   querySnapshot.forEach((doc) => {
-//     vikundis.push(doc.data());
-//   });
-//   // setVikundi([...vikundis]);
-//   console.log("Current watu!", vikundis);
-// });
 
 const MembersStackComponent = ({}) => {
   const { states } = useContext(KatibuDataContext);

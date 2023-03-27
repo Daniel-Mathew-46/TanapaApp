@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SIZES, COLORS } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
 
-const TaarifaCard = ({ text, options, isCF }) => {
+const FormCard = ({ text, options, data, navigation }) => {
   const [showoptions, setShowOptions] = useState(false);
 
   const showOptions = (options) => {
@@ -31,14 +31,31 @@ const TaarifaCard = ({ text, options, isCF }) => {
         {optionsArray.map((item, index) => (
           <TouchableOpacity
             key={index}
-            style={{
-              borderBottomWidth: 1,
-              width: "80%",
-              marginBottom: 4,
-            }}
+            style={
+              index === optionsLength
+                ? {
+                    borderBottomWidth: 1,
+                    width: "80%",
+                    marginBottom: 10,
+                  }
+                : {
+                    borderBottomWidth: 1,
+                    width: "80%",
+                    marginBottom: 4,
+                  }
+            }
             onPress={() => {
               setShowOptions(!showoptions);
-              alert(`You Pressed ${item}`);
+              switch (options[item]) {
+                case "Angalia":
+                  navigation.navigate("FormsRecord", { data });
+                  break;
+                case "Pakua":
+                  alert(
+                    `Samahani! Huduma ya kupakua fomu itakuja hivi karibuni!`
+                  );
+                  break;
+              }
             }}
           >
             <Text
@@ -87,21 +104,15 @@ const TaarifaCard = ({ text, options, isCF }) => {
               {text}
             </Text>
           </View>
-          {isCF ? (
-            <TouchableOpacity
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              onPress={() => setShowOptions(!showoptions)}
-            >
-              <Icon
-                name="dots-three-horizontal"
-                size={25}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
-          ) : null}
+          <TouchableOpacity
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => setShowOptions(!showoptions)}
+          >
+            <Icon name="dots-three-horizontal" size={25} color={COLORS.white} />
+          </TouchableOpacity>
         </View>
         {showoptions && showOptions(options)}
       </View>
@@ -109,4 +120,4 @@ const TaarifaCard = ({ text, options, isCF }) => {
   );
 };
 
-export default TaarifaCard;
+export default FormCard;

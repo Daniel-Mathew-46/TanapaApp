@@ -9,6 +9,8 @@ import { submitFormData } from "../context/submits";
 
 const FormWakopaji = ({ route }) => {
   const katibuEmail = route.params?.katibuEmail;
+  const week = route.params?.week;
+  const weekNumber = week ? Number(week) : null;
 
   const [jinaMkopaji, setJinaMkopaji] = useState("");
   const [kiasiMkopo, setKiasiMkopo] = useState("");
@@ -24,6 +26,11 @@ const FormWakopaji = ({ route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
+    const docName =
+      "Wakopaji_na_Marejesho_" +
+      katibuEmail?.split("@")[0] +
+      "_week_" +
+      weekNumber;
     const formData = {
       "Jina la Mkopaji": jinaMkopaji,
       "Kiasi cha Mkopo": kiasiMkopo,
@@ -42,12 +49,12 @@ const FormWakopaji = ({ route }) => {
       "FormDocs",
       katibuEmail,
       "Shughuli ya Wakopaji na Marejesho",
-      "Shughuli ya Wakopaji na Marejesho_week_1",
+      docName,
+      weekNumber,
       formData
     )
       .then(() => {
         setLoading(false);
-        alert("Umefanikiwa Kukusanya Taarifa.");
         setJinaMkopaji("");
         setKiasiMkopo("");
         setRiba("");
@@ -59,6 +66,7 @@ const FormWakopaji = ({ route }) => {
         setTano("");
         setJumla("");
         setJumlaKuu("");
+        alert("Umefanikiwa Kukusanya Taarifa.");
       })
       .catch((e) => {
         setLoading(false);

@@ -15,7 +15,7 @@ const CustomInput = ({
 }) => {
   return (
     <View style={{ marginBottom: SIZES.medium }}>
-      <Text style={{ fontSize: 18 }}>{label}</Text>
+      {label && <Text style={{ fontSize: 18 }}>{label}</Text>}
       <View
         style={{
           width: "100%",

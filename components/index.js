@@ -4,6 +4,8 @@ import CustomInput from "./CustomInput";
 import CustomKatibuDataCard from "./CustomKatibuDataCard";
 import DataCard from "./DataCard";
 import DropDownComponent from "./DropDownComponent";
+import FormCard from "./FormCard";
+import FormDataCard from "./FormDataCard";
 import FormInput from "./FormInput";
 import FormsHeader from "./FormsHeader";
 import GroupsInformation from "./GroupsInformation";
@@ -56,4 +58,6 @@ export {
   HorizontalListAdmin,
   CustomKatibuDataCard,
   MemberCard,
+  FormCard,
+  FormDataCard,
 };

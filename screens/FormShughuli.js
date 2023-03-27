@@ -9,6 +9,8 @@ import { submitFormData } from "../context/submits";
 
 const FormShughuli = ({ route }) => {
   const katibuEmail = route.params?.katibuEmail;
+  const week = route.params?.week;
+  const weekNumber = week ? Number(week) : null;
 
   const [mahudhurioJumla, setMahudhurioJumla] = useState("");
   const [mahudhurioWaume, setMahudhurioWaume] = useState("");
@@ -27,6 +29,11 @@ const FormShughuli = ({ route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
+    const docName =
+      "Shughuli_za_Kikundi_" +
+      katibuEmail?.split("@")[0] +
+      "_week_" +
+      weekNumber;
     const formData = {
       "Mahudhurio Jumla": mahudhurioJumla,
       "Mahudhurio Waume": mahudhurioWaume,
@@ -44,10 +51,16 @@ const FormShughuli = ({ route }) => {
       "Jumla Kuu": jumlaKuu,
     };
     setLoading(true);
-    submitFormData("FormDocs", katibuEmail, "Shughuli za Kikundi", formData)
+    submitFormData(
+      "FormDocs",
+      katibuEmail,
+      "Shughuli za Kikundi",
+      docName,
+      weekNumber,
+      formData
+    )
       .then(() => {
         setLoading(false);
-        alert("Umefanikiwa Kukusanya Taarifa.");
         setMahudhurioJumla("");
         setMahudhurioWaume("");
         setMahudhurioWake("");
@@ -62,6 +75,7 @@ const FormShughuli = ({ route }) => {
         setMapatoMengine("");
         setJumla("");
         setJumlaKuu("");
+        alert("Umefanikiwa Kukusanya Taarifa.");
       })
       .catch((e) => {
         setLoading(false);

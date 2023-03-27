@@ -48,26 +48,24 @@ const RegisterMwanachama = ({ route }) => {
         data?.["Barua Pepe"],
         data?.["Kikundi Chake"],
         formData,
-        (update = true)
+        (update = true),
+        dispatch,
+        _currMembers
       )
         .then(() => {
           setLoading(false);
           alert("Umefanikiwa Kukusanya Taarifa.");
-          setJinaMwanachama("");
-          setBaruaPepe("");
-          setNambaSimu("");
-          setAnuani("");
-          dispatch({
-            type: "UPDATE_MEMBER",
-            payload: _currMembers,
-          });
+          setJinaMwanachama(formData["Jina la Mwanachama"]);
+          setBaruaPepe(formData["Barua Pepe"]);
+          setNambaSimu(formData["Namba Ya Simu"]);
+          setAnuani(formData.Anuani);
         })
         .catch((e) => {
           setLoading(false);
           alert(e.message);
         });
     } else {
-      submitMembersData(null, kikundi, formData, false)
+      submitMembersData(null, kikundi, formData, false, null, null)
         .then(() => {
           setLoading(false);
           alert("Umefanikiwa Kukusanya Taarifa.");

@@ -8,7 +8,6 @@ import {
 } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 const FormMahudhurio = () => {

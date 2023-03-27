@@ -24,9 +24,6 @@ const DashBoard = ({ navigation, route }) => {
       }}
     >
       <ScrollView>
-        {/* HeaderComponent */}
-        {/* <Header text={role} color={COLORS.primary} /> */}
-
         {/* HeaderUser */}
         <PicNameHeader username={userEmail} role={role} />
 
@@ -37,7 +34,6 @@ const DashBoard = ({ navigation, route }) => {
         {(role == "Admin" || role == "CF") && (
           <TaskText text={`Shughuli za ${role}`} role={role} />
         )}
-        {role == "Katibu" && <TaskText text={`wiki`} role={role} />}
 
         {role !== "Katibu" ? (
           <View>

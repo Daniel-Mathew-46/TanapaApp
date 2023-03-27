@@ -27,6 +27,9 @@ import VikundiList from "./VikundiList";
 import MakatibuRecords from "./MakatibuRecords";
 import RegisterMwanachama from "./RegisterMwanachama";
 import MemberStackProvider from "./MembersStackComponent";
+import FormsStackComponent from "./FormsStackComponent";
+import WeeksRecords from "./WeeksRecords";
+import FormData from "./FormData";
 
 export {
   Login,
@@ -58,4 +61,7 @@ export {
   MakatibuRecords,
   RegisterMwanachama,
   MemberStackProvider,
+  FormData,
+  WeeksRecords,
+  FormsStackComponent,
 };

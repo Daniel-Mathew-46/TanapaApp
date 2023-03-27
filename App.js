@@ -17,6 +17,7 @@ import {
   RegisterKatibu,
   MakatibuRecords,
   MemberStackProvider,
+  FormsStackComponent,
 } from "./screens";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -280,7 +281,7 @@ export default function App() {
                 />
                 <Drawer.Screen
                   name="Rekodi ya Fomu"
-                  component={FormsRecord}
+                  component={FormsStackComponent}
                   initialParams={{ role: userToken?.role }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.primary },
