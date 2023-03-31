@@ -29,12 +29,6 @@ const TasksDataCF = [
     task: "Sajili",
   },
   {
-    id: "SH-02",
-    shughuli: "Sajili Kijiji",
-    description: "Sajili Vijiji",
-    task: "Sajili",
-  },
-  {
     id: "SH-03",
     shughuli: "Sajili Kikundi",
     description: "Sajili kikundi na taarifa zake",

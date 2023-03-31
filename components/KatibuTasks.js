@@ -1,10 +1,12 @@
 import { View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SIZES } from "../constants";
 import KatibuTaskCard from "./KatibuTaskCard";
 import CustomInput from "./CustomInput";
+import { KatibuDataContext } from "../context/MemberStackProvide";
 
 const KatibuTasks = ({ navigation }) => {
+  const { states } = useContext(KatibuDataContext);
   const [weekNumber, setWeekNumber] = useState(null);
   const validateWeekNumber = (number) => {
     if (isNaN(number)) {
@@ -98,6 +100,7 @@ const KatibuTasks = ({ navigation }) => {
           toForm={"MAHUDHURIO"}
           navigation={navigation}
           week={weekNumber}
+          members={states?.members}
         />
       </View>
     </View>

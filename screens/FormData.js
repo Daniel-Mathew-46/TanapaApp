@@ -1,52 +1,53 @@
 import { View, Text, SafeAreaView, StatusBar, Alert } from "react-native";
-import React, { useState, useContext } from "react";
+import React from "react";
 import { COLORS, SIZES } from "../constants";
-import { Button } from "../components";
+import { ScrollView } from "react-native";
 
 const FormData = ({ route }) => {
-  const [loading, setLoading] = useState(false);
+  const data = route?.params?.data;
 
   return (
-    <SafeAreaView style={{}}>
-      <View>
-        <View
-          style={{
-            width: "100%",
-            paddingTop: SIZES.base,
-            paddingBottom: SIZES.font,
-            backgroundColor: COLORS.primary,
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
-          }}
-        >
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
+        <View>
           <View
             style={{
-              paddingHorizontal: SIZES.medium,
               width: "100%",
+              paddingTop: SIZES.base,
+              paddingBottom: SIZES.font,
+              backgroundColor: COLORS.primary,
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
             }}
           >
-            <View>
-              <Text
-                style={{
-                  textAlign: "left",
-                  color: COLORS.white,
-                  fontSize: SIZES.extraLarge + 5,
-                }}
-              >
-                {`Taarifa za Fomu`}
-              </Text>
+            <View
+              style={{
+                paddingHorizontal: SIZES.medium,
+                width: "100%",
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    textAlign: "left",
+                    color: COLORS.white,
+                    fontSize: SIZES.extraLarge + 5,
+                  }}
+                >
+                  {`Taarifa za Fomu`}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      {/* Render Card */}
-      {
+        {/* Render Card */}
         <View
           style={{
             width: "100%",
             paddingHorizontal: SIZES.medium,
             paddingTop: SIZES.extraLarge,
+            paddingBottom: SIZES.font,
           }}
         >
           <View
@@ -63,16 +64,50 @@ const FormData = ({ route }) => {
               shadowOpacity: 0.75,
               elevation: 9,
             }}
-          ></View>
+          >
+            <Text
+              style={{
+                fontSize: SIZES.medium,
+                marginTop: SIZES.small,
+              }}
+            >
+              {"Fomu"}:{" "}
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: SIZES.large,
+                  color: COLORS.secondary,
+                  marginBottom: SIZES.medium,
+                }}
+              >
+                {data?.formName}
+              </Text>
+            </Text>
+            {Object.keys(data?.formData).map((item, index) => {
+              return (
+                <Text
+                  key={index}
+                  style={{
+                    fontSize: SIZES.medium,
+                    marginTop: SIZES.small,
+                  }}
+                >
+                  {item}:{" "}
+                  <Text
+                    style={{
+                      fontSize: SIZES.medium,
+                      color: COLORS.gray,
+                      marginBottom: SIZES.medium,
+                    }}
+                  >
+                    {data?.formData[item]}
+                  </Text>
+                </Text>
+              );
+            })}
+          </View>
         </View>
-      }
-      {/* {
-        <Button
-          text={"Futa Mwanachama"}
-          loading={loading}
-          onPress={handleDelete}
-        />
-      } */}
+      </ScrollView>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </SafeAreaView>
   );

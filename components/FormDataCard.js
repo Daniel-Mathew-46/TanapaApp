@@ -3,6 +3,12 @@ import React, { useState } from "react";
 import { SIZES, COLORS } from "../constants";
 
 const FormDataCard = ({ text, data, navigation }) => {
+  const text_ = text;
+  const textArray = text_.split("_");
+  const weekIndex = textArray.indexOf("week");
+  const formText = textArray.slice(0, weekIndex - 1).join(" ");
+
+  const specFormData = data[0]?.[text];
   return (
     <View
       style={{
@@ -19,7 +25,9 @@ const FormDataCard = ({ text, data, navigation }) => {
             justifyContent: "space-between",
             paddingHorizontal: SIZES.font,
           }}
-          onPress={() => navigation.navigate("FormData", { data })}
+          onPress={() =>
+            navigation.navigate("FormData", { data: specFormData })
+          }
         >
           <View
             style={{
@@ -33,7 +41,7 @@ const FormDataCard = ({ text, data, navigation }) => {
                 textAlign: "left",
               }}
             >
-              {text}
+              {formText}
             </Text>
           </View>
         </TouchableOpacity>

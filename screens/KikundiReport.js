@@ -1,7 +1,7 @@
 import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
-import { Button, TaarifaCard, TaskText } from "../components";
+import { Button, TaarifaCard, TaskText, WhiteButton } from "../components";
 
 const KikundiReport = ({ route }) => {
   const kikundiName = route.params?.kikundiName;
@@ -11,7 +11,7 @@ const KikundiReport = ({ route }) => {
   const kikundiData = [
     {
       id: 1,
-      text: `Taarifa za Kikundi ${kikundi_name}`,
+      text: `Taarifa za Kikundi`,
     },
     {
       id: 2,
@@ -106,7 +106,7 @@ const KikundiReport = ({ route }) => {
           keyExtractor={(item) => item.id}
           ListFooterComponent={
             <View style={{ position: "absolute", right: -10 }}>
-              <Button text={"Pakia"} />
+              <WhiteButton />
             </View>
           }
           ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}

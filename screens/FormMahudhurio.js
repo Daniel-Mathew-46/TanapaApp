@@ -1,16 +1,63 @@
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
-  CustomInput,
+  Text,
   FormsHeader,
-  RadioComponent,
+  AttendanceRadioComponent,
 } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { submitFormData } from "../context/submits";
 
-const FormMahudhurio = () => {
+const FormMahudhurio = ({ route }) => {
+  const members = route.params?.members;
+  const katibuEmail = route.params?.katibuEmail;
+  const week = route.params?.week;
+  const weekNumber = week ? Number(week) : null;
+  const membersNames = members?.map((item) => item["Jina la Mwanachama"]);
+  const mahudhurioArray = members ? [] : null;
+  const formData = {};
+  const [loading, setLoading] = useState(false);
+
+  const populateMahudhurio = (value, index) => {
+    mahudhurioArray[index] = value || "Hapana";
+  };
+
+  const handleSubmit = () => {
+    if (week === null || typeof week === "undefined") {
+      alert("Tafadhali sema ni wiki ya ngapi!");
+      return;
+    }
+    const docName =
+      "Kadi_Ya_Mahudhurio_" +
+      katibuEmail?.split("@")[0] +
+      "_week_" +
+      weekNumber;
+    for (i = 0; i < members?.length; i++) {
+      let jina = membersNames[i];
+      let jibu = mahudhurioArray[i];
+      formData[jina] = jibu;
+    }
+    setLoading(true);
+    submitFormData(
+      "FormDocs",
+      katibuEmail,
+      "Kadi Ya Mahudhurio Kila Wiki",
+      docName,
+      weekNumber,
+      formData
+    )
+      .then(() => {
+        setLoading(false);
+        alert("Umefanikiwa Kukusanya Taarifa.");
+      })
+      .catch((e) => {
+        setLoading(false);
+        alert(e.message);
+      });
+  };
   return (
     <ScrollView>
       <View
@@ -27,31 +74,47 @@ const FormMahudhurio = () => {
           subTitle={"Fomu ya kadi ya mahudhurio"}
         />
       </View>
-      <KeyboardAwareScrollView>
+      {members?.length === 0 ? (
         <View
-          style={{
-            paddingHorizontal: SIZES.large,
-            marginTop: SIZES.large,
-          }}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <RadioComponent label={`Gideon Ndabuye Yupo?`} />
-          <RadioComponent label={`Daniel Mathew Yupo?`} />
-          <RadioComponent label={`Evance Samson Yupo?`} />
-          <RadioComponent label={`Haji Zuberi Yupo?`} />
-          <RadioComponent label={`Jofrey Kajungu Yupo?`} />
-          <RadioComponent label={`Jumbi Lukujo Yupo?`} />
+          <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+            Hakuna Wanachama.Sajili Wanachama
+          </Text>
+        </View>
+      ) : (
+        <KeyboardAwareScrollView>
           <View
             style={{
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: SIZES.base,
+              paddingHorizontal: SIZES.large,
+              marginTop: SIZES.large,
             }}
           >
-            <Button text={"Kusanya Taarifa"} />
+            {members?.map((item, index) => (
+              <AttendanceRadioComponent
+                key={index}
+                label={`${item["Jina la Mwanachama"]} Yupo?`}
+                index={index}
+                populateMahudhurio={populateMahudhurio}
+              />
+            ))}
+            <View
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: SIZES.base,
+              }}
+            >
+              <Button
+                text={"Kusanya Taarifa"}
+                onPress={handleSubmit}
+                loading={loading}
+              />
+            </View>
           </View>
-        </View>
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      )}
     </ScrollView>
   );
 };

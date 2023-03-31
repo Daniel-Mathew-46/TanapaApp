@@ -56,7 +56,11 @@ const DashBoard = ({ navigation, route }) => {
         ) : null}
 
         {/* Vertical List */}
-        <VerticalList navigation={navigation} role={role} />
+        <VerticalList
+          navigation={navigation}
+          role={role}
+          userEmail={userEmail}
+        />
 
         {role == "CF" && (
           <View>

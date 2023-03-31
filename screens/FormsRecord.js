@@ -1,11 +1,47 @@
-import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  ActivityIndicator,
+} from "react-native";
+import React, { useEffect, useState, useContext } from "react";
 import { COLORS, SIZES } from "../constants";
-import { FormCard, FormDataCard } from "../components";
+import { FormDataCard } from "../components";
+import { getDoc, db, doc } from "../context/firebase";
+import { FormsDataContext } from "../context/FormsRecordProvider";
 
 const FormsRecord = ({ navigation, route }) => {
+  const { states, dispatch } = useContext(FormsDataContext);
   const data = route.params?.data;
-
+  const forms = data?.forms;
+  const [loading, setLoading] = useState(false);
+  const [formDatas, setFormDatas] = useState(states?.formDatas);
+  const formDataArray = [];
+  useEffect(() => {
+    dispatch({ type: "ACTIVATE_FORMLOADING", loading: true });
+    const getFormData = async (forms) => {
+      let formObj = {};
+      try {
+        for (let i = 0; i < forms?.length; i++) {
+          let docName = forms?.[i];
+          const doc_ = await getDoc(doc(db, "FormDocs", docName));
+          if (doc_.exists()) {
+            formObj[docName] = doc_.data();
+            formDataArray.push(formObj);
+          } else {
+            alert("Hakuna Data za Fomu hii");
+          }
+        }
+        await dispatch({ type: "SET_FORMS", payload: formDataArray });
+        setLoading(false);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+    getFormData(forms);
+  }, []);
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -68,28 +104,44 @@ const FormsRecord = ({ navigation, route }) => {
           paddingVertical: SIZES.extraLarge,
         }}
       >
-        <FlatList
-          data={data?.forms}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <FormDataCard text={item} data={item} navigation={navigation} />
-          )}
-          ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
-          keyExtractor={(item) => item.id}
-          ListFooterComponent={
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 10,
-                height: 200,
-              }}
-            >
-              {/* <Button text={"Pakua"} /> */}
-            </View>
-          }
-          ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-        />
+        {states?.formsLoading && states?.formDatas?.length == 0 ? (
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <ActivityIndicator size={40} color={COLORS.primary} />
+          </View>
+        ) : (
+          <FlatList
+            data={forms}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <FormDataCard
+                text={item}
+                data={states?.formDatas}
+                navigation={navigation}
+              />
+            )}
+            ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
+            keyExtractor={(item) => item}
+            ListFooterComponent={
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  height: 200,
+                }}
+              >
+                {/* <Button text={"Pakua"} /> */}
+              </View>
+            }
+            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+          />
+        )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </SafeAreaView>

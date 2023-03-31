@@ -1,15 +1,10 @@
-import React, { createContext, useState, useEffect, useReducer } from "react";
-import { query, collection, where, getDocs, db, onSnapshot } from "./firebase";
+import React, { createContext, useEffect, useReducer } from "react";
+import { query, collection, where, getDocs, db } from "./firebase";
 
 export const KatibuDataContext = createContext(null);
 
 const MemberStackProvide = (props) => {
   const katibuEmail = props?.katibuEmail;
-  // const [katibuData, setKatibuData] = useState(katibuEmail);
-  // const [kikundi, setKikundi] = useState({});
-  // const [members, setMembers] = useState([]);
-  // const [newMember, setNewMember] = useState({});
-  // const [loading, setLoading] = useState(false);
 
   const initialStates = {
     katibuData: katibuEmail,

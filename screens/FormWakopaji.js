@@ -26,6 +26,10 @@ const FormWakopaji = ({ route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
+    if (week === null || typeof week === "undefined") {
+      alert("Tafadhali sema ni wiki ya ngapi!");
+      return;
+    }
     const docName =
       "Wakopaji_na_Marejesho_" +
       katibuEmail?.split("@")[0] +

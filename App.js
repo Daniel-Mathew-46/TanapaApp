@@ -7,9 +7,6 @@ import {
   DashBoard,
   DrawerContent,
   RegistrationsCf,
-  VikundiRecords,
-  Members,
-  FormsRecord,
   KatibuStackComponent,
   CfStackComponent,
   RegistrationAdmin,
@@ -17,16 +14,15 @@ import {
   RegisterKatibu,
   MakatibuRecords,
   MemberStackProvider,
-  FormsStackComponent,
 } from "./screens";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { COLORS, SIZES } from "./constants";
 import { useEffect, useState } from "react";
 import AuthProvider from "./context/AuthProvider";
-import { auth, onAuthStateChanged, signOut } from "./context/firebase";
+import { auth, onAuthStateChanged } from "./context/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import MembersStackComponent from "./screens/MembersStackComponent";
+import FormStackProvider from "./screens/FormsStackComponent";
 
 const Drawer = createDrawerNavigator();
 
@@ -281,8 +277,11 @@ export default function App() {
                 />
                 <Drawer.Screen
                   name="Rekodi ya Fomu"
-                  component={FormsStackComponent}
-                  initialParams={{ role: userToken?.role }}
+                  component={FormStackProvider}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
+                  }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.primary },
                     headerTitleAlign: "center",

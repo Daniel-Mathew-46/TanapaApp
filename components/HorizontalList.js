@@ -76,8 +76,6 @@ const Item = ({ item, navigation }) => {
                 case "Sajili Kikundi":
                   navigation.navigate("Sajili Vikundi");
                   break;
-                default:
-                  break;
               }
             }}
           >

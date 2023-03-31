@@ -1,13 +1,12 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
-import { COLORS, SIZES } from "../constants";
+import { SIZES } from "../constants";
 import Stats from "./Stats";
 import { Dimensions } from "react-native";
 import KatibuTasks from "./KatibuTasks";
-import KatibuTaskCard from "./KatibuTaskCard";
-import Icon from "react-native-vector-icons/Ionicons";
+import MemberStackProvide from "../context/MemberStackProvide";
 
-const VerticalList = ({ role, navigation }) => {
+const VerticalList = ({ role, navigation, userEmail }) => {
   const [windowWidth, setWindowWidth] = useState(
     Dimensions.get("screen").width
   );
@@ -159,7 +158,9 @@ const VerticalList = ({ role, navigation }) => {
             height: "100%",
           }}
         >
-          <KatibuTasks navigation={navigation} />
+          <MemberStackProvide katibuEmail={userEmail}>
+            <KatibuTasks navigation={navigation} />
+          </MemberStackProvide>
         </View>
       ) : null}
     </View>

@@ -24,7 +24,6 @@ const RegistrationAdmin = ({ route }) => {
   const [password, setPassword] = useState("");
   const [confPasswd, setConfPasswd] = useState("");
   const [loading, setLoading] = useState(false);
-  const [submit, setSubmit] = useState(false);
 
   const submitToFirebase = () => {
     setLoading(true);
@@ -49,7 +48,7 @@ const RegistrationAdmin = ({ route }) => {
         };
         addData(user);
         setLoading(false);
-        alert("Umefanikiwa Kusajili");
+        alert("Umefanikiwa Kusajili CF");
       })
       .catch((error) => {
         setLoading(false);
@@ -100,6 +99,7 @@ const RegistrationAdmin = ({ route }) => {
             icon={<Icon name="person" size={25} color={COLORS.primary} />}
             label="Jina la Community Facilitator"
             placeholder={"Ingiza jina la CF"}
+            value={fullname}
             onChangeText={(text) => {
               setFullName(text);
             }}
@@ -108,6 +108,7 @@ const RegistrationAdmin = ({ route }) => {
             icon={<Icon name="mail-outline" size={25} color={COLORS.primary} />}
             label="Barua pepe"
             placeholder={"Ingiza barua pepe ya CF"}
+            value={email}
             onChangeText={(text) => {
               setEmail(text);
             }}
@@ -116,6 +117,7 @@ const RegistrationAdmin = ({ route }) => {
             icon={<Icons name="phone" size={25} color={COLORS.primary} />}
             label="Namba ya Simu"
             placeholder={"Ingiza namba ya simu"}
+            value={phone}
             onChangeText={(number) => {
               setPhone(number);
             }}
@@ -127,6 +129,7 @@ const RegistrationAdmin = ({ route }) => {
             }
             label="Anuani Ya Makazi"
             placeholder={"Ingiza anuani ya makazi"}
+            value={anuani}
             onChangeText={(text) => {
               setAnuani(text);
             }}
@@ -135,6 +138,7 @@ const RegistrationAdmin = ({ route }) => {
             icon={<Icon name="person" size={25} color={COLORS.primary} />}
             label="Jina la Utumiaji la CF"
             placeholder={"Ingiza jina la utumiaji"}
+            value={username}
             onChangeText={(text) => {
               setUsername(text);
             }}
@@ -143,6 +147,7 @@ const RegistrationAdmin = ({ route }) => {
             icon={<Icon name="lock-closed" size={25} color={COLORS.primary} />}
             label="NenoSiri la Community Facilitator"
             placeholder={"Ingiza nenosiri"}
+            value={password}
             onChangeText={(passwd) => setPassword(passwd)}
             isPassword={true}
           />
@@ -150,6 +155,7 @@ const RegistrationAdmin = ({ route }) => {
             icon={<Icon name="lock-closed" size={25} color={COLORS.primary} />}
             label="NenoSiri la Community Facilitator"
             placeholder={"Ingiza tena nenosiri"}
+            value={confPasswd}
             onChangeText={(passwd) => setConfPasswd(passwd)}
             isPassword={true}
           />

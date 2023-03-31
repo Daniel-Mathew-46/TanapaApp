@@ -39,16 +39,7 @@ const RegistrationsCf = ({ navigation }) => {
                 iconName={"adduser"}
                 iconSize={30}
                 count={1}
-                customStyle={{ width: "45%", fontSize: SIZES.medium - 2 }}
-                navigation={navigation}
-              />
-              <TaskCard
-                title={"Sajili Kijiji"}
-                subTitle={"Vijiji vilivyosajiliwa"}
-                iconName={"addusergroup"}
-                iconSize={30}
-                count={4}
-                customStyle={{ width: "45%", fontSize: SIZES.medium - 2 }}
+                customStyle={{ width: "100%", fontSize: SIZES.large }}
                 navigation={navigation}
               />
             </View>

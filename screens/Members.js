@@ -14,10 +14,9 @@ import { KatibuDataContext } from "../context/MemberStackProvide";
 import { onSnapshot, collection, db, query, where } from "../context/firebase";
 
 const Members = ({ navigation, route }) => {
-  // const members = route.params?.members;
   const kikundi = route.params?.kikundi;
   const { states } = useContext(KatibuDataContext);
-  const [vikundi, setVikundi] = useState(states?.members);
+  const [members, setMembers] = useState(states?.members);
 
   return (
     <SafeAreaView style={{}}>
@@ -125,7 +124,7 @@ const Members = ({ navigation, route }) => {
         }}
       >
         <FlatList
-          data={vikundi}
+          data={members}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <MemberCard

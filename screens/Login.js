@@ -181,7 +181,7 @@ const Login = ({ setUser, setUserToken }) => {
             />
           )}
 
-          <TextComponent text={"Umesahau neno siri?"} />
+          <TextComponent text={"                   "} />
 
           <Button
             loading={loading}
@@ -217,27 +217,7 @@ const Login = ({ setUser, setUserToken }) => {
                   Ingia
                 </Text>
               </Text>
-            ) : (
-              <Text
-                style={{
-                  fontStyle: "italic",
-                  fontSize: 17,
-                  color: COLORS.gray,
-                }}
-              >
-                Je huna akaunti?
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontStyle: "italic",
-                    fontSize: 17,
-                  }}
-                  onPress={() => setGoToSignUp(true)}
-                >
-                  Jiandikishe
-                </Text>
-              </Text>
-            )}
+            ) : null}
           </View>
         </KeyboardAwareScrollView>
       </View>

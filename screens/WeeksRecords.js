@@ -1,56 +1,23 @@
 import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { COLORS, SIZES } from "../constants";
 import { FormCard } from "../components";
+import { FormsDataContext } from "../context/FormsRecordProvider";
 
 const WeeksRecords = ({ navigation, route }) => {
-  const formRecords = [
-    {
-      id: 1,
-      week: 1,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 2,
-      week: 2,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 3,
-      week: 3,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 4,
-      week: 4,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 5,
-      week: 5,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 6,
-      week: 6,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 7,
-      week: 7,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 8,
-      week: 8,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-    {
-      id: 9,
-      week: 9,
-      forms: ["Fomu ya Kumaliza Mzunguko", "Fomu ya Ubanzi"],
-    },
-  ];
+  const { states } = useContext(FormsDataContext);
+  const [weeks, setWeeks] = useState(states?.weeks);
+  const [forms_, setForms] = useState(states?.forms);
+  const formRecords = [];
+  for (i = 0; i < weeks?.length; i++) {
+    let key = weeks[i];
+    key = key.toString();
+    let formObjProtoType = {};
+    formObjProtoType["id"] = i;
+    formObjProtoType["week"] = weeks[0];
+    formObjProtoType["forms"] = forms_?.[i]?.[key];
+    formRecords.push(formObjProtoType);
+  }
 
   return (
     <SafeAreaView style={{}}>
@@ -117,8 +84,9 @@ const WeeksRecords = ({ navigation, route }) => {
         <FlatList
           data={formRecords.reverse()}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <FormCard
+              key={index}
               text={`Week ${item.week}`}
               data={item}
               navigation={navigation}
@@ -129,7 +97,6 @@ const WeeksRecords = ({ navigation, route }) => {
             />
           )}
           ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
-          keyExtractor={(item) => item.id}
           ListFooterComponent={
             <View
               style={{

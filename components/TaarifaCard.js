@@ -8,7 +8,6 @@ const TaarifaCard = ({ text, options, isCF }) => {
 
   const showOptions = (options) => {
     const optionsArray = Object.keys(options);
-    const optionsLength = optionsArray.length;
     return (
       <View
         style={{
