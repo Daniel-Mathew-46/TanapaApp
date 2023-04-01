@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
-import { query, collection, where, getDocs, db } from "./firebase";
+import { query, collection, where, getDocs, db, onSnapshot } from "./firebase";
 
 export const KatibuDataContext = createContext(null);
 
@@ -26,6 +26,11 @@ const MemberStackProvide = (props) => {
           ...prevStates,
           kikundi: action.payload,
         };
+      // case "SET_MEMBERS":
+      //   return {
+      //     ...prevStates,
+      //     members: [...action.payload],
+      //   };
       case "SET_MEMBERS":
         return {
           ...prevStates,
@@ -52,6 +57,35 @@ const MemberStackProvide = (props) => {
   };
 
   const [states, dispatch] = useReducer(statesReducer_, initialStates);
+
+  // const q_ = query(
+  //   collection(db, "Vikundi"),
+  //   where("Katibu", "==", states?.katibuData)
+  // );
+  // const unsub = onSnapshot(
+  //   q_,
+  //   async (docs) => {
+  //     let members_ = [];
+  //     const kikundiDoc = docs.docs?.[0].data();
+  //     const kikundiName = kikundiDoc?.name;
+  //     if (states.kikundi !== doc)
+  //       dispatch({ type: "SET_KIKUNDI", payload: kikundiDoc });
+  //     const q = query(
+  //       collection(db, "KikundiMembers"),
+  //       where("Kikundi Chake", "==", kikundiName)
+  //     );
+  //     const snapshot = await getDocs(q);
+  //     snapshot.forEach((doc) => {
+  //       members_.unshift(doc.data());
+  //     });
+  //     if (states.members !== members_)
+  //       dispatch({ type: "SET_MEMBERS", payload: members_ });
+  //   },
+  //   (error) => {
+  //     console.log(error);
+  //   }
+  // );
+
   useEffect(() => {
     dispatch({ type: "ACTIVATE_LOADING", loading: true });
     const getKikundiChaKatibu = async (email) => {
@@ -91,6 +125,7 @@ const MemberStackProvide = (props) => {
       });
     return () => {
       dispatch({ type: "ACTIVATE_LOADING", loading: false });
+      // unsub;
     };
   }, []);
 

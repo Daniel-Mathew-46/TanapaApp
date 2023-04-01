@@ -25,6 +25,7 @@ import {
   deleteDoc,
   limit,
   orderBy,
+  getCountFromServer,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -72,4 +73,5 @@ export {
   deleteDoc,
   limit,
   orderBy,
+  getCountFromServer,
 };

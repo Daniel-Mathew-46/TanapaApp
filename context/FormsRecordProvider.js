@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React, { createContext, useEffect, useReducer } from "react";
 import {
   query,
@@ -86,29 +85,6 @@ const FormsRecordProvider = (props) => {
       }
     };
     getWeeks(katibuEmail);
-    // .then((forms) => {
-    //   let getFormsData = async (form) => {
-    //     let members_ = [];
-    //     try {
-    //       const q = query(
-    //         collection(db, "KikundiMembers"),
-    //         where("Kikundi Chake", "==", kikundiName)
-    //       );
-    //       const docs = await getDocs(q);
-    //       docs.forEach((doc) => {
-    //         members_.unshift(doc.data());
-    //       });
-    //       dispatch({ type: "SET_MEMBERS", payload: members_ });
-    //     } catch (e) {
-    //       alert(e.message);
-    //     }
-    //   };
-    //   getKikundiMembers(doc.name);
-    // })
-    // .catch((e) => {
-    //   dispatch({ type: "ACTIVATE_LOADING", loading: false });
-    //   alert(e.message);
-    // });
     return () => {
       dispatch;
     };

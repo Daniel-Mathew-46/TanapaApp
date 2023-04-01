@@ -135,7 +135,7 @@ const Login = ({ setUser, setUserToken }) => {
       >
         <KeyboardAwareScrollView>
           <Image
-            source={assets.logo2}
+            source={assets.logo3}
             resizeMode="contain"
             style={{
               height: 300,

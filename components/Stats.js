@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -25,7 +25,7 @@ const Stats = ({ statsStyle, text, count }) => {
           <Icon
             name={"people"}
             size={statsStyle?.iconSize}
-            color={COLORS.secondary}
+            color={COLORS.white}
           />
         </View>
         <Text
@@ -35,7 +35,11 @@ const Stats = ({ statsStyle, text, count }) => {
             fontWeight: "bold",
           }}
         >
-          {count}
+          {count !== null ? (
+            count
+          ) : (
+            <ActivityIndicator size={20} color={COLORS.white} />
+          )}
         </Text>
       </View>
       <Text
