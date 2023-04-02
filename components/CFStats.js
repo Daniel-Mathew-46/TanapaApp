@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { SIZES, COLORS } from "../constants";
+import { SIZES } from "../constants";
 import Stats from "./Stats";
-import { Dimensions, View, ActivityIndicator } from "react-native";
+import { Dimensions, View } from "react-native";
 import { CFDashContext } from "../context/CFProvider";
 
 const CFStats = () => {

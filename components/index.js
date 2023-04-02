@@ -2,6 +2,7 @@ import AdminStats from "./AdminStats";
 import AttendanceRadioComponent from "./AttendanceRadioComponent";
 import Button from "./Button";
 import CFStats from "./CFStats";
+import CFStatsUsajili from "./CFStatsUsajili";
 import CustomDataCard from "./CustomDataCard";
 import CustomInput from "./CustomInput";
 import CustomKatibuDataCard from "./CustomKatibuDataCard";

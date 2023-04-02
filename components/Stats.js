@@ -18,39 +18,47 @@ const Stats = ({ statsStyle, text, count }) => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingVertical: SIZES.base,
         }}
       >
         <View>
-          <Icon
-            name={"people"}
-            size={statsStyle?.iconSize}
-            color={COLORS.white}
-          />
+          <View>
+            <Icon
+              name={"people"}
+              size={statsStyle?.iconSize}
+              color={COLORS.white}
+            />
+          </View>
+          <Text
+            style={{
+              fontSize: statsStyle.textFont,
+              fontWeight: "bold",
+              textAlign: "left",
+            }}
+          >
+            {text}
+          </Text>
         </View>
-        <Text
+        <View
           style={{
-            color: COLORS.white,
-            fontSize: statsStyle?.fontSize,
-            fontWeight: "bold",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          {count !== null ? (
-            count
-          ) : (
-            <ActivityIndicator size={20} color={COLORS.white} />
-          )}
-        </Text>
+          <Text
+            style={{
+              color: COLORS.white,
+              fontSize: statsStyle?.fontSize,
+              fontWeight: "bold",
+            }}
+          >
+            {count !== null ? (
+              count
+            ) : (
+              <ActivityIndicator size={20} color={COLORS.white} />
+            )}
+          </Text>
+        </View>
       </View>
-      <Text
-        style={{
-          fontSize: statsStyle.textFont,
-          fontWeight: "bold",
-          textAlign: "left",
-        }}
-      >
-        {text}
-      </Text>
     </View>
   );
 };

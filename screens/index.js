@@ -22,7 +22,6 @@ import RegistrationAdmin from "./RegistrationAdmin";
 import RegisterKatibu from "./RegisterKatibu";
 import RegisterKikundi from "./RegisterKikundi";
 import CFStackRegistrations from "./CFStackRegistrations";
-import KatibuList from "./KatibuList";
 import VikundiList from "./VikundiList";
 import MakatibuRecords from "./MakatibuRecords";
 import RegisterMwanachama from "./RegisterMwanachama";
@@ -30,6 +29,8 @@ import MemberStackProvider from "./MembersStackComponent";
 import FormsStackComponent from "./FormsStackComponent";
 import WeeksRecords from "./WeeksRecords";
 import FormData from "./FormData";
+import KatibuData from "./KatibuData";
+import CfKatibuStack from "./CfKatibuStack";
 
 export {
   Login,
@@ -56,7 +57,6 @@ export {
   RegisterKatibu,
   RegisterKikundi,
   CFStackRegistrations,
-  KatibuList,
   VikundiList,
   MakatibuRecords,
   RegisterMwanachama,
@@ -64,4 +64,6 @@ export {
   FormData,
   WeeksRecords,
   FormsStackComponent,
+  KatibuData,
+  CfKatibuStack,
 };

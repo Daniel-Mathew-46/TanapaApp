@@ -33,7 +33,7 @@ const Login = ({ setUser, setUserToken }) => {
     CF: [
       { opt: "Dashboard", icon: "view-dashboard-outline" },
       { opt: "Usajili", icon: "file-document-edit-outline" },
-      { opt: "Makatibu Records", icon: "file-document-edit-outline" },
+      { opt: "Rekodi za Makatibu", icon: "file-document-edit-outline" },
       { opt: "Rekodi za Vikundi", icon: "page-previous-outline" },
     ],
     Katibu: [

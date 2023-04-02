@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const KatibuList = () => {
+const KikundiReportData = () => {
   return (
     <View>
-      <Text>KatibuList</Text>
+      <Text>KikundiReportData</Text>
     </View>
   );
 };
 
-export default KatibuList;
+export default KikundiReportData;

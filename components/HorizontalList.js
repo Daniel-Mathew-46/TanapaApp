@@ -1,14 +1,8 @@
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
-import {
-  COLORS,
-  SIZES,
-  TasksDataAdmin,
-  TasksDataCF,
-  SHADOWS,
-} from "../constants";
+import { COLORS, SIZES, TasksDataCF } from "../constants";
 
-const Item = ({ item, navigation }) => {
+const Item = ({ item, navigation, cfEmail }) => {
   return (
     <View
       style={{
@@ -69,12 +63,15 @@ const Item = ({ item, navigation }) => {
             onPress={() => {
               switch (item.shughuli) {
                 case "Sajili katibu":
-                  navigation.navigate("Sajili Katibu", {
+                  navigation.navigate("Rekodi za Makatibu", {
                     screen: "Sajili Katibu",
+                    cfEmail,
                   });
                   break;
                 case "Sajili Kikundi":
-                  navigation.navigate("Sajili Vikundi");
+                  navigation.navigate("Rekodi za Vikundi", {
+                    screen: "Sajili Kikundi",
+                  });
                   break;
               }
             }}
@@ -94,7 +91,7 @@ const Item = ({ item, navigation }) => {
     </View>
   );
 };
-const HorizontalList = ({ navigation, role }) => {
+const HorizontalList = ({ navigation, cfEmail }) => {
   return (
     <View
       style={{
@@ -107,7 +104,9 @@ const HorizontalList = ({ navigation, role }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         data={TasksDataCF}
-        renderItem={({ item }) => <Item item={item} navigation={navigation} />}
+        renderItem={({ item }) => (
+          <Item item={item} navigation={navigation} cfEmail={cfEmail} />
+        )}
         keyExtractor={(item) => item.id}
       />
     </View>

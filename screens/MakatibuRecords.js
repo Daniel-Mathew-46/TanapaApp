@@ -1,60 +1,12 @@
-import { View, Text, FlatList } from "react-native";
-import React from "react";
-import { SIZES, assets } from "../constants";
-import { CustomKatibuDataCard, FormsHeader } from "../components";
+import { View, FlatList, StatusBar } from "react-native";
+import React, { useContext } from "react";
+import { SIZES, assets, COLORS } from "../constants";
+import { CustomKatibuDataCard } from "../components";
+import { KatibuRecordsContext } from "../context/KatibuRecordsProvider";
 
-const MakatibuRecords = ({ navigation }) => {
-  const personData = [
-    {
-      id: 1,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-    {
-      id: 2,
-      name: "Hamis Fereji",
-      role: "Katibu Msufiri",
-      avatar: assets.person02,
-    },
-    {
-      id: 3,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-    {
-      id: 4,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-    {
-      id: 5,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-    {
-      id: 6,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-    {
-      id: 7,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-    {
-      id: 8,
-      name: "Zaidu Nyoni",
-      role: "Katibu Tembo Pilipili",
-      avatar: assets.person01,
-    },
-  ];
-
+const MakatibuRecords = ({ navigation, route }) => {
+  const { states, dispatch } = useContext(KatibuRecordsContext);
+  const cfEmail = route.params?.cfEmail;
   return (
     <View>
       <View
@@ -64,16 +16,22 @@ const MakatibuRecords = ({ navigation }) => {
         }}
       >
         <FlatList
-          data={personData}
+          data={states?.myKatibus}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <CustomKatibuDataCard data={item} navigation={navigation} />
+          renderItem={({ item, index }) => (
+            <CustomKatibuDataCard
+              key={index}
+              data={item}
+              navigation={navigation}
+              cfEmail={cfEmail}
+            />
           )}
-          keyExtractor={(item) => item.id}
           ListFooterComponent={<View />}
           ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+          ListFooterComponentStyle={{ marginBottom: "20%" }}
         />
       </View>
+      <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </View>
   );
 };

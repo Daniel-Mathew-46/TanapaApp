@@ -134,7 +134,7 @@ const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
               justifyContent: "center",
             }}
             onPress={() =>
-              navigation.navigate("Taarifa za Kikundi", {
+              navigation.navigate("Week Records", {
                 kikundiName: data?.name,
               })
             }

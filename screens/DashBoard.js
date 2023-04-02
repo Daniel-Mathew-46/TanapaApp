@@ -43,7 +43,11 @@ const DashBoard = ({ navigation, route }) => {
             )}
 
             {role == "CF" && (
-              <HorizontalList navigation={navigation} role={role} />
+              <HorizontalList
+                navigation={navigation}
+                role={role}
+                cfEmail={userEmail}
+              />
             )}
 
             {/* SectionTitle */}

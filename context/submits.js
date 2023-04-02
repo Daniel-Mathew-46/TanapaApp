@@ -115,3 +115,25 @@ export const deleteMember = async (email) => {
   };
   await deleteMember(_doc.id);
 };
+
+//updateMember
+export const updateKatibu = async (email, formData, change, dispatch) => {
+  const docs = await getDocs(
+    query(collection(db, "users"), where("email", "==", email))
+  );
+  const _doc = docs.docs[0];
+  const updateKatibuInfo = async (docId) => {
+    try {
+      await updateDoc(doc(db, "users", docId), {
+        ...formData,
+      });
+      await dispatch({
+        type: "SET_CHANGE",
+        change: change,
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+  updateKatibuInfo(_doc.id);
+};

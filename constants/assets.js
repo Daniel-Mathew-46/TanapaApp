@@ -6,6 +6,7 @@ import person04 from "../assets/images/person04.png";
 // import logo3 from "../assets/images/logo_tanapa_removebg-preview.png";
 import logo4 from "../assets/images/tanapa-removebg-preview.png";
 import logo3 from "../assets/images/logo_tanapa-removebg-preview.png";
+import avatar from "../assets/download.jpg";
 
 export default {
   logo2,
@@ -15,4 +16,5 @@ export default {
   person04,
   logo3,
   logo4,
+  avatar,
 };

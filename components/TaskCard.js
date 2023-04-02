@@ -99,7 +99,9 @@ const TaskCard = ({
               onPress={() => {
                 switch (title) {
                   case "Sajili Katibu":
-                    navigation.navigate("Makatibu Records");
+                    navigation.navigate("Rekodi za Makatibu", {
+                      screen: "Rekodi ya Makatibu",
+                    });
                     break;
                   case "Sajili Vikundi":
                     navigation.navigate("Rekodi za Vikundi");

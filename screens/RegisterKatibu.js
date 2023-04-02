@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Alert } from "react-native";
 import { Button, CustomInput, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
@@ -13,63 +13,124 @@ import {
   createUserWithEmailAndPassword,
   addDoc,
 } from "../context/firebase";
+import { updateKatibu } from "../context/submits";
+import { KatibuRecordsContext } from "../context/KatibuRecordsProvider";
 
 const RegisterKatibu = ({ route }) => {
-  const [fullname, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const edit = route.params?.edit;
+  const data = route.params?.data;
+  const cfEmail = route.params?.cfEmail;
+  const { states, dispatch } = useContext(KatibuRecordsContext);
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let change = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < 5; i++) {
+    change += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  var name = "" || data?.["name"];
+  var katEmail = "" || data?.["email"];
+  var katPhone = "" || data?.["phone"];
+  var passw = "" || data?.["password"];
+
+  const [fullname, setFullName] = useState(name);
+  const [email, setEmail] = useState(katEmail);
+  const [phone, setPhone] = useState(katPhone);
   const [anuani, setAnuani] = useState("");
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(passw);
   const [confPasswd, setConfPasswd] = useState("");
   const [loading, setLoading] = useState(false);
 
   const submitToFirebase = () => {
+    const formData = {
+      name: fullname,
+      email,
+      phone,
+      anuani,
+      password,
+    };
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        const addUser = async (user) => {
-          try {
-            await addDoc(collection(db, "users"), {
-              userId: user.uid,
-              name: fullname,
-              email,
-              password,
-              phone,
-              assigned: "no",
-              role: "Katibu",
-            });
-          } catch (e) {
-            setLoading(false);
-            alert(e.message.split(" ")[2]);
-          }
-        };
-        addUser(user);
-        setLoading(false);
-        alert("Umefanikiwa Kusajili Katibu");
-        setFullName("");
-        setEmail("");
-        setAnuani("");
-        setUsername("");
-        setPhone("");
-        setPassword("");
-        setConfPasswd("");
-      })
-      .catch((error) => {
-        setLoading(false);
-        alert(error.message.split(" ")[2]);
-      });
+    if (edit) {
+      updateKatibu(data?.["email"], formData, change, dispatch)
+        .then(() => {
+          setLoading(false);
+          alert("Umefanikiwa Kubadilisha taarifa za Katibu");
+          setFullName("");
+          setEmail("");
+          setAnuani("");
+          setUsername("");
+          setPhone("");
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+          const user = userCredentials.user;
+          const addUser = async (user) => {
+            try {
+              await addDoc(collection(db, "users"), {
+                userId: user.uid,
+                ...formData,
+                assigned: "no",
+                role: "Katibu",
+                createdBy: cfEmail,
+              });
+              // await dispatch({
+              //   type: "ADD_KATIBU",
+              //   katibu: {
+              //     userId: user.uid,
+              //     ...formData,
+              //     assigned: "no",
+              //     role: "Katibu",
+              //     createdBy: cfEmail,
+              //   },
+              // });
+            } catch (e) {
+              setLoading(false);
+              alert(e.message.split(" ")[2]);
+            }
+          };
+          addUser(user);
+          setLoading(false);
+          alert("Umefanikiwa Kusajili Katibu");
+          // dispatch({
+          //   type: "SET_CHANGE",
+          //   change: change,
+          // });
+          setFullName("");
+          setEmail("");
+          setAnuani("");
+          setUsername("");
+          setPhone("");
+          setPassword("");
+          setConfPasswd("");
+        })
+        .catch((error) => {
+          setLoading(false);
+          alert(error.message.split(" ")[2]);
+        });
+    }
   };
 
   const handleSubmit = () => {
-    if (confPasswd !== password) {
-      alert("Nenosiri hazifanani!Rudia Nenosiri kwa usahihi!");
-      return;
-    }
-    if (fullname == "" || email == "" || phone == "" || password == "") {
-      alert("Tafadhali jaza taarifa kamili!");
-      return;
+    if (!edit) {
+      if (confPasswd !== password) {
+        alert("Nenosiri hazifanani!Rudia Nenosiri kwa usahihi!");
+        return;
+      }
+      if (fullname == "" || email == "" || phone == "" || password == "") {
+        alert("Tafadhali jaza taarifa kamili!");
+        return;
+      }
+    } else {
+      if (fullname == "" || email == "" || phone == "") {
+        alert("Tafadhali jaza taarifa kamili!");
+        return;
+      }
     }
     if (phone.length !== 10 || isNaN(phone)) {
       alert("Namba ya Simu siyo sahihi!");
@@ -127,6 +188,7 @@ const RegisterKatibu = ({ route }) => {
             icon={<Icon name="mail-outline" size={25} color={COLORS.primary} />}
             label="Barua pepe"
             value={email}
+            editable={!edit}
             placeholder={"Ingiza barua pepe ya Katibu"}
             onChangeText={(text) => setEmail(text)}
           />
@@ -154,21 +216,30 @@ const RegisterKatibu = ({ route }) => {
             value={username}
             onChangeText={(text) => setUsername(text)}
           />
-          <CustomInput
-            icon={<Icon name="lock-closed" size={25} color={COLORS.primary} />}
-            label="NenoSiri la Katibu"
-            placeholder={"Ingiza nenosiri"}
-            onChangeText={(text) => setPassword(text)}
-            isPassword={true}
-          />
-          <CustomInput
-            icon={<Icon name="lock-closed" size={25} color={COLORS.primary} />}
-            label="NenoSiri la Katibu"
-            placeholder={"Ingiza tena nenosiri"}
-            value={confPasswd}
-            onChangeText={(text) => setConfPasswd(text)}
-            isPassword={true}
-          />
+          {!edit && (
+            <CustomInput
+              icon={
+                <Icon name="lock-closed" size={25} color={COLORS.primary} />
+              }
+              label="NenoSiri la Katibu"
+              placeholder={"Ingiza nenosiri"}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              isPassword={true}
+            />
+          )}
+          {!edit && (
+            <CustomInput
+              icon={
+                <Icon name="lock-closed" size={25} color={COLORS.primary} />
+              }
+              label="NenoSiri la Katibu"
+              placeholder={"Ingiza tena nenosiri"}
+              value={confPasswd}
+              onChangeText={(text) => setConfPasswd(text)}
+              isPassword={true}
+            />
+          )}
 
           <View
             style={{

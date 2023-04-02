@@ -38,7 +38,6 @@ const CFProvider = (props) => {
   };
 
   const [stats, dispatch] = useReducer(cfStatsReducer, cfStats);
-
   const q_ = query(collection(db, "Vikundi"));
   const unsub = onSnapshot(q_, async (doc) => {
     const snapshot = await getCountFromServer(q_);

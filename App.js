@@ -14,6 +14,7 @@ import {
   RegisterKatibu,
   MakatibuRecords,
   MemberStackProvider,
+  CfKatibuStack,
 } from "./screens";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -176,9 +177,12 @@ export default function App() {
                   }}
                 />
                 <Drawer.Screen
-                  name="Makatibu Records"
-                  component={MakatibuRecords}
-                  initialParams={{ role: userToken?.role }}
+                  name="Rekodi za Makatibu"
+                  component={CfKatibuStack}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
+                  }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.primary },
                     headerTitleAlign: "center",
@@ -190,7 +194,7 @@ export default function App() {
                     },
                   }}
                 />
-                <Drawer.Screen
+                {/* <Drawer.Screen
                   name="Sajili Vikundi"
                   component={RegisterKikundi}
                   initialParams={{ role: userToken?.role }}
@@ -204,22 +208,7 @@ export default function App() {
                       fontSize: SIZES.large,
                     },
                   }}
-                />
-                <Drawer.Screen
-                  name="Sajili Katibu"
-                  component={RegisterKatibu}
-                  initialParams={{ role: userToken?.role }}
-                  options={{
-                    headerStyle: { backgroundColor: COLORS.primary },
-                    headerTitleAlign: "center",
-                    headerTitle: "SAJILI KATIBU",
-                    headerTitleStyle: {
-                      textTransform: "uppercase",
-                      color: COLORS.white,
-                      fontSize: SIZES.large,
-                    },
-                  }}
-                />
+                /> */}
                 <Drawer.Screen
                   name="Rekodi za Vikundi"
                   component={CfStackComponent}

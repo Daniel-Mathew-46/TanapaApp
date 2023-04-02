@@ -102,12 +102,23 @@ const WeeksRecords = ({ navigation, route }) => {
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: 10,
                 height: 200,
               }}
-            ></View>
+            />
+            // style={{
+            //   justifyContent: "center",
+            //   alignItems: "center",
+            //   marginTop: 10,
+            //   height: 200,
+            // }}
+            // ></View>
           }
-          ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+          ItemSeparatorComponent={
+            <View
+              style={{ marginBottom: 40 }}
+              ListFooterComponentStyle={{ marginBottom: "20%" }}
+            />
+          }
         />
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />

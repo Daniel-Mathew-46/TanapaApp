@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Icon from "react-native-vector-icons/Entypo";
-import { COLORS, SIZES } from "../constants";
+import { assets, COLORS, SIZES } from "../constants";
+import { KatibuRecordsContext } from "../context/KatibuRecordsProvider";
 
 const CustomKatibuDataCard = ({ data, navigation }) => {
+  const { states } = useContext(KatibuRecordsContext);
   const [showoptions, setShowOptions] = useState(false);
 
   const showOptions = (options, navigation) => {
@@ -11,7 +13,7 @@ const CustomKatibuDataCard = ({ data, navigation }) => {
       <View
         style={{
           zIndex: 1,
-          height: 50,
+          height: 60,
           width: 100,
           backgroundColor: COLORS.gray,
           paddingHorizontal: SIZES.base,
@@ -38,11 +40,15 @@ const CustomKatibuDataCard = ({ data, navigation }) => {
               setShowOptions(!showoptions);
               switch (item) {
                 case "Angalia":
+                  navigation.navigate("Taarifa za Katibu", {
+                    data,
+                  });
                   break;
                 case "Badilisha":
                   navigation.navigate("Sajili Katibu", {
                     edit: true,
                     data,
+                    cfEmail: states.cfEmail,
                   });
                   break;
               }
@@ -86,11 +92,12 @@ const CustomKatibuDataCard = ({ data, navigation }) => {
           }}
         >
           <Image
-            source={data?.avatar}
-            resizeMode="contain"
+            source={assets.avatar}
+            resizeMode="cover"
             style={{
-              height: 60,
-              width: 60,
+              height: 50,
+              width: 50,
+              borderRadius: 60,
             }}
           />
         </View>
