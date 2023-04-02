@@ -2,8 +2,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SIZES, COLORS } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
+import Icons from "react-native-vector-icons/AntDesign";
 
-const TaarifaCard = ({ text, options, isCF }) => {
+const TaarifaCard = ({ text, options, isCF, navigation, data }) => {
   const [showoptions, setShowOptions] = useState(false);
 
   const showOptions = (options) => {
@@ -71,21 +72,46 @@ const TaarifaCard = ({ text, options, isCF }) => {
             paddingHorizontal: SIZES.font,
           }}
         >
-          <View
-            style={{
-              justifyContent: "center",
-            }}
-          >
-            <Text
+          {isCF ? (
+            <View
               style={{
-                color: COLORS.white,
-                fontSize: SIZES.medium,
-                textAlign: "left",
+                justifyContent: "center",
               }}
             >
-              {text}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontSize: SIZES.medium,
+                  textAlign: "left",
+                }}
+              >
+                {text}
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={{
+                justifyContent: "center",
+              }}
+              onPress={() =>
+                navigation.navigate("Kikundi Report Data", {
+                  data,
+                })
+              }
+            >
+              <Text
+                style={{
+                  width: "100%",
+                  color: COLORS.white,
+                  fontSize: SIZES.medium,
+                  textAlign: "left",
+                }}
+              >
+                {text}
+              </Text>
+            </TouchableOpacity>
+          )}
+
           {isCF ? (
             <TouchableOpacity
               style={{
@@ -100,7 +126,21 @@ const TaarifaCard = ({ text, options, isCF }) => {
                 color={COLORS.white}
               />
             </TouchableOpacity>
-          ) : null}
+          ) : (
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() =>
+                navigation.navigate("Kikundi Report Data", {
+                  data,
+                })
+              }
+            >
+              <Icons name="arrowright" size={22} color={COLORS.white} />
+            </TouchableOpacity>
+          )}
         </View>
         {showoptions && showOptions(options)}
       </View>

@@ -11,9 +11,6 @@ import { COLORS, SIZES } from "../constants";
 import { DataCard } from "../components";
 
 const VikundiRecords = ({ navigation }) => {
-  // const navigateOperation = () =>
-  //   navigation.navigate("Taarifa za Kikundi", { week: "wwek 1" });
-
   const vikundiData = [
     {
       id: 1,

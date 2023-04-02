@@ -3,10 +3,10 @@ import React from "react";
 import { COLORS, SIZES } from "../constants";
 import { Button, TaarifaCard, TaskText, WhiteButton } from "../components";
 
-const KikundiReport = ({ route }) => {
+const KikundiReport = ({ route, navigation }) => {
   const kikundiName = route.params?.kikundiName;
 
-  const kikundi_name = kikundiName.split(" ").slice(1).join(" ");
+  // const kikundi_name = kikundiName.split(" ").slice(1).join(" ");
 
   const kikundiData = [
     {
@@ -63,10 +63,10 @@ const KikundiReport = ({ route }) => {
                 style={{
                   textAlign: "left",
                   color: COLORS.white,
-                  fontSize: SIZES.extraLarge,
+                  fontSize: SIZES.large + 2,
                 }}
               >
-                Rekodi Ya Taarifa Za {kikundi_name}
+                Taarifa za Tembo PiliPili Wiki ya 1
               </Text>
             </View>
             <View
@@ -80,7 +80,7 @@ const KikundiReport = ({ route }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                Orodha ya fomu zilizojazawa na Kikundi
+                Orodha ya fomu zilizojazawa Wiki 1
               </Text>
             </View>
           </View>
@@ -99,9 +99,13 @@ const KikundiReport = ({ route }) => {
           data={kikundiData}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
-            <TaarifaCard text={item.text} isCF={false} />
+            <TaarifaCard
+              text={item.text}
+              isCF={false}
+              navigation={navigation}
+              data={item}
+            />
           )}
-          ListHeaderComponent={<TaskText text={"week 1"} />}
           ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
           keyExtractor={(item) => item.id}
           ListFooterComponent={

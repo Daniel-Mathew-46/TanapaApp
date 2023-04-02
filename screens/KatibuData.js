@@ -1,11 +1,9 @@
 import { View, Text, SafeAreaView, StatusBar, Alert } from "react-native";
-import React, { useState, useContext } from "react";
+import React from "react";
 import { COLORS, SIZES } from "../constants";
 
 const KatibuData = ({ route }) => {
   const data = route.params?.data;
-  //   const deleteParam = route.params?.delete;
-  //   const [loading, setLoading] = useState(false);
   return (
     <SafeAreaView style={{}}>
       <View>
