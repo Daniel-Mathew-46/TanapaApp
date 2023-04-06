@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, StatusBar, Alert } from "react-native";
 import React, { useState, useContext } from "react";
-import { COLORS, SIZES } from "../constants";
+import { COLORS, SIZES, generateChars } from "../constants";
 import { Button } from "../components";
 import { deleteMember } from "../context/submits";
 import { KatibuDataContext } from "../context/MemberStackProvide";
@@ -23,6 +23,7 @@ const MemberData = ({ route }) => {
     ]);
 
     const onDeleteConfirm = () => {
+      let change = generateChars();
       setLoading(true);
       let currMembers = states?.members;
       currMembers = currMembers.filter(
@@ -33,8 +34,8 @@ const MemberData = ({ route }) => {
           alert("Umefanikiwa Kufuta Taarifa.");
           setLoading(false);
           dispatch({
-            type: "DELETE_MEMBER",
-            remMembers: currMembers,
+            type: "SET_CHANGE",
+            change: change,
           });
         })
         .catch((e) => {

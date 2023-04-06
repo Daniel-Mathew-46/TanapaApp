@@ -8,42 +8,44 @@ import {
 } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
-import { DataCard } from "../components";
+import { CfDataCard } from "../components";
 
-const VikundiRecords = ({ navigation }) => {
-  const vikundiData = [
-    {
-      id: 1,
-      name: "Kikundi: Tembo Pilipili",
-      role: "Katibu: Peterson Kiara",
-    },
-    // {
-    //   id: 2,
-    //   name: "Kikundi: Tembo Pilipili",
-    //   role: "Katibu: Peterson Kiara",
-    // },
-    // {
-    //   id: 3,
-    //   name: "Kikundi: Tembo Pilipili",
-    //   role: "Katibu: Peterson Kiara",
-    // },
-    // {
-    //   id: 4,
-    //   name: "Kikundi: Tembo Pilipili",
-    //   role: "Katibu: Peterson Kiara",
-    // },
-    // {
-    //   id: 5,
-    //   name: "Kikundi: Tembo Pilipili",
-    //   role: "Katibu: Peterson Kiara",
-    // },
-    // {
-    //   id: 6,
-    //   name: "Kikundi: Tembo Pilipili",
-    //   role: "Katibu: Peterson Kiara",
-    // },
-  ];
+const VikundiRecords = ({ navigation, route }) => {
+  const vikundi = route.params?.vikundi;
+  // const vikundiData = [
+  //   {
+  //     id: 1,
+  //     name: "Tembo Pilipili",
+  //     role: "Peterson Kiara",
+  //   },
+  // {
+  //   id: 2,
+  //   name: "Kikundi: Tembo Pilipili",
+  //   role: "Katibu: Peterson Kiara",
+  // },
+  // {
+  //   id: 3,
+  //   name: "Kikundi: Tembo Pilipili",
+  //   role: "Katibu: Peterson Kiara",
+  // },
+  // {
+  //   id: 4,
+  //   name: "Kikundi: Tembo Pilipili",
+  //   role: "Katibu: Peterson Kiara",
+  // },
+  // {
+  //   id: 5,
+  //   name: "Kikundi: Tembo Pilipili",
+  //   role: "Katibu: Peterson Kiara",
+  // },
+  // {
+  //   id: 6,
+  //   name: "Kikundi: Tembo Pilipili",
+  //   role: "Katibu: Peterson Kiara",
+  // },
+  // ];
 
+  console.log(vikundi);
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -146,17 +148,16 @@ const VikundiRecords = ({ navigation }) => {
         }}
       >
         <FlatList
-          data={vikundiData}
+          data={vikundi}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <DataCard
-              hasAvatar={false}
+          renderItem={({ item, index }) => (
+            <CfDataCard
+              key={index}
               data={item}
               weekText={"Weeks"}
               navigation={navigation}
             />
           )}
-          keyExtractor={(item) => item.id}
           ListFooterComponent={<View />}
           ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
           ListFooterComponentStyle={{ marginBottom: "80%" }}

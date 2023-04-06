@@ -1,11 +1,11 @@
-import { View, Text, SafeAreaView, StatusBar, Alert } from "react-native";
+import { View, Text, SafeAreaView, StatusBar } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
 
 const KatibuData = ({ route }) => {
   const data = route.params?.data;
   return (
-    <SafeAreaView style={{}}>
+    <SafeAreaView>
       <View>
         <View
           style={{

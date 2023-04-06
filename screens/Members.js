@@ -5,19 +5,19 @@ import {
   FlatList,
   StatusBar,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
-import { COLORS, SIZES, assets } from "../constants";
+import React, { useContext } from "react";
+import { COLORS, SIZES } from "../constants";
 import { MemberCard } from "../components";
 import { KatibuDataContext } from "../context/MemberStackProvide";
-import { onSnapshot, collection, db, query, where } from "../context/firebase";
 
 const Members = ({ navigation, route }) => {
   const kikundi = route.params?.kikundi;
   const { states } = useContext(KatibuDataContext);
-  const [members, setMembers] = useState(states?.members);
-
+  const membersIds =
+    states?.members?.length > 0
+      ? states.members.map((item) => item["Namba yake"])
+      : [];
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -51,7 +51,7 @@ const Members = ({ navigation, route }) => {
                   fontSize: SIZES.extraLarge + 5,
                 }}
               >
-                {`Rekodi Ya Wanachama wa ${kikundi?.name}`}
+                {`Rekodi Ya Wanachama wa ${kikundi}`}
               </Text>
             </View>
             <View
@@ -95,7 +95,8 @@ const Members = ({ navigation, route }) => {
                   }}
                   onPress={() =>
                     navigation.navigate("RegisterMwanachama", {
-                      kikundi: kikundi?.name,
+                      kikundi: kikundi,
+                      membersIds,
                     })
                   }
                 >
@@ -123,25 +124,39 @@ const Members = ({ navigation, route }) => {
           paddingVertical: SIZES.extraLarge,
         }}
       >
-        <FlatList
-          data={members}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <MemberCard
-              data={item}
-              options={{
-                angalia: "Angalia",
-                badilisha: "Badilisha",
-                futa: "Futa",
-              }}
-              navigation={navigation}
-            />
-          )}
-          keyExtractor={(item) => item["Barua Pepe"]}
-          ListFooterComponent={<View />}
-          ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-          ListFooterComponentStyle={{ marginBottom: "90%" }}
-        />
+        {states?.members?.length === 0 ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+              Hakuna Wanachama.Sajili Wanachama
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={states?.members}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <MemberCard
+                data={item}
+                options={{
+                  angalia: "Angalia",
+                  badilisha: "Badilisha",
+                  futa: "Futa",
+                }}
+                navigation={navigation}
+              />
+            )}
+            keyExtractor={(item) => item["Barua Pepe"]}
+            ListFooterComponent={<View />}
+            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+            ListFooterComponentStyle={{ marginBottom: "90%" }}
+          />
+        )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </SafeAreaView>

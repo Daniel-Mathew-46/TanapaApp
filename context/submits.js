@@ -67,7 +67,8 @@ export const submitMembersData = async (
   formData,
   update = false,
   dispatch,
-  currMembers
+  currMembers,
+  change
 ) => {
   if (update == true) {
     const docs = await getDocs(
@@ -84,8 +85,8 @@ export const submitMembersData = async (
           ...formData,
         });
         await dispatch({
-          type: "UPDATE_MEMBER",
-          data: currMembers,
+          type: "SET_CHANGE",
+          change: change,
         });
       } catch (e) {
         alert(e.message);

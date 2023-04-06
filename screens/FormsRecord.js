@@ -30,8 +30,6 @@ const FormsRecord = ({ navigation, route }) => {
           if (doc_.exists()) {
             formObj[docName] = doc_.data();
             formDataArray.push(formObj);
-          } else {
-            alert("Hakuna Data za Fomu hii");
           }
         }
         await dispatch({ type: "SET_FORMS", payload: formDataArray });
@@ -104,7 +102,7 @@ const FormsRecord = ({ navigation, route }) => {
           paddingVertical: SIZES.extraLarge,
         }}
       >
-        {states?.formsLoading && states?.formDatas?.length == 0 ? (
+        {states?.formDatas == null ? (
           <View
             style={{
               alignItems: "center",
@@ -115,32 +113,48 @@ const FormsRecord = ({ navigation, route }) => {
             <ActivityIndicator size={40} color={COLORS.primary} />
           </View>
         ) : (
-          <FlatList
-            data={forms}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <FormDataCard
-                text={item}
-                data={states?.formDatas}
-                navigation={navigation}
-              />
-            )}
-            ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
-            keyExtractor={(item) => item}
-            ListFooterComponent={
+          <>
+            {states?.formDatas?.length === 0 ? (
               <View
                 style={{
+                  flex: 1,
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 10,
-                  height: 200,
                 }}
               >
-                {/* <Button text={"Pakua"} /> */}
+                <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+                  Hakuna Wanachama.Sajili Wanachama
+                </Text>
               </View>
-            }
-            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-          />
+            ) : (
+              <FlatList
+                data={forms}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <FormDataCard
+                    text={item}
+                    data={states?.formDatas}
+                    navigation={navigation}
+                  />
+                )}
+                ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
+                keyExtractor={(item) => item}
+                ListFooterComponent={
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 10,
+                      height: 200,
+                    }}
+                  >
+                    {/* <Button text={"Pakua"} /> */}
+                  </View>
+                }
+                ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+              />
+            )}
+          </>
         )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />

@@ -6,8 +6,8 @@ import { FormsDataContext } from "../context/FormsRecordProvider";
 
 const WeeksRecords = ({ navigation, route }) => {
   const { states } = useContext(FormsDataContext);
-  const [weeks, setWeeks] = useState(states?.weeks);
-  const [forms_, setForms] = useState(states?.forms);
+  const weeks = states.weeks;
+  const forms_ = states?.forms;
   const formRecords = [];
   for (i = 0; i < weeks?.length; i++) {
     let key = weeks[i];
@@ -105,13 +105,6 @@ const WeeksRecords = ({ navigation, route }) => {
                 height: 200,
               }}
             />
-            // style={{
-            //   justifyContent: "center",
-            //   alignItems: "center",
-            //   marginTop: 10,
-            //   height: 200,
-            // }}
-            // ></View>
           }
           ItemSeparatorComponent={
             <View

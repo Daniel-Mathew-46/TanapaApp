@@ -1,6 +1,5 @@
 import { View, Text } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import React, { useState } from "react";
+import React from "react";
 import { COLORS, SIZES } from "../constants";
 import { Dropdown } from "react-native-element-dropdown";
 
@@ -10,15 +9,6 @@ const DropDownComponent = ({ label, options, value, setValue, loading }) => {
   return (
     <View>
       <Text style={{ fontSize: 18, marginBottom: SIZES.base }}>{label}</Text>
-      {/* <View
-        style={{
-          width: "100%",
-          borderWidth: 1,
-          borderColor: COLORS.primary,
-          borderRadius: 5,
-          marginBottom: SIZES.small,
-        }}
-      > */}
       {loading ? (
         <View
           style={{
@@ -67,32 +57,6 @@ const DropDownComponent = ({ label, options, value, setValue, loading }) => {
           }}
         />
       )}
-      {/* {loading ? (
-          <Text
-            style={{
-              fontSize: SIZES.medium,
-              color: COLORS.gray,
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            ...tafadhali subiri
-          </Text>
-        ) : (
-          <Picker
-            selectedValue={katibu}
-            onValueChange={(itemValue, itemPosition) =>
-              setKatibuFunc(itemPosition)
-            }
-            prompt={prompt}
-          >
-            {options?.map((item, index) => (
-              <Picker.Item key={index} label={item} value={item} />
-            ))}
-          </Picker>
-        )} */}
-
-      {/* </View> */}
     </View>
   );
 };

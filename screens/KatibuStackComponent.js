@@ -1,18 +1,26 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FormShughuli from "./FormShughuli";
-import FormMzunguko from "./FormMzunguko";
 import FormHisa from "./FormHisa";
 import FormWakopaji from "./FormWakopaji";
-import FormTaarifaMwezi from "./FormTaarifaMwezi";
 import FormMahudhurio from "./FormMahudhurio";
 import DashBoard from "./DashBoard";
+import FormLejaMfuko from "./FormLejaMfuko";
+import FormLejaHisa from "./FormLejaHisa";
+import KatibuTasksProvider from "../context/KatibuTasksProvider";
 
 const KatibuStack = createNativeStackNavigator();
 
-const KatibuStackComponent = ({ route }) => {
+const KatibuTasksProvide = ({ route }) => {
   var role = route.params?.role;
   var katibuEmail = route.params?.user;
+  return (
+    <KatibuTasksProvider katibuEmail={katibuEmail}>
+      <KatibuStackComponent role={role} katibuEmail={katibuEmail} />
+    </KatibuTasksProvider>
+  );
+};
+
+const KatibuStackComponent = ({ role, katibuEmail }) => {
   return (
     <KatibuStack.Navigator
       initialRouteName="KatibuDashboard"
@@ -24,28 +32,8 @@ const KatibuStackComponent = ({ route }) => {
         initialParams={{ role, user: katibuEmail }}
       />
       <KatibuStack.Screen
-        name="SHUGHULI"
-        component={FormShughuli}
-        initialParams={{ katibuEmail }}
-      />
-      <KatibuStack.Screen
-        name="MZUNGUKO"
-        component={FormMzunguko}
-        initialParams={{ katibuEmail }}
-      />
-      <KatibuStack.Screen
-        name="HISA"
-        component={FormHisa}
-        initialParams={{ katibuEmail }}
-      />
-      <KatibuStack.Screen
         name="WAKOPAJI"
         component={FormWakopaji}
-        initialParams={{ katibuEmail }}
-      />
-      <KatibuStack.Screen
-        name="TAARIFA YA MWEZI"
-        component={FormTaarifaMwezi}
         initialParams={{ katibuEmail }}
       />
       <KatibuStack.Screen
@@ -53,8 +41,23 @@ const KatibuStackComponent = ({ route }) => {
         component={FormMahudhurio}
         initialParams={{ katibuEmail }}
       />
+      <KatibuStack.Screen
+        name="LEJAMFUKO"
+        component={FormLejaMfuko}
+        initialParams={{ katibuEmail }}
+      />
+      <KatibuStack.Screen
+        name="LEJAHISA"
+        component={FormLejaHisa}
+        initialParams={{ katibuEmail }}
+      />
+      <KatibuStack.Screen
+        name="HISA"
+        component={FormHisa}
+        initialParams={{ katibuEmail }}
+      />
     </KatibuStack.Navigator>
   );
 };
 
-export default KatibuStackComponent;
+export default KatibuTasksProvide;

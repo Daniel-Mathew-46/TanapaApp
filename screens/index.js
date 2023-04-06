@@ -9,8 +9,6 @@ import VikundiRecords from "./VikundiRecords";
 import DrawerContent from "./DrawerContent";
 import Members from "./Members";
 import FormsRecord from "./FormsRecord";
-import FormShughuli from "./FormShughuli";
-import FormMzunguko from "./FormMzunguko";
 import FormHisa from "./FormHisa";
 import FormMahudhurio from "./FormMahudhurio";
 import FormWakopaji from "./FormWakopaji";
@@ -22,7 +20,6 @@ import RegistrationAdmin from "./RegistrationAdmin";
 import RegisterKatibu from "./RegisterKatibu";
 import RegisterKikundi from "./RegisterKikundi";
 import CFStackRegistrations from "./CFStackRegistrations";
-import VikundiList from "./VikundiList";
 import MakatibuRecords from "./MakatibuRecords";
 import RegisterMwanachama from "./RegisterMwanachama";
 import MemberStackProvider from "./MembersStackComponent";
@@ -31,6 +28,9 @@ import WeeksRecords from "./WeeksRecords";
 import FormData from "./FormData";
 import KatibuData from "./KatibuData";
 import CfKatibuStack from "./CfKatibuStack";
+import FormLejaMfuko from "./FormLejaMfuko";
+import FormLejaHisa from "./FormLejaHisa";
+import KikundiData from "./KikundiData";
 
 export {
   Login,
@@ -44,8 +44,6 @@ export {
   DrawerContent,
   Members,
   FormsRecord,
-  FormShughuli,
-  FormMzunguko,
   FormHisa,
   FormMahudhurio,
   FormWakopaji,
@@ -57,7 +55,6 @@ export {
   RegisterKatibu,
   RegisterKikundi,
   CFStackRegistrations,
-  VikundiList,
   MakatibuRecords,
   RegisterMwanachama,
   MemberStackProvider,
@@ -66,4 +63,7 @@ export {
   FormsStackComponent,
   KatibuData,
   CfKatibuStack,
+  FormLejaMfuko,
+  FormLejaHisa,
+  KikundiData,
 };

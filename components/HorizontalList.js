@@ -71,6 +71,7 @@ const Item = ({ item, navigation, cfEmail }) => {
                 case "Sajili Kikundi":
                   navigation.navigate("Rekodi za Vikundi", {
                     screen: "Sajili Kikundi",
+                    cfEmail,
                   });
                   break;
               }

@@ -42,6 +42,7 @@ const Stats = ({ statsStyle, text, count }) => {
           style={{
             justifyContent: "center",
             alignItems: "center",
+            paddingVertical: SIZES.base,
           }}
         >
           <Text

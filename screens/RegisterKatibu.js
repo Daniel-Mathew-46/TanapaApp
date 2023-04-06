@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { View, Alert } from "react-native";
 import { Button, CustomInput, FormsHeader } from "../components";
-import { SIZES, COLORS } from "../constants";
+import { SIZES, COLORS, generateChars } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "react-native-vector-icons/FontAwesome";
@@ -20,14 +20,9 @@ const RegisterKatibu = ({ route }) => {
   const edit = route.params?.edit;
   const data = route.params?.data;
   const cfEmail = route.params?.cfEmail;
-  const { states, dispatch } = useContext(KatibuRecordsContext);
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let change = "";
-  const charactersLength = characters.length;
-  for (let i = 0; i < 5; i++) {
-    change += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  const { dispatch } = useContext(KatibuRecordsContext);
+
+  let change = generateChars();
 
   var name = "" || data?.["name"];
   var katEmail = "" || data?.["email"];
@@ -79,16 +74,6 @@ const RegisterKatibu = ({ route }) => {
                 role: "Katibu",
                 createdBy: cfEmail,
               });
-              // await dispatch({
-              //   type: "ADD_KATIBU",
-              //   katibu: {
-              //     userId: user.uid,
-              //     ...formData,
-              //     assigned: "no",
-              //     role: "Katibu",
-              //     createdBy: cfEmail,
-              //   },
-              // });
             } catch (e) {
               setLoading(false);
               alert(e.message.split(" ")[2]);
@@ -97,10 +82,10 @@ const RegisterKatibu = ({ route }) => {
           addUser(user);
           setLoading(false);
           alert("Umefanikiwa Kusajili Katibu");
-          // dispatch({
-          //   type: "SET_CHANGE",
-          //   change: change,
-          // });
+          dispatch({
+            type: "SET_CHANGE",
+            change: change,
+          });
           setFullName("");
           setEmail("");
           setAnuani("");

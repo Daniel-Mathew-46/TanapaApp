@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState, useContext } from "react";
-import { Button, CustomInput, FormsHeader, FormsDropDown } from "../components";
+import React, { useContext, useState } from "react";
+import { Button, CustomInput, FormsDropDown, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -8,18 +8,16 @@ import Icons from "react-native-vector-icons/AntDesign";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { submitFormData } from "../context/submits";
 import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
-import moment from "moment/moment";
 
 const RenderFields = ({
   item,
   setMemberSampleData,
   deductFromMembersToShow,
 }) => {
-  const [dateValue, setDateValue] = useState(moment().format("D/MM/YYYY"));
   let key = Object.keys(item)[0];
-  key = Number(key);
+  let intKey = Number(key);
   let name = item[key];
-  const [jina, setJina] = useState(name);
+  const [namba_, setNamba_] = useState(key);
   return (
     <>
       {}
@@ -40,112 +38,49 @@ const RenderFields = ({
         >
           {name}
         </Text>
-        <TouchableOpacity onPress={() => deductFromMembersToShow(key)}>
+        <TouchableOpacity onPress={() => deductFromMembersToShow(intKey)}>
           <Icons name="minuscircle" size={20} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <CustomInput
-        icon={<Icon name="person" size={25} color={COLORS.primary} />}
-        label="Jina la Mkopaji"
-        placeholder={"Ingiza jina kamili la mkopaji"}
-        value={jina}
+        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
+        label="Namba ya Mwanachama"
+        placeholder={"Ingiza namba"}
+        value={namba_}
         onChangeText={(text) => {
-          setJina(text);
-          setMemberSampleData(jina, key, "jina");
+          setNamba_(text);
+          setMemberSampleData(namba_, key, "namba");
         }}
+        isNumber={true}
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Tarehe ya Mkopo"
-        placeholder={"Chagua tarehe ya Mkopo"}
-        value={`${dateValue}`}
+        label="Afya"
+        placeholder={"Ingiza afya"}
         onChangeText={(text) => {
-          setDateValue(text);
-          setMemberSampleData(dateValue, key, "tarehe");
+          setMemberSampleData(text, intKey, "afya");
         }}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Kiasi cha Mkopo"
-        placeholder={"Ingiza kiasi cha mkopo"}
-        onChangeText={(text) => setMemberSampleData(text, key, "kiasi")}
         isNumber={true}
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Riba"
-        placeholder={"Ingiza riba"}
-        onChangeText={(text) => setMemberSampleData(text, key, "riba")}
+        label="Elimu"
+        placeholder={"Weka elimu"}
+        onChangeText={(text) => setMemberSampleData(text, intKey, "elimu")}
         isNumber={true}
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Bima"
-        placeholder={"Ingiza Bima"}
-        onChangeText={(text) => setMemberSampleData(text, key, "bima")}
+        label="Mazingira"
+        placeholder={"Ingiza mazingira"}
+        onChangeText={(text) => setMemberSampleData(text, intKey, "mazingira")}
         isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="1"
-        placeholder={"Ingiza 1"}
-        onChangeText={(text) => setMemberSampleData(text, key, 1)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="2"
-        placeholder={"Ingiza 2"}
-        onChangeText={(text) => setMemberSampleData(text, key, 2)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="3"
-        placeholder={"Ingiza 3"}
-        onChangeText={(text) => setMemberSampleData(text, key, 3)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="4"
-        placeholder={"Ingiza 4"}
-        onChangeText={(text) => setMemberSampleData(text, key, 4)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="5"
-        placeholder={"Ingiza 5"}
-        onChangeText={(text) => setMemberSampleData(text, key, 5)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="5"
-        placeholder={"Ingiza 5"}
-        onChangeText={(text) => setMemberSampleData(text, key, 6)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Jumla"
-        placeholder={"Weka Jumla"}
-        onChangeText={(text) => setMemberSampleData(text, key, "jumla")}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Maelezo"
-        placeholder={"Andika Maelezo"}
-        onChangeText={(text) => setMemberSampleData(text, key, "maelezo")}
-        multiLine={true}
       />
     </>
   );
 };
 
-const FormWakopaji = ({ route }) => {
+const FormLejaMfuko = ({ route }) => {
   const { states } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
   const week = route.params?.week;
@@ -167,25 +102,16 @@ const FormWakopaji = ({ route }) => {
     obj[id] = membersNames[i];
     idToNamesMapArray.push(obj);
   }
-
+  const [salioAnzia, setSalioAnzia] = useState("");
   const [currMember, setCurrMember] = useState();
   const [loading, setLoading] = useState(false);
   const [membersFilled, setMembersFilled] = useState({});
   const [wanachamaShown, setWanachamaShown] = useState([]);
   const fields = {
-    jina: 0,
-    tarehe: 1,
-    kiasi: 2,
-    riba: 3,
-    bima: 4,
-    1: 5,
-    2: 6,
-    3: 7,
-    4: 8,
-    5: 9,
-    6: 10,
-    jumla: 11,
-    maelezo: 12,
+    namba: 0,
+    afya: 1,
+    elimu: 2,
+    mazingira: 3,
   };
 
   const deduceMembersToShow = (index, label) => {
@@ -237,34 +163,16 @@ const FormWakopaji = ({ route }) => {
     }
     const memberDataToSubmit = { ...membersFilled };
     const docName =
-      "Wakopaji_na_Marejesho_" +
-      katibuEmail?.split("@")[0] +
-      "_week_" +
-      weekNumber;
+      "Leja_ya_Mfuko_" + katibuEmail?.split("@")[0] + "_week_" + weekNumber;
     const formData = {
-      0: [
-        "Jina",
-        "Tarehe ya Mkopo",
-        "Kiasi",
-        "Riba",
-        "Bima",
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        "Jumla",
-        "Maelezo",
-      ],
+      0: ["Namba ya Mwanachama", "Afya", "Elimu", "Mazingira"],
       ...memberDataToSubmit,
     };
-
     setLoading(true);
     submitFormData(
       "FormDocs",
       katibuEmail,
-      "Fomu ya Wakopaji na Marejesho",
+      "Leja ya Mfuko wa Jamii",
       docName,
       weekNumber,
       formData
@@ -280,6 +188,7 @@ const FormWakopaji = ({ route }) => {
       });
   };
 
+  console.log(membersFilled);
   return (
     <ScrollView>
       <View
@@ -292,8 +201,8 @@ const FormWakopaji = ({ route }) => {
         }}
       >
         <FormsHeader
-          title={"Fomu Wakopaji na Marejesho"}
-          subTitle={"Fomu ya wakopaji na marejesho"}
+          title={`Leja Mfuko wa Jamii`}
+          subTitle={"Fomu Leja mfuko wa jamii"}
         />
       </View>
       <KeyboardAwareScrollView>
@@ -303,6 +212,16 @@ const FormWakopaji = ({ route }) => {
             marginTop: SIZES.large,
           }}
         >
+          <CustomInput
+            icon={
+              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+            }
+            label="Salio Anzia"
+            placeholder={"Ingiza salio anzia!"}
+            value={salioAnzia}
+            onChangeText={(text) => setSalioAnzia(text)}
+            isNumber={true}
+          />
           <FormsDropDown
             labelText={"Chagua Mwanachama"}
             options={idToNamesMapArray}
@@ -337,4 +256,4 @@ const FormWakopaji = ({ route }) => {
   );
 };
 
-export default FormWakopaji;
+export default FormLejaMfuko;

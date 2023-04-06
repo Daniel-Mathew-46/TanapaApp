@@ -24,7 +24,7 @@ const FormsStackComponent = ({ katibuEmail }) => {
   const { states } = useContext(FormsDataContext);
   return (
     <>
-      {states?.loading && states?.weeks?.length == 0 ? (
+      {states?.weeks == null ? (
         <View
           style={{
             alignItems: "center",
@@ -35,14 +35,30 @@ const FormsStackComponent = ({ katibuEmail }) => {
           <ActivityIndicator size={40} color={COLORS.primary} />
         </View>
       ) : (
-        <FormsStack.Navigator
-          initialRouteName="WeekRecords"
-          screenOptions={{ headerShown: false }}
-        >
-          <FormsStack.Screen name="WeekRecords" component={WeeksRecords} />
-          <FormsStack.Screen name="FormsRecord" component={FormsRecord} />
-          <FormsStack.Screen name="FormData" component={FormData} />
-        </FormsStack.Navigator>
+        <>
+          {states?.weeks?.length === 0 ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+                Hakuna Taarifa za Wiki!
+              </Text>
+            </View>
+          ) : (
+            <FormsStack.Navigator
+              initialRouteName="WeekRecords"
+              screenOptions={{ headerShown: false }}
+            >
+              <FormsStack.Screen name="WeekRecords" component={WeeksRecords} />
+              <FormsStack.Screen name="FormsRecord" component={FormsRecord} />
+              <FormsStack.Screen name="FormData" component={FormData} />
+            </FormsStack.Navigator>
+          )}
+        </>
       )}
     </>
   );

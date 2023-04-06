@@ -24,7 +24,7 @@ const MembersStackComponent = ({}) => {
   const { states } = useContext(KatibuDataContext);
   return (
     <>
-      {states?.loading && states?.members.length == 0 ? (
+      {states?.members == null ? (
         <View
           style={{
             alignItems: "center",

@@ -22,7 +22,8 @@ import {
   updateDoc,
 } from "../context/firebase";
 
-const RegisterKikundi = () => {
+const RegisterKikundi = ({ route }) => {
+  const cfEmail = route.params?.cfEmail;
   const [jinaKikundi, setJinaKikundi] = useState("");
   const [kata, setKata] = useState("");
   const [thamaniHisa, setThamaniHisa] = useState("");
@@ -148,6 +149,7 @@ const RegisterKikundi = () => {
       "Thamani ya Hisa ya Kikundi": thamaniHisa,
       "Namba ya usajili ya Kikundi": nambaUsajili,
       "Idadi ya Wanachama wa Kikundi": idadiWanachama,
+      createdBy: cfEmail,
     };
 
     Alert.alert("Uhakiki", "Umehakiki taarifa zote kwa usahihi?", [

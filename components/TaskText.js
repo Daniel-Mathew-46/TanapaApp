@@ -39,22 +39,6 @@ const TaskText = ({ text, role }) => {
           {text}
         </Text>
       </View>
-
-      {/* {role == "Admin" || role == "Community Facilitator" ? (
-        <TouchableOpacity>
-          <Text
-            style={{
-              color: COLORS.secondary,
-              textTransform: "uppercase",
-              fontSize: SIZES.large,
-              textDecorationLine: "underline",
-              marginLeft: SIZES.base - 3,
-            }}
-          >
-            ONA ZOTE
-          </Text>
-        </TouchableOpacity>
-      ) : null} */}
     </View>
   );
 };

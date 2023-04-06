@@ -1,6 +1,6 @@
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { View } from "react-native";
-import React, { useState } from "react";
+import { View, ActivityIndicator } from "react-native";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Text,
@@ -10,14 +10,18 @@ import {
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import { submitFormData } from "../context/submits";
+import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 
 const FormMahudhurio = ({ route }) => {
-  const members = route.params?.members;
+  const { states } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
   const week = route.params?.week;
   const weekNumber = week ? Number(week) : null;
-  const membersNames = members?.map((item) => item["Jina la Mwanachama"]);
-  const mahudhurioArray = members ? [] : null;
+  const membersNames =
+    states?.members?.length > 0
+      ? states?.members?.map((item) => item["Jina la Mwanachama"])
+      : [];
+  const mahudhurioArray = states?.members ? [] : null;
   const formData = {};
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +39,7 @@ const FormMahudhurio = ({ route }) => {
       katibuEmail?.split("@")[0] +
       "_week_" +
       weekNumber;
-    for (i = 0; i < members?.length; i++) {
+    for (i = 0; i < states?.members?.length; i++) {
       let jina = membersNames[i];
       let jibu = mahudhurioArray[i];
       formData[jina] = jibu;
@@ -58,6 +62,7 @@ const FormMahudhurio = ({ route }) => {
         alert(e.message);
       });
   };
+
   return (
     <ScrollView>
       <View
@@ -74,46 +79,64 @@ const FormMahudhurio = ({ route }) => {
           subTitle={"Fomu ya kadi ya mahudhurio"}
         />
       </View>
-      {members?.length === 0 ? (
+      {states?.members === null ? (
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 10,
+          }}
         >
-          <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
-            Hakuna Wanachama.Sajili Wanachama
-          </Text>
+          <ActivityIndicator size={40} color={COLORS.primary} />
         </View>
       ) : (
-        <KeyboardAwareScrollView>
-          <View
-            style={{
-              paddingHorizontal: SIZES.large,
-              marginTop: SIZES.large,
-            }}
-          >
-            {members?.map((item, index) => (
-              <AttendanceRadioComponent
-                key={index}
-                label={`${item["Jina la Mwanachama"]} Yupo?`}
-                index={index}
-                populateMahudhurio={populateMahudhurio}
-              />
-            ))}
+        <>
+          {states?.members?.length === 0 ? (
             <View
               style={{
-                width: "100%",
+                flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                marginBottom: SIZES.base,
               }}
             >
-              <Button
-                text={"Kusanya Taarifa"}
-                onPress={handleSubmit}
-                loading={loading}
-              />
+              <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+                Hakuna Wanachama.Sajili Wanachama
+              </Text>
             </View>
-          </View>
-        </KeyboardAwareScrollView>
+          ) : (
+            <KeyboardAwareScrollView>
+              <View
+                style={{
+                  paddingHorizontal: SIZES.large,
+                  marginTop: SIZES.large,
+                }}
+              >
+                {states?.members?.map((item, index) => (
+                  <AttendanceRadioComponent
+                    key={index}
+                    label={`${item["Jina la Mwanachama"]} Yupo?`}
+                    index={index}
+                    populateMahudhurio={populateMahudhurio}
+                  />
+                ))}
+                <View
+                  style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: SIZES.base,
+                  }}
+                >
+                  <Button
+                    text={"Kusanya Taarifa"}
+                    onPress={handleSubmit}
+                    loading={loading}
+                  />
+                </View>
+              </View>
+            </KeyboardAwareScrollView>
+          )}
+        </>
       )}
     </ScrollView>
   );

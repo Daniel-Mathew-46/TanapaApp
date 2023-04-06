@@ -9,6 +9,7 @@ const FormDataCard = ({ text, data, navigation }) => {
   const formText = textArray.slice(0, weekIndex - 1).join(" ");
 
   const specFormData = data[0]?.[text];
+
   return (
     <View
       style={{
@@ -25,9 +26,21 @@ const FormDataCard = ({ text, data, navigation }) => {
             justifyContent: "space-between",
             paddingHorizontal: SIZES.font,
           }}
-          onPress={() =>
-            navigation.navigate("FormData", { data: specFormData })
-          }
+          onPress={() => {
+            switch (formText) {
+              case "Kadi Ya Mahudhurio":
+                navigation.navigate("FormData", {
+                  data: specFormData,
+                  isNotTableData: true,
+                });
+                break;
+              default:
+                navigation.navigate("FormData", {
+                  data: specFormData,
+                  formText,
+                });
+            }
+          }}
         >
           <View
             style={{

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { View } from "react-native";
 import { Button, CustomInput, FormsHeader } from "../components";
-import { SIZES, COLORS } from "../constants";
+import { SIZES, COLORS, generateChars } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "react-native-vector-icons/FontAwesome";
@@ -12,13 +12,18 @@ import { KatibuDataContext } from "../context/MemberStackProvide";
 const RegisterMwanachama = ({ route }) => {
   const { states, dispatch } = useContext(KatibuDataContext);
   const kikundi_ = route.params?.kikundi;
+  const membersIds = route.params?.membersIds;
+  const edit = route.params?.edit;
   const data = route.params?.data;
   var jina = "" || data?.["Jina la Mwanachama"];
   var email = "" || data?.["Barua Pepe"];
   var phone = "" || data?.["Barua Pepe"];
   var pobox = "" || data?.["Anuani"];
+  var nambayake = null || data?.["Namba yake"];
+  let change = generateChars();
 
   const [kikundi, setKikundi] = useState(kikundi_);
+  const [nambaUanachama, setNambaUanachama] = useState(nambayake);
   const [jinaMwanachama, setJinaMwanachama] = useState(jina);
   const [baruaPepe, setBaruaPepe] = useState(email);
   const [nambaSimu, setNambaSimu] = useState(phone);
@@ -26,11 +31,31 @@ const RegisterMwanachama = ({ route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
+    if (
+      isNaN(nambaUanachama) ||
+      membersIds.includes(Math.floor(nambaUanachama))
+    ) {
+      alert("Ingiza namba ya uanachama sahihi na ambayo haijatumika.");
+      return;
+    }
+
+    if (
+      kikundi === "" ||
+      nambaUanachama === "" ||
+      jinaMwanachama === "" ||
+      baruaPepe === "" ||
+      nambaSimu === "" ||
+      anuani === ""
+    ) {
+      alert("Tafadhali ingiza taarifa sahihi");
+      return;
+    }
     const formData = {
       "Jina la Mwanachama": jinaMwanachama,
       "Barua Pepe": baruaPepe,
       "Namba Ya Simu": nambaSimu,
       Anuani: anuani,
+      "Namba yake": Math.floor(nambaUanachama),
     };
     let currMembers = states?.members;
     if (route.params?.edit) {
@@ -50,7 +75,8 @@ const RegisterMwanachama = ({ route }) => {
         formData,
         (update = true),
         dispatch,
-        _currMembers
+        _currMembers,
+        change
       )
         .then(() => {
           setLoading(false);
@@ -65,7 +91,7 @@ const RegisterMwanachama = ({ route }) => {
           alert(e.message);
         });
     } else {
-      submitMembersData(null, kikundi, formData, false, null, null)
+      submitMembersData(null, kikundi, formData, false, null, null, change)
         .then(() => {
           setLoading(false);
           alert("Umefanikiwa Kukusanya Taarifa.");
@@ -74,8 +100,8 @@ const RegisterMwanachama = ({ route }) => {
           setNambaSimu("");
           setAnuani("");
           dispatch({
-            type: "ADD_NEW_MEMBER",
-            payload: currMembers,
+            type: "SET_CHANGE",
+            change: change,
           });
         })
         .catch((e) => {
@@ -119,6 +145,14 @@ const RegisterMwanachama = ({ route }) => {
             placeholder={"Kikundi chako"}
             onChangeText={() => {}}
             editable={false}
+          />
+          <CustomInput
+            icon={<Icon name="person" size={25} color={COLORS.primary} />}
+            value={nambaUanachama?.toString()}
+            label="Namba ya Uanachama"
+            placeholder={"Weka namba"}
+            onChangeText={(text) => setNambaUanachama(text)}
+            editable={!edit}
           />
           <CustomInput
             icon={<Icon name="person" size={25} color={COLORS.primary} />}

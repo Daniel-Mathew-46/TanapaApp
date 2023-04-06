@@ -7,12 +7,8 @@ import {
   DashBoard,
   DrawerContent,
   RegistrationsCf,
-  KatibuStackComponent,
   CfStackComponent,
   RegistrationAdmin,
-  RegisterKikundi,
-  RegisterKatibu,
-  MakatibuRecords,
   MemberStackProvider,
   CfKatibuStack,
 } from "./screens";
@@ -24,6 +20,7 @@ import AuthProvider from "./context/AuthProvider";
 import { auth, onAuthStateChanged } from "./context/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FormStackProvider from "./screens/FormsStackComponent";
+import KatibuTasksProvide from "./screens/KatibuStackComponent";
 
 const Drawer = createDrawerNavigator();
 
@@ -194,24 +191,12 @@ export default function App() {
                     },
                   }}
                 />
-                {/* <Drawer.Screen
-                  name="Sajili Vikundi"
-                  component={RegisterKikundi}
-                  initialParams={{ role: userToken?.role }}
-                  options={{
-                    headerStyle: { backgroundColor: COLORS.primary },
-                    headerTitleAlign: "center",
-                    headerTitle: "SAJILI KIKUNDI",
-                    headerTitleStyle: {
-                      textTransform: "uppercase",
-                      color: COLORS.white,
-                      fontSize: SIZES.large,
-                    },
-                  }}
-                /> */}
                 <Drawer.Screen
                   name="Rekodi za Vikundi"
                   component={CfStackComponent}
+                  initialParams={{
+                    user: userToken?.user,
+                  }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.primary },
                     headerTitleAlign: "center",
@@ -230,7 +215,7 @@ export default function App() {
               <Drawer.Group>
                 <Drawer.Screen
                   name="Dashboard"
-                  component={KatibuStackComponent}
+                  component={KatibuTasksProvide}
                   initialParams={{
                     role: userToken?.role,
                     user: userToken?.user,

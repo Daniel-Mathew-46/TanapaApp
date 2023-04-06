@@ -4,7 +4,8 @@ import { SafeAreaView } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { CfFormCard } from "../components";
 
-const CfWeekRecords = ({ navigation }) => {
+const CfWeekRecords = ({ navigation, route }) => {
+  const kikundiName = route.params?.kikundiName;
   const weeks = [
     {
       id: 1,
@@ -47,6 +48,7 @@ const CfWeekRecords = ({ navigation }) => {
       week: 1,
     },
   ];
+  console.log(kikundiName);
   return (
     <SafeAreaView style={{}}>
       <View>
