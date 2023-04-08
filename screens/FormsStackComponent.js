@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Text } from "react-native";
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WeeksRecords from "./WeeksRecords";
@@ -7,7 +7,7 @@ import FormData from "./FormData";
 import FormsRecordProvider, {
   FormsDataContext,
 } from "../context/FormsRecordProvider";
-import { COLORS } from "../constants";
+import { COLORS, SIZES } from "../constants";
 
 const FormsStack = createNativeStackNavigator();
 
@@ -20,7 +20,7 @@ const FormStackProvider = ({ route }) => {
   );
 };
 
-const FormsStackComponent = ({ katibuEmail }) => {
+const FormsStackComponent = () => {
   const { states } = useContext(FormsDataContext);
   return (
     <>

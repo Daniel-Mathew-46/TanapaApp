@@ -9,7 +9,7 @@ const TasksDataAdmin = [
   },
   {
     id: "SH-02",
-    shughuli: "Agalia Riport",
+    shughuli: "Angalia Report",
     description: "Angalia Report za MaCF",
     task: "Angalia",
   },

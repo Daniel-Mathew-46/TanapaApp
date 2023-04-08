@@ -14,11 +14,12 @@ const WeeksRecords = ({ navigation, route }) => {
     key = key.toString();
     let formObjProtoType = {};
     formObjProtoType["id"] = i;
-    formObjProtoType["week"] = weeks[0];
+    formObjProtoType["week"] = key;
     formObjProtoType["forms"] = forms_?.[i]?.[key];
     formRecords.push(formObjProtoType);
   }
 
+  console.log(formRecords);
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -52,7 +53,7 @@ const WeeksRecords = ({ navigation, route }) => {
                   fontSize: SIZES.extraLarge,
                 }}
               >
-                Fomu ulizotuma
+                Fomu zilizotumwa
               </Text>
             </View>
             <View
@@ -66,7 +67,7 @@ const WeeksRecords = ({ navigation, route }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                Rekodi za Fomu Ulizopakia
+                Rekodi za Fomu zilizopakia
               </Text>
             </View>
           </View>

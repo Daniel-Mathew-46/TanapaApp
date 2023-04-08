@@ -66,11 +66,6 @@ const DrawerContent = (props) => {
               };
               onSignOut();
             });
-
-            // .then(() => {
-            // })
-            // .then(() => props?.setUserToken(null))
-            // .catch((error) => alert(error.message));
           }}
           labelStyle={{
             fontSize: SIZES.large,

@@ -3,11 +3,10 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CFReport from "./CFReport";
 import CFRecords from "./CFRecords";
-import RegistrationAdmin from "./RegistrationAdmin";
 
 const AdminStack = createNativeStackNavigator();
 
-const AdminStackComponent = () => {
+const AdminReportsStack = () => {
   return (
     <AdminStack.Navigator
       screenOptions={{ headerShown: false }}
@@ -15,9 +14,8 @@ const AdminStackComponent = () => {
     >
       <AdminStack.Screen name="CFrecords" component={CFRecords} />
       <AdminStack.Screen name="CFReport" component={CFReport} />
-      {/* <AdminStack.Screen name="RegisterCF" component={RegistrationAdmin} /> */}
     </AdminStack.Navigator>
   );
 };
 
-export default AdminStackComponent;
+export default AdminReportsStack;

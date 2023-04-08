@@ -28,7 +28,6 @@ const RegisterKikundi = ({ route }) => {
   const [kata, setKata] = useState("");
   const [thamaniHisa, setThamaniHisa] = useState("");
   const [nambaUsajili, setNambaUsajili] = useState("");
-  const [idadiWanachama, setIdadiWanachama] = useState("");
   const [loading, setLoading] = useState(false);
   const [katibu, setKatibu] = useState(null);
 
@@ -122,7 +121,6 @@ const RegisterKikundi = ({ route }) => {
         setJinaKikundi("");
         setKata("");
         setThamaniHisa("");
-        setIdadiWanachama("");
         setNambaUsajili("");
       })
       .catch((e) => {
@@ -136,8 +134,7 @@ const RegisterKikundi = ({ route }) => {
       katibu == "" ||
       kata == "" ||
       thamaniHisa == "" ||
-      nambaUsajili == "" ||
-      idadiWanachama == ""
+      nambaUsajili == ""
     ) {
       alert("Tafadhali jaza taarifa sahihi!");
       return;
@@ -148,7 +145,6 @@ const RegisterKikundi = ({ route }) => {
       "Kata ya Kikundi": kata,
       "Thamani ya Hisa ya Kikundi": thamaniHisa,
       "Namba ya usajili ya Kikundi": nambaUsajili,
-      "Idadi ya Wanachama wa Kikundi": idadiWanachama,
       createdBy: cfEmail,
     };
 
@@ -234,16 +230,6 @@ const RegisterKikundi = ({ route }) => {
             placeholder={"Ingiza namba ya usajili ya kikundi"}
             value={nambaUsajili}
             onChangeText={(text) => setNambaUsajili(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Idadi ya Wanachama wa Kikundi"
-            placeholder={"Ingiza idadi ya wanachama"}
-            value={idadiWanachama}
-            onChangeText={(text) => setIdadiWanachama(text)}
             isNumber={true}
           />
 

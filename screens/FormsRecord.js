@@ -16,8 +16,6 @@ const FormsRecord = ({ navigation, route }) => {
   const { states, dispatch } = useContext(FormsDataContext);
   const data = route.params?.data;
   const forms = data?.forms;
-  const [loading, setLoading] = useState(false);
-  const [formDatas, setFormDatas] = useState(states?.formDatas);
   const formDataArray = [];
   useEffect(() => {
     dispatch({ type: "ACTIVATE_FORMLOADING", loading: true });
@@ -33,7 +31,6 @@ const FormsRecord = ({ navigation, route }) => {
           }
         }
         await dispatch({ type: "SET_FORMS", payload: formDataArray });
-        setLoading(false);
       } catch (e) {
         console.log(e.message);
       }
@@ -123,7 +120,7 @@ const FormsRecord = ({ navigation, route }) => {
                 }}
               >
                 <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
-                  Hakuna Wanachama.Sajili Wanachama
+                  Hakuna taarifa zozote!
                 </Text>
               </View>
             ) : (

@@ -1,12 +1,52 @@
-import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  ActivityIndicator,
+} from "react-native";
+import React, { useContext, useEffect } from "react";
 import { COLORS, SIZES } from "../constants";
-import { Button, TaarifaCard, TaskText, WhiteButton } from "../components";
+import { CfFormDataCard, WhiteButton } from "../components";
+import { CfFormsDataContext } from "../context/CfFormsRecordProvider";
+import { getDoc, db, doc } from "../context/firebase";
 
 const KikundiReport = ({ route, navigation }) => {
-  const kikundiName = route.params?.kikundiName;
-
-  // const kikundi_name = kikundiName.split(" ").slice(1).join(" ");
+  const { statesVikundi, dispatch } = useContext(CfFormsDataContext);
+  const data = route.params?.data;
+  const kikundiName = route.params?.kikundi;
+  const katibu_email = route.params?.katibu_email;
+  const forms = data?.forms;
+  const week = data?.week;
+  console.log("formsInKikReport", forms);
+  console.log("currFormDatas", statesVikundi?.vikundiData?.[katibu_email]);
+  useEffect(() => {
+    const getFormData = async (forms) => {
+      const currStates = { ...statesVikundi?.vikundiData?.[katibu_email] };
+      const formsDataArray = [...currStates.formData];
+      let formObj = {};
+      let weekFormsObj = {};
+      let formDataArray = [];
+      try {
+        for (let i = 0; i < forms?.length; i++) {
+          let docName = forms?.[i];
+          const doc_ = await getDoc(doc(db, "FormDocs", docName));
+          if (doc_.exists()) {
+            formObj[docName] = doc_.data();
+          }
+        }
+        formDataArray.push(formObj);
+        weekFormsObj[week] = formDataArray;
+        formsDataArray.push(weekFormsObj);
+        currStates.formData = [...formDataArray];
+        await dispatch({ type: "SET_WEEKS_DATA", weeksData: currStates });
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+    getFormData(forms);
+  }, []);
 
   const kikundiData = [
     {
@@ -21,20 +61,8 @@ const KikundiReport = ({ route, navigation }) => {
       id: 3,
       text: "Fomu ya wakopaji na marejesho",
     },
-    {
-      id: 4,
-      text: "Fomu ya kumaliza mzunguko",
-    },
-    {
-      id: 5,
-      text: "Taarifa ya mwezi ya Kikundi",
-    },
-    {
-      id: 6,
-      text: "Kadi ya mahudhurio ya kila wiki",
-    },
   ];
-
+  console.log(statesVikundi?.vikundiData?.[katibu_email]?.formData);
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -66,7 +94,7 @@ const KikundiReport = ({ route, navigation }) => {
                   fontSize: SIZES.large + 2,
                 }}
               >
-                Taarifa za Tembo PiliPili Wiki ya 1
+                {`Taarifa za ${kikundiName} Wiki ya ${week}`}
               </Text>
             </View>
             <View
@@ -80,7 +108,7 @@ const KikundiReport = ({ route, navigation }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                Orodha ya fomu zilizojazawa Wiki 1
+                {`Orodha ya fomu zilizojazawa Wiki ya ${week}`}
               </Text>
             </View>
           </View>
@@ -95,27 +123,38 @@ const KikundiReport = ({ route, navigation }) => {
           paddingVertical: SIZES.extraLarge,
         }}
       >
-        <FlatList
-          data={kikundiData}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TaarifaCard
-              text={item.text}
-              isCF={false}
-              navigation={navigation}
-              data={item}
-            />
-          )}
-          ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
-          keyExtractor={(item) => item.id}
-          ListFooterComponent={
-            <View style={{ position: "absolute", right: -10 }}>
-              <WhiteButton />
-            </View>
-          }
-          ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-          ListFooterComponentStyle={{ marginBottom: "80%" }}
-        />
+        {statesVikundi?.vikundiData?.[katibu_email]?.formData.length === 0 ? (
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <ActivityIndicator size={30} color={COLORS.primary} />
+          </View>
+        ) : (
+          <FlatList
+            data={forms}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <CfFormDataCard
+                key={index}
+                text={item}
+                navigation={navigation}
+                data={kikundiData}
+              />
+            )}
+            ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
+            ListFooterComponent={
+              <View style={{ position: "absolute", right: -10 }}>
+                <WhiteButton />
+              </View>
+            }
+            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+            ListFooterComponentStyle={{ marginBottom: "80%" }}
+          />
+        )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </SafeAreaView>

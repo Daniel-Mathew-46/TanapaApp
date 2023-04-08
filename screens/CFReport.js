@@ -1,35 +1,11 @@
 import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { COLORS, SIZES } from "../constants";
-import { Button, TaarifaCard, TaskText } from "../components";
+import { AdminDataCard } from "../components";
+import { CFRecordsContext } from "../context/CfRecordsProvider";
 
-const CFReport = ({ route }) => {
-  const cfData = [
-    {
-      id: 1,
-      text: `Taarifa za Kikundi cha ${route.params?.cf_name}`,
-    },
-    {
-      id: 2,
-      text: "Kitabu cha hisa cha mteja",
-    },
-    {
-      id: 3,
-      text: "Fomu ya wakopaji na marejesho",
-    },
-    {
-      id: 4,
-      text: "Fomu ya kumaliza mzunguko",
-    },
-    {
-      id: 5,
-      text: "Taarifa ya mwezi ya Kikundi",
-    },
-    {
-      id: 6,
-      text: "Kadi ya mahudhurio ya kila wiki",
-    },
-  ];
+const CFReport = ({ route, navigation }) => {
+  const { states } = useContext(CFRecordsContext);
 
   return (
     <SafeAreaView style={{}}>
@@ -62,7 +38,7 @@ const CFReport = ({ route }) => {
                   fontSize: SIZES.extraLarge,
                 }}
               >
-                Rekodi Zilizotumwa na CF
+                Repoti Zilizotumwa na CF
               </Text>
             </View>
             <View
@@ -76,7 +52,7 @@ const CFReport = ({ route }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                Ripoti zilizopakiwa na CF: {route.params?.cf_name}
+                Orodha ya MaCF Wako na Ripoti zao
               </Text>
             </View>
           </View>
@@ -92,26 +68,17 @@ const CFReport = ({ route }) => {
         }}
       >
         <FlatList
-          data={cfData}
+          data={states?.myCfs}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TaarifaCard
-              text={item.text}
-              isCF={true}
-              options={{
-                angalia: "Angalia",
-                badilisha: "Pakua",
-              }}
+          renderItem={({ item, index }) => (
+            <AdminDataCard
+              key={index}
+              data={item}
+              text={"reports"}
+              navigation={navigation}
             />
           )}
-          ListHeaderComponent={<TaskText text={"week 1"} />}
-          ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
-          keyExtractor={(item) => item.id}
-          ListFooterComponent={
-            <View style={{ position: "absolute", right: -10 }}>
-              <Button text={"Pakua"} />
-            </View>
-          }
+          ListFooterComponent={<View />}
           ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
           ListFooterComponentStyle={{ marginBottom: "80%" }}
         />

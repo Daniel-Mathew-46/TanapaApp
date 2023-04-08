@@ -127,7 +127,6 @@ const Members = ({ navigation, route }) => {
         {states?.members?.length === 0 ? (
           <View
             style={{
-              flex: 1,
               justifyContent: "center",
               alignItems: "center",
             }}
@@ -149,6 +148,7 @@ const Members = ({ navigation, route }) => {
                   futa: "Futa",
                 }}
                 navigation={navigation}
+                membersIds={membersIds}
               />
             )}
             keyExtractor={(item) => item["Barua Pepe"]}

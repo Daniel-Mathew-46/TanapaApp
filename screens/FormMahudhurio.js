@@ -1,12 +1,6 @@
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Text } from "react-native";
 import React, { useState, useContext } from "react";
-import {
-  Button,
-  Text,
-  FormsHeader,
-  AttendanceRadioComponent,
-} from "../components";
+import { Button, FormsHeader, AttendanceRadioComponent } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import { submitFormData } from "../context/submits";
@@ -21,7 +15,7 @@ const FormMahudhurio = ({ route }) => {
     states?.members?.length > 0
       ? states?.members?.map((item) => item["Jina la Mwanachama"])
       : [];
-  const mahudhurioArray = states?.members ? [] : null;
+  const mahudhurioArray = states?.members ? [] : [];
   const formData = {};
   const [loading, setLoading] = useState(false);
 
@@ -104,37 +98,35 @@ const FormMahudhurio = ({ route }) => {
               </Text>
             </View>
           ) : (
-            <KeyboardAwareScrollView>
+            <View
+              style={{
+                paddingHorizontal: SIZES.large,
+                marginTop: SIZES.large,
+              }}
+            >
+              {states?.members?.map((item, index) => (
+                <AttendanceRadioComponent
+                  key={index}
+                  label={`${item["Jina la Mwanachama"]} Yupo?`}
+                  index={index}
+                  populateMahudhurio={populateMahudhurio}
+                />
+              ))}
               <View
                 style={{
-                  paddingHorizontal: SIZES.large,
-                  marginTop: SIZES.large,
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: SIZES.base,
                 }}
               >
-                {states?.members?.map((item, index) => (
-                  <AttendanceRadioComponent
-                    key={index}
-                    label={`${item["Jina la Mwanachama"]} Yupo?`}
-                    index={index}
-                    populateMahudhurio={populateMahudhurio}
-                  />
-                ))}
-                <View
-                  style={{
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginBottom: SIZES.base,
-                  }}
-                >
-                  <Button
-                    text={"Kusanya Taarifa"}
-                    onPress={handleSubmit}
-                    loading={loading}
-                  />
-                </View>
+                <Button
+                  text={"Kusanya Taarifa"}
+                  onPress={handleSubmit}
+                  loading={loading}
+                />
               </View>
-            </KeyboardAwareScrollView>
+            </View>
           )}
         </>
       )}

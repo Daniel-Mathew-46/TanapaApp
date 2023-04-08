@@ -27,8 +27,8 @@ const Login = ({ setUser, setUserToken }) => {
   const role_to_options = {
     Admin: [
       { opt: "Dashboard", icon: "view-dashboard-outline" },
-      { opt: "CFRecords", icon: "file-document-edit-outline" },
-      { opt: "RegisterCF", icon: "file-document-edit-outline" },
+      { opt: "Rekodi za MaCF", icon: "file-document-edit-outline" },
+      { opt: "Report za MaCF", icon: "file-document-edit-outline" },
     ],
     CF: [
       { opt: "Dashboard", icon: "view-dashboard-outline" },

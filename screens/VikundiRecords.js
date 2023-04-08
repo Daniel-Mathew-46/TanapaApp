@@ -12,40 +12,7 @@ import { CfDataCard } from "../components";
 
 const VikundiRecords = ({ navigation, route }) => {
   const vikundi = route.params?.vikundi;
-  // const vikundiData = [
-  //   {
-  //     id: 1,
-  //     name: "Tembo Pilipili",
-  //     role: "Peterson Kiara",
-  //   },
-  // {
-  //   id: 2,
-  //   name: "Kikundi: Tembo Pilipili",
-  //   role: "Katibu: Peterson Kiara",
-  // },
-  // {
-  //   id: 3,
-  //   name: "Kikundi: Tembo Pilipili",
-  //   role: "Katibu: Peterson Kiara",
-  // },
-  // {
-  //   id: 4,
-  //   name: "Kikundi: Tembo Pilipili",
-  //   role: "Katibu: Peterson Kiara",
-  // },
-  // {
-  //   id: 5,
-  //   name: "Kikundi: Tembo Pilipili",
-  //   role: "Katibu: Peterson Kiara",
-  // },
-  // {
-  //   id: 6,
-  //   name: "Kikundi: Tembo Pilipili",
-  //   role: "Katibu: Peterson Kiara",
-  // },
-  // ];
 
-  console.log(vikundi);
   return (
     <SafeAreaView style={{}}>
       <View>

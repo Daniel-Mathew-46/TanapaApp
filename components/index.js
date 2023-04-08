@@ -1,3 +1,4 @@
+import AdminDataCard from "./AdminDataCard";
 import AdminStats from "./AdminStats";
 import AttendanceRadioComponent from "./AttendanceRadioComponent";
 import Button from "./Button";
@@ -5,6 +6,7 @@ import CFStats from "./CFStats";
 import CfDataCard from "./CfDataCard";
 
 import CfFormCard from "./CfFormCard";
+import CfFormDataCard from "./CfFormDataCard";
 import CustomDataCard from "./CustomDataCard";
 import CustomInput from "./CustomInput";
 import CustomKatibuDataCard from "./CustomKatibuDataCard";
@@ -75,4 +77,6 @@ export {
   CfFormCard,
   FormsDropDown,
   CfDataCard,
+  CfFormDataCard,
+  AdminDataCard,
 };

@@ -65,7 +65,6 @@ const CfKatibuStack = () => {
           <CFKatibuStack.Screen
             name="Taarifa za Katibu"
             component={KatibuData}
-            initialParams={{ cfEmail: states.cfEmail }}
           />
           <CFKatibuStack.Screen
             name="Sajili Katibu"

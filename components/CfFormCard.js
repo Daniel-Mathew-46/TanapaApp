@@ -3,7 +3,14 @@ import React, { useState } from "react";
 import { SIZES, COLORS } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
 
-const CfFormCard = ({ text, options, data, navigation }) => {
+const CfFormCard = ({
+  text,
+  options,
+  data,
+  kikundi,
+  katibu_email,
+  navigation,
+}) => {
   const [showoptions, setShowOptions] = useState(false);
 
   const showOptions = (options) => {
@@ -48,7 +55,11 @@ const CfFormCard = ({ text, options, data, navigation }) => {
               setShowOptions(!showoptions);
               switch (options[item]) {
                 case "Angalia":
-                  navigation.navigate("Taarifa za Kikundi", { data });
+                  navigation.navigate("Taarifa za Kikundi", {
+                    data,
+                    katibu_email,
+                    kikundi,
+                  });
                   break;
                 case "Pakua":
                   alert(

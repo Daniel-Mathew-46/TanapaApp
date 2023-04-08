@@ -7,7 +7,6 @@ import {
   db,
   onSnapshot,
   getCountFromServer,
-  limit,
 } from "./firebase";
 
 export const CfFormsDataContext = createContext(null);
@@ -18,13 +17,7 @@ const CfFormsRecordProvider = (props) => {
     cfEmail,
     vikundiCount: null,
     vikundi: null,
-    // katibuData:[{
-    //     email: "",
-    //     weeks: [],
-    //     forms: [],
-    //     formDatas: []
-    //   },],
-    loading: false,
+    vikundiData: {},
   };
 
   const cfFormsReducer = (prevStates, action) => {
@@ -34,16 +27,21 @@ const CfFormsRecordProvider = (props) => {
           ...prevStates,
           loading: action.loading,
         };
-      //   case "SET_KATIBU_COUNT":
-      //     return {
-      //       ...prevStates,
-      //       katibuCount: action.count,
-      //     };
       case "SET_VIKUNDI":
         return {
           ...prevStates,
           vikundiCount: action.count,
           vikundi: action.vikundi,
+        };
+      case "SET_WEEKS_DATA":
+        return {
+          ...prevStates,
+          vikundiData: { ...action.weeksData },
+        };
+      case "SET_FORMS_DATA":
+        return {
+          ...prevStates,
+          formDatas: [...action.payload],
         };
     }
   };
@@ -85,7 +83,6 @@ const CfFormsRecordProvider = (props) => {
     statesVikundi,
     dispatch,
   }));
-  console.log(statesVikundi.vikundi);
   return (
     <CfFormsDataContext.Provider value={cfFormsContext}>
       {props?.children}

@@ -1,11 +1,11 @@
 import { View, FlatList, StatusBar } from "react-native";
 import React, { useContext } from "react";
-import { SIZES, assets, COLORS } from "../constants";
+import { SIZES, COLORS } from "../constants";
 import { CustomKatibuDataCard } from "../components";
 import { KatibuRecordsContext } from "../context/KatibuRecordsProvider";
 
 const MakatibuRecords = ({ navigation, route }) => {
-  const { states, dispatch } = useContext(KatibuRecordsContext);
+  const { states } = useContext(KatibuRecordsContext);
   const cfEmail = route.params?.cfEmail;
   return (
     <View>

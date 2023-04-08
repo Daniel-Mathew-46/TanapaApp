@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
-import { Table, TableWrapper, Row } from "react-native-table-component";
+import { Table, Row } from "react-native-table-component";
 
 const FormData = ({ route }) => {
   const data = route?.params?.data;

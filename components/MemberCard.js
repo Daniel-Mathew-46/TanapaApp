@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { COLORS, SIZES } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
 
-const MemberCard = ({ data, options, navigation }) => {
+const MemberCard = ({ data, options, navigation, membersIds }) => {
   const [showoptions, setShowOptions] = useState(false);
 
   const showOptions = (options, navigation) => {
@@ -39,7 +39,11 @@ const MemberCard = ({ data, options, navigation }) => {
               options[item] == "Angalia" &&
                 navigation.navigate("MemberData", { data });
               options[item] == "Badilisha" &&
-                navigation.navigate("RegisterMwanachama", { edit: true, data });
+                navigation.navigate("RegisterMwanachama", {
+                  edit: true,
+                  data,
+                  membersIds,
+                });
               options[item] == "Futa" &&
                 navigation.navigate("MemberData", { delete: true, data });
             }}

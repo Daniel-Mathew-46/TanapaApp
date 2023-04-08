@@ -38,6 +38,7 @@ const KikundiData = ({ route }) => {
 
   const kikundiDataInit = {
     members: {},
+    count: null,
     loading: false,
     change: "no",
   };
@@ -53,12 +54,8 @@ const KikundiData = ({ route }) => {
         return {
           ...prevStates,
           members: action.payload,
-          loading: action.loading,
-        };
-      case "CHANGE":
-        return {
-          ...prevStates,
-          change: action.change,
+          count: action.count,
+          loading: false,
         };
     }
   };
@@ -81,11 +78,11 @@ const KikundiData = ({ route }) => {
           if (wanachamaDocs.docs.length === 0) {
             dispatch({
               type: "SET_KIKUNDIMEMBERS",
-              kikundi: kikundiName,
               payload: {},
-              loading: false,
+              count: 0,
             });
           } else {
+            let count = wanachamaDocs.docs.length;
             let members_ = [];
             let kikundiObj = { ...statesMembers.members };
             wanachamaDocs.forEach((doc) => {
@@ -97,9 +94,8 @@ const KikundiData = ({ route }) => {
             kikundiObj[kikundiName] = members_;
             dispatch({
               type: "SET_KIKUNDIMEMBERS",
-              kikundi: kikundiName,
               payload: kikundiObj,
-              loading: false,
+              count,
             });
           }
         } catch (e) {
@@ -197,6 +193,28 @@ const KikundiData = ({ route }) => {
             style={{
               fontSize: SIZES.medium,
               marginTop: SIZES.small,
+            }}
+          >
+            {`Idadi ya Wanachama`}:{" "}
+            {statesMembers?.count === null ? (
+              <ActivityIndicator size={20} color={COLORS.gray} />
+            ) : (
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: SIZES.medium,
+                  color: COLORS.gray,
+                  marginBottom: SIZES.medium,
+                }}
+              >
+                {statesMembers?.count}
+              </Text>
+            )}
+          </Text>
+          <Text
+            style={{
+              fontSize: SIZES.medium,
+              marginTop: SIZES.small,
               fontWeight: "bold",
             }}
           >
@@ -210,7 +228,7 @@ const KikundiData = ({ route }) => {
                 marginTop: 10,
               }}
             >
-              <ActivityIndicator size={20} color={COLORS.darkWhite} />
+              <ActivityIndicator size={20} color={COLORS.gray} />
             </View>
           ) : (
             renderWanachama(statesMembers?.members)

@@ -102,72 +102,11 @@ const FormsRecordProvider = (props) => {
   });
 
   useEffect(() => {
-    // const UnSubscriber = onSnapshot(
-    //   q,
-    //   async (docSnapshot) => {
-    //     const weeksDocs = await getDocs(q);
-    //     if (weeksDocs.docs.length === 0) {
-    //       dispatch({ type: "SET_WEEKS", payload: [], formsPayload: [] });
-    //     } else {
-    //       let forms = [];
-    //       let formsObj = {};
-    //       let weeks = [];
-    //       try {
-    //         weeksDocs.forEach((doc_) => {
-    //           let week = doc_.data().week;
-    //           weeks.push(week);
-    //           formsObj[week] = doc_.data().forms;
-    //         });
-    //         forms.push(formsObj);
-    //         weeks.sort(function (a, b) {
-    //           return a - b;
-    //         });
-
-    //         if (states.weeks !== weeks || states?.forms !== forms)
-    //           dispatch({
-    //             type: "SET_WEEKS",
-    //             payload: weeks,
-    //             formsPayload: forms,
-    //           });
-    //       } catch (e) {
-    //         console.log(e);
-    //       }
-    //     }
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
-    // -----------
-    // dispatch({ type: "ACTIVATE_LOADING", loading: true });
-    // const getWeeks = async (email) => {
-    // let forms = [];
-    // let formsObj = {};
-    // let weeks = [];
-    //   try {
-    //     const docs = await getDocs(q);
-    // docs.forEach((doc_) => {
-    //   let week = doc_.data().week;
-    //   weeks.push(week);
-    //   formsObj[week] = doc_.data().forms;
-    // });
-    // forms.push(formsObj);
-    // weeks.sort(function (a, b) {
-    //   return a - b;
-    // });
-    // dispatch({ type: "SET_WEEKS", payload: weeks, formsPayload: forms });
-    //   } catch (e) {
-    //     dispatch({ type: "ACTIVATE_LOADING", loading: false });
-    //     alert(e.message);
-    //   }
-    // };
-    // getWeeks(katibuEmail);
     return () => {
       unsub();
     };
   }, []);
 
-  console.log(states.forms);
   const formsContext = React.useMemo(() => ({
     states,
     dispatch,

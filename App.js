@@ -2,15 +2,14 @@ import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 import {
   Auth,
-  CFRecords,
   CFReport,
   DashBoard,
   DrawerContent,
   RegistrationsCf,
   CfStackComponent,
-  RegistrationAdmin,
   MemberStackProvider,
   CfKatibuStack,
+  CfReportsStack,
 } from "./screens";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -21,6 +20,7 @@ import { auth, onAuthStateChanged } from "./context/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FormStackProvider from "./screens/FormsStackComponent";
 import KatibuTasksProvide from "./screens/KatibuStackComponent";
+import CfRecordsProvide from "./screens/AdminCfStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -93,8 +93,12 @@ export default function App() {
                   }}
                 />
                 <Drawer.Screen
-                  name="CFRecords"
-                  component={CFRecords}
+                  name="Rekodi za MaCF"
+                  component={CfRecordsProvide}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
+                  }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.primary },
                     headerTitleAlign: "center",
@@ -107,23 +111,12 @@ export default function App() {
                   }}
                 />
                 <Drawer.Screen
-                  name="RegisterCF"
-                  component={RegistrationAdmin}
-                  options={{
-                    headerStyle: { backgroundColor: COLORS.primary },
-                    headerTitleAlign: "center",
-                    headerTitle: "",
-                    headerTitleStyle: {
-                      textTransform: "uppercase",
-                      color: COLORS.primary,
-                      fontSize: SIZES.large,
-                    },
+                  name="Report za MaCF"
+                  component={CfReportsStack}
+                  initialParams={{
+                    role: userToken?.role,
+                    user: userToken?.user,
                   }}
-                />
-                <Drawer.Screen
-                  name="CFReport"
-                  component={CFReport}
-                  initialParams={{ role: userToken?.role }}
                   options={{
                     headerStyle: { backgroundColor: COLORS.primary },
                     headerTitleAlign: "center",

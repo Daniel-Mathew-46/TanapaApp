@@ -15,7 +15,7 @@ import FormWakopaji from "./FormWakopaji";
 import FormTaarifaMwezi from "./FormTaarifaMwezi";
 import KatibuStackComponent from "./KatibuStackComponent";
 import CfStackComponent from "./CfStackComponent";
-import AdminStackComponent from "./AdminStackComponent";
+import AdminReportsStack from "./AdminReportsStack";
 import RegistrationAdmin from "./RegistrationAdmin";
 import RegisterKatibu from "./RegisterKatibu";
 import RegisterKikundi from "./RegisterKikundi";
@@ -31,6 +31,9 @@ import CfKatibuStack from "./CfKatibuStack";
 import FormLejaMfuko from "./FormLejaMfuko";
 import FormLejaHisa from "./FormLejaHisa";
 import KikundiData from "./KikundiData";
+import CFData from "./CFData";
+import AdminCfStack from "./AdminCfStack";
+import CfReportsStack from "./CfReportsStack";
 
 export {
   Login,
@@ -50,7 +53,7 @@ export {
   FormTaarifaMwezi,
   KatibuStackComponent,
   CfStackComponent,
-  AdminStackComponent,
+  AdminReportsStack,
   RegistrationAdmin,
   RegisterKatibu,
   RegisterKikundi,
@@ -66,4 +69,7 @@ export {
   FormLejaMfuko,
   FormLejaHisa,
   KikundiData,
+  CFData,
+  AdminCfStack,
+  CfReportsStack,
 };

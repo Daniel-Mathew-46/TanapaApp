@@ -2,7 +2,7 @@ import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
 import { COLORS, SIZES, TasksDataAdmin } from "../constants";
 
-const Item = ({ item, navigation }) => {
+const Item = ({ item, navigation, adminEmail }) => {
   return (
     <View
       style={{
@@ -63,10 +63,13 @@ const Item = ({ item, navigation }) => {
             onPress={() => {
               switch (item.shughuli) {
                 case "Sajili Community Facilitator":
-                  navigation.navigate("RegisterCF");
+                  navigation.navigate("Rekodi za MaCF", {
+                    screen: "Register CF",
+                    adminEmail,
+                  });
                   break;
-                case "Agalia Riport":
-                  navigation.navigate("CFRecords");
+                case "Angalia Report":
+                  navigation.navigate("Report za MaCF", { adminEmail });
                   break;
                 default:
                   break;
@@ -89,7 +92,7 @@ const Item = ({ item, navigation }) => {
   );
 };
 
-const HorizontalListAdmin = ({ navigation, role }) => {
+const HorizontalListAdmin = ({ navigation, adminEmail }) => {
   return (
     <View
       style={{
@@ -102,7 +105,9 @@ const HorizontalListAdmin = ({ navigation, role }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         data={TasksDataAdmin}
-        renderItem={({ item }) => <Item item={item} navigation={navigation} />}
+        renderItem={({ item }) => (
+          <Item item={item} navigation={navigation} adminEmail={adminEmail} />
+        )}
         keyExtractor={(item) => item.id}
       />
     </View>

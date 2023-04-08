@@ -27,12 +27,13 @@ const RegisterKatibu = ({ route }) => {
   var name = "" || data?.["name"];
   var katEmail = "" || data?.["email"];
   var katPhone = "" || data?.["phone"];
+  var katAnuani = "" || data?.["anuani"];
   var passw = "" || data?.["password"];
 
   const [fullname, setFullName] = useState(name);
   const [email, setEmail] = useState(katEmail);
   const [phone, setPhone] = useState(katPhone);
-  const [anuani, setAnuani] = useState("");
+  const [anuani, setAnuani] = useState(katAnuani);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState(passw);
   const [confPasswd, setConfPasswd] = useState("");

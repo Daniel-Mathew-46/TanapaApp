@@ -1,9 +1,8 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
-import { COLORS, SIZES } from "../constants";
-import Icons from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { assets, COLORS, SIZES } from "../constants";
 
-const CfDataCard = ({ data, weekText, navigation }) => {
+const AdminDataCard = ({ data, text, navigation }) => {
   return (
     <View
       style={{
@@ -24,50 +23,54 @@ const CfDataCard = ({ data, weekText, navigation }) => {
           style={{
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 30,
           }}
         >
-          <Icons name="account-group" size={40} />
+          <Image
+            source={assets.avatar}
+            resizeMode="cover"
+            style={{
+              height: 60,
+              width: 60,
+              borderRadius: 60,
+            }}
+          />
         </View>
         <View
           style={{
             justifyContent: "center",
-            marginLeft: -20,
+            marginLeft: -25,
           }}
         >
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Details za Kikundi", { data })}
+          <Text
+            style={{
+              color: COLORS.white,
+              fontSize: SIZES.large,
+              textAlign: "left",
+            }}
           >
-            <Text
-              style={{
-                color: COLORS.white,
-                fontSize: SIZES.large,
-                textDecorationLine: "underline",
-                textAlign: "left",
-              }}
-            >
-              {`Kikundi: ${data?.name}`}
-            </Text>
-          </TouchableOpacity>
+            {data?.name}
+          </Text>
           <Text
             style={{
               fontSize: SIZES.medium,
               textAlign: "left",
+              textDecorationLine: "underline",
               marginTop: SIZES.base,
             }}
           >
-            {`Katibu: ${data?.Katibu}`}
+            {data?.role}
           </Text>
         </View>
+
         <TouchableOpacity
           style={{
             alignItems: "center",
             justifyContent: "center",
           }}
           onPress={() =>
-            navigation.navigate("Week Records", {
+            navigation.navigate("Cf Vikundi", {
               kikundiName: data?.name,
-              user: data?.Katibu,
+              user: data?.email,
             })
           }
         >
@@ -78,7 +81,7 @@ const CfDataCard = ({ data, weekText, navigation }) => {
               fontSize: SIZES.font,
             }}
           >
-            {weekText}
+            {text}
           </Text>
         </TouchableOpacity>
       </View>
@@ -86,4 +89,4 @@ const CfDataCard = ({ data, weekText, navigation }) => {
   );
 };
 
-export default CfDataCard;
+export default AdminDataCard;

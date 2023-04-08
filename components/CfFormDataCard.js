@@ -2,14 +2,13 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { SIZES, COLORS } from "../constants";
 
-const FormDataCard = ({ text, data, navigation }) => {
+const CfFormDataCard = ({ text, data, navigation }) => {
   const text_ = text;
   const textArray = text_.split("_");
   const weekIndex = textArray.indexOf("week");
   const formText = textArray.slice(0, weekIndex - 1).join(" ");
 
   const specFormData = data[0]?.[text];
-
   return (
     <View
       style={{
@@ -29,13 +28,13 @@ const FormDataCard = ({ text, data, navigation }) => {
           onPress={() => {
             switch (formText) {
               case "Kadi Ya Mahudhurio":
-                navigation.navigate("FormData", {
+                navigation.navigate("KikundiReportData", {
                   data: specFormData,
                   isNotTableData: true,
                 });
                 break;
               default:
-                navigation.navigate("FormData", {
+                navigation.navigate("KikundiReportData", {
                   data: specFormData,
                   formText,
                 });
@@ -63,4 +62,4 @@ const FormDataCard = ({ text, data, navigation }) => {
   );
 };
 
-export default FormDataCard;
+export default CfFormDataCard;

@@ -1,75 +1,83 @@
-import { View } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { Button, CustomInput, FormsHeader } from "../components";
+// import { Button, CustomInput, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
-import { ScrollView } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { submitFormData } from "../context/submits";
+// import Icon from "react-native-vector-icons/Ionicons";
+// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+// import { submitFormData } from "../context/submits";
 
 const FormLejaHisa = ({ route }) => {
-  const katibuEmail = route.params?.katibuEmail;
-  const week = route.params?.week;
-  const weekNumber = week ? Number(week) : null;
+  // const katibuEmail = route.params?.katibuEmail;
+  // const week = route.params?.week;
+  // const weekNumber = week ? Number(week) : null;
 
-  const [jinaMwanachama, setJinaMwanachama] = useState("");
-  const [idadiHisa, setIdadiHisa] = useState("");
-  const [mifukoJamiiAfya, setMifukoJamiiAfya] = useState("");
-  const [mifukoJamiiElimu, setMifukoJamiiElimu] = useState("");
-  const [mifukoJamiiMazingira, setMifukoJamiiMazingira] = useState("");
-  const [madeni, setMadeni] = useState("");
-  const [gawio, setGawio] = useState("");
-  const [salio, setSalio] = useState("");
+  // const [jinaMwanachama, setJinaMwanachama] = useState("");
+  // const [idadiHisa, setIdadiHisa] = useState("");
+  // const [mifukoJamiiAfya, setMifukoJamiiAfya] = useState("");
+  // const [mifukoJamiiElimu, setMifukoJamiiElimu] = useState("");
+  // const [mifukoJamiiMazingira, setMifukoJamiiMazingira] = useState("");
+  // const [madeni, setMadeni] = useState("");
+  // const [gawio, setGawio] = useState("");
+  // const [salio, setSalio] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    if (week === null || typeof week === "undefined") {
-      alert("Tafadhali sema ni wiki ya ngapi!");
-      return;
-    }
-    const docName =
-      "Kumaliza_Mzunguko_" + katibuEmail?.split("@")[0] + "_week_" + weekNumber;
-    const formData = {
-      "Jina la Mwanachama": jinaMwanachama,
-      "Idadi ya Hisa": idadiHisa,
-      "Mifuko Jamii Ya Afya": mifukoJamiiAfya,
-      "Mifuko Jamii Ya Elimu": mifukoJamiiElimu,
-      "Mifuko Jamii Ya Mazingira": mifukoJamiiMazingira,
-      Madeni: madeni,
-      Gawio: gawio,
-      Salio: salio,
-    };
-    setLoading(true);
-    submitFormData(
-      "FormDocs",
-      katibuEmail,
-      "Kumaliza Mzunguko",
-      docName,
-      weekNumber,
-      formData
-    )
-      .then(() => {
-        setLoading(false);
-        setJinaMwanachama("");
-        setIdadiHisa("");
-        setMifukoJamiiAfya("");
-        setMifukoJamiiElimu("");
-        setMifukoJamiiMazingira("");
-        setGawio("");
-        setSalio("");
-        alert("Umefanikiwa Kukusanya Taarifa.");
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert(e.message);
-        console.log(e.message);
-      });
-  };
+  // const handleSubmit = () => {
+  //   if (week === null || typeof week === "undefined") {
+  //     alert("Tafadhali sema ni wiki ya ngapi!");
+  //     return;
+  //   }
+  //   const docName =
+  //     "Kumaliza_Mzunguko_" + katibuEmail?.split("@")[0] + "_week_" + weekNumber;
+  //   const formData = {
+  //     "Jina la Mwanachama": jinaMwanachama,
+  //     "Idadi ya Hisa": idadiHisa,
+  //     "Mifuko Jamii Ya Afya": mifukoJamiiAfya,
+  //     "Mifuko Jamii Ya Elimu": mifukoJamiiElimu,
+  //     "Mifuko Jamii Ya Mazingira": mifukoJamiiMazingira,
+  //     Madeni: madeni,
+  //     Gawio: gawio,
+  //     Salio: salio,
+  //   };
+  //   setLoading(true);
+  //   submitFormData(
+  //     "FormDocs",
+  //     katibuEmail,
+  //     "Kumaliza Mzunguko",
+  //     docName,
+  //     weekNumber,
+  //     formData
+  //   )
+  //     .then(() => {
+  //       setLoading(false);
+  //       setJinaMwanachama("");
+  //       setIdadiHisa("");
+  //       setMifukoJamiiAfya("");
+  //       setMifukoJamiiElimu("");
+  //       setMifukoJamiiMazingira("");
+  //       setGawio("");
+  //       setSalio("");
+  //       alert("Umefanikiwa Kukusanya Taarifa.");
+  //     })
+  //     .catch((e) => {
+  //       setLoading(false);
+  //       alert(e.message);
+  //       console.log(e.message);
+  //     });
+  // };
 
   return (
-    <ScrollView>
-      <View
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
+        Fomu hii itawezeshwa hivi punde!
+      </Text>
+    </View>
+  );
+  // (
+  // <ScrollView style={{ flex: 1 }}>
+
+  {
+    /* <View
         style={{
           width: "100%",
           paddingTop: SIZES.base,
@@ -182,9 +190,10 @@ const FormLejaHisa = ({ route }) => {
             />
           </View>
         </View>
-      </KeyboardAwareScrollView>
-    </ScrollView>
-  );
+      </KeyboardAwareScrollView> */
+  }
+  // </ScrollView>
+  // );
 };
 
 export default FormLejaHisa;

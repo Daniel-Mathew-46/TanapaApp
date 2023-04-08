@@ -50,7 +50,7 @@ const AdminStats = () => {
           <View
             style={{
               height: "100%",
-              paddingRight: SIZES.base,
+              paddingRight: SIZES.font + 1,
             }}
           >
             <Stats
@@ -59,8 +59,8 @@ const AdminStats = () => {
                 paddingHorizontal: SIZES.base,
                 marginLeft: SIZES.font,
                 justifyContent: "center",
-                fontSize: SIZES.extraLarge + 8,
-                textFont: SIZES.large,
+                fontSize: SIZES.extraLarge + 5,
+                textFont: SIZES.large - 2,
                 paddingHorizontal: SIZES.font,
                 iconSize: 40,
               }}
@@ -73,9 +73,9 @@ const AdminStats = () => {
                 marginLeft: SIZES.font,
                 justifyContent: "center",
                 marginTop: SIZES.base + 2,
-                fontSize: SIZES.extraLarge + 8,
+                fontSize: SIZES.extraLarge + 5,
                 iconSize: 40,
-                textFont: SIZES.large,
+                textFont: SIZES.large - 2,
                 paddingHorizontal: SIZES.font,
               }}
               text={"Makatibu"}

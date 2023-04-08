@@ -17,7 +17,7 @@ const RegisterMwanachama = ({ route }) => {
   const data = route.params?.data;
   var jina = "" || data?.["Jina la Mwanachama"];
   var email = "" || data?.["Barua Pepe"];
-  var phone = "" || data?.["Barua Pepe"];
+  var phone = "" || data?.["Namba Ya Simu"];
   var pobox = "" || data?.["Anuani"];
   var nambayake = null || data?.["Namba yake"];
   let change = generateChars();
@@ -31,12 +31,14 @@ const RegisterMwanachama = ({ route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
-    if (
-      isNaN(nambaUanachama) ||
-      membersIds.includes(Math.floor(nambaUanachama))
-    ) {
-      alert("Ingiza namba ya uanachama sahihi na ambayo haijatumika.");
-      return;
+    if (!route.params?.edit) {
+      if (
+        isNaN(nambaUanachama) ||
+        membersIds.includes(Math.floor(nambaUanachama))
+      ) {
+        alert("Ingiza namba ya uanachama sahihi na ambayo haijatumika.");
+        return;
+      }
     }
 
     if (
@@ -80,7 +82,7 @@ const RegisterMwanachama = ({ route }) => {
       )
         .then(() => {
           setLoading(false);
-          alert("Umefanikiwa Kukusanya Taarifa.");
+          alert("Umefanikiwa Kubadili Taarifa.");
           setJinaMwanachama(formData["Jina la Mwanachama"]);
           setBaruaPepe(formData["Barua Pepe"]);
           setNambaSimu(formData["Namba Ya Simu"]);

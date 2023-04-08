@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import KikundiReport from "./KikundiReport";
 import VikundiRecords from "./VikundiRecords";
-import CfWeekRecords from "./CfWeekRecords";
-import KikundiReportData from "./KikundiReportData";
 import RegisterKikundi from "./RegisterKikundi";
 import CfFormsRecordProvider from "../context/CfFormsRecordProvider";
 import { CfFormsDataContext } from "../context/CfFormsRecordProvider";
 import KikundiData from "./KikundiData";
-import { View, ActivityIndicator } from "react-native";
-import { COLORS } from "../constants";
+import { View, ActivityIndicator, Text } from "react-native";
+import { COLORS, SIZES } from "../constants";
+import FormStackProvider from "./FormsStackComponent";
 
 // import KatibuRecordsProvider from "../context/KatibuRecordsProvider";
 const CFStack = createNativeStackNavigator();
@@ -70,14 +68,9 @@ const CfStackComponent = ({ cfEmail }) => {
                 initialParams={{ cfEmail }}
                 component={RegisterKikundi}
               />
-              <CFStack.Screen name="Week Records" component={CfWeekRecords} />
               <CFStack.Screen
-                name="Taarifa za Kikundi"
-                component={KikundiReport}
-              />
-              <CFStack.Screen
-                name="Kikundi Report Data"
-                component={KikundiReportData}
+                name="Week Records"
+                component={FormStackProvider}
               />
             </CFStack.Navigator>
           )}

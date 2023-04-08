@@ -38,7 +38,11 @@ const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
             onPress={() => {
               setShowOptions(!showoptions);
               options[item] == "Angalia" &&
-                navigation.navigate("CFReport", { cf_name: data?.name });
+                navigation.navigate("Taarifa za CF", { data });
+              options[item] == "Badilisha" &&
+                navigation.navigate("Register CF", { edit: true, data });
+              // options[item] == "Futa" &&
+              //   navigation.navigate("MemberData", { delete: true, data });
             }}
           >
             <Text
@@ -75,16 +79,16 @@ const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
           style={{
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 30,
           }}
         >
           {hasAvatar ? (
             <Image
-              source={data?.avatar}
-              resizeMode="contain"
+              source={assets.avatar}
+              resizeMode="cover"
               style={{
                 height: 60,
                 width: 60,
+                borderRadius: 60,
               }}
             />
           ) : (

@@ -39,7 +39,11 @@ const DashBoard = ({ navigation, route }) => {
           <View>
             {/* Horizontal List */}
             {role == "Admin" && (
-              <HorizontalListAdmin navigation={navigation} role={role} />
+              <HorizontalListAdmin
+                navigation={navigation}
+                role={role}
+                adminEmail={userEmail}
+              />
             )}
 
             {role == "CF" && (

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, Text } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Members from "./Members";
 import MemberData from "./MemberData";
@@ -7,7 +7,7 @@ import RegisterMwanachama from "./RegisterMwanachama";
 import MemberStackProvide, {
   KatibuDataContext,
 } from "../context/MemberStackProvide";
-import { COLORS } from "../constants";
+import { COLORS, SIZES } from "../constants";
 
 const MemberStack = createNativeStackNavigator();
 

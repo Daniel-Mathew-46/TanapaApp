@@ -1,13 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  db,
-  onSnapshot,
-  getCountFromServer,
-} from "./firebase";
+import { query, collection, where, getDocs, db, onSnapshot } from "./firebase";
 
 export const KatibuRecordsContext = createContext(null);
 

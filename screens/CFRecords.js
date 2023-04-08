@@ -6,50 +6,13 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
-import React from "react";
-import { COLORS, SIZES, assets } from "../constants";
-import Icon from "react-native-vector-icons/Ionicons";
+import React, { useContext } from "react";
+import { COLORS, SIZES } from "../constants";
 import { DataCard } from "../components";
+import { CFRecordsContext } from "../context/CfRecordsProvider";
 
-const CFRecords = ({ data, navigation }) => {
-  const personData = [
-    {
-      id: 1,
-      name: "Zaidu Nyoni",
-      role: "Community Facilitator",
-      avatar: assets.person01,
-    },
-    {
-      id: 2,
-      name: "Hamis Fereji",
-      role: "Community Facilitator",
-      avatar: assets.person02,
-    },
-    // {
-    //   id: 3,
-    //   name: "Zaidu Nyoni",
-    //   role: "Community Facilitator",
-    //   avatar: assets.person01,
-    // },
-    // {
-    //   id: 4,
-    //   name: "Zaidu Nyoni",
-    //   role: "Community Facilitator",
-    //   avatar: assets.person01,
-    // },
-    // {
-    //   id: 5,
-    //   name: "Zaidu Nyoni",
-    //   role: "Community Facilitator",
-    //   avatar: assets.person01,
-    // },
-    // {
-    //   id: 6,
-    //   name: "Zaidu Nyoni",
-    //   role: "Community Facilitator",
-    //   avatar: assets.person01,
-    // },
-  ];
+const CFRecords = ({ navigation }) => {
+  const { states } = useContext(CFRecordsContext);
 
   return (
     <SafeAreaView style={{}}>
@@ -88,16 +51,57 @@ const CFRecords = ({ data, navigation }) => {
             <View
               style={{
                 marginTop: SIZES.small,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingHorizontal: SIZES.base,
+                width: "100%",
               }}
             >
-              <Text
+              <View
                 style={{
-                  textAlign: "left",
-                  fontSize: SIZES.large,
+                  justifyContent: "center",
+                  width: "50%",
                 }}
               >
-                Orodha ya Community Facilitators
-              </Text>
+                <Text
+                  style={{
+                    textAlign: "left",
+                    fontSize: SIZES.medium,
+                  }}
+                >
+                  Orodha ya Community Facilitators
+                </Text>
+              </View>
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    paddingHorizontal: SIZES.font,
+                    backgroundColor: COLORS.white,
+                    paddingVertical: SIZES.base,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 5,
+                  }}
+                  onPress={() => {
+                    navigation.navigate("Register CF");
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: COLORS.secondary,
+                      fontSize: SIZES.font,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    SAJILI
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -112,21 +116,21 @@ const CFRecords = ({ data, navigation }) => {
         }}
       >
         <FlatList
-          data={personData}
+          data={states?.myCfs}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <DataCard
+              key={index}
               hasAvatar={true}
               data={item}
               options={{
                 angalia: "Angalia",
                 badilisha: "Badilisha",
-                futa: "Futa",
+                // futa: "Futa",
               }}
               navigation={navigation}
             />
           )}
-          keyExtractor={(item) => item.id}
           ListFooterComponent={<View />}
           ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
           ListFooterComponentStyle={{ marginBottom: "80%" }}
