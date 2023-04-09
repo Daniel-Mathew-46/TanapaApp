@@ -4,14 +4,19 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
-  StyleSheet,
+  LogBox,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { COLORS, SIZES } from "../constants";
 import { Table, Row } from "react-native-table-component";
+import { FormsDataContext } from "../context/FormsRecordProvider";
 
 const FormData = ({ route }) => {
-  const data = route?.params?.data;
+  const { states } = useContext(FormsDataContext);
+  const text = route?.params?.text;
+  const datas = states?.formDatas;
+  const data = datas[0]?.[text];
+  console.log(data);
   const isNotTableData = route.params?.isNotTableData;
   const formText = route.params?.formText;
   let widthArr;
@@ -29,7 +34,9 @@ const FormData = ({ route }) => {
       if (key !== "0") tableData.push(data.formData[key]);
     });
   }
-
+  LogBox.ignoreLogs([
+    "Warning: Failed prop type: Invalid prop `textStyle` of type `array` supplied to `Cell`, expected `object`",
+  ]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>

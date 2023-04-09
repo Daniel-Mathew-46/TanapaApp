@@ -8,8 +8,7 @@ const FormDataCard = ({ text, data, navigation }) => {
   const weekIndex = textArray.indexOf("week");
   const formText = textArray.slice(0, weekIndex - 1).join(" ");
 
-  const specFormData = data[0]?.[text];
-
+  console.log(text);
   return (
     <View
       style={{
@@ -30,13 +29,14 @@ const FormDataCard = ({ text, data, navigation }) => {
             switch (formText) {
               case "Kadi Ya Mahudhurio":
                 navigation.navigate("FormData", {
-                  data: specFormData,
+                  text,
+                  formText,
                   isNotTableData: true,
                 });
                 break;
               default:
                 navigation.navigate("FormData", {
-                  data: specFormData,
+                  text,
                   formText,
                 });
             }

@@ -1,5 +1,5 @@
 import { View, Text, FlatList, SafeAreaView, StatusBar } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { COLORS, SIZES } from "../constants";
 import { FormCard } from "../components";
 import { FormsDataContext } from "../context/FormsRecordProvider";
@@ -15,11 +15,10 @@ const WeeksRecords = ({ navigation, route }) => {
     let formObjProtoType = {};
     formObjProtoType["id"] = i;
     formObjProtoType["week"] = key;
-    formObjProtoType["forms"] = forms_?.[i]?.[key];
+    formObjProtoType["forms"] = forms_?.[0]?.[key];
     formRecords.push(formObjProtoType);
   }
 
-  console.log(formRecords);
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -39,13 +38,7 @@ const WeeksRecords = ({ navigation, route }) => {
               width: "100%",
             }}
           >
-            <View
-              style={
-                {
-                  // marginTop: SIZES.small,
-                }
-              }
-            >
+            <View>
               <Text
                 style={{
                   textAlign: "left",
@@ -67,7 +60,7 @@ const WeeksRecords = ({ navigation, route }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                Rekodi za Fomu zilizopakia
+                Rekodi za Fomu zilizopakiwa
               </Text>
             </View>
           </View>

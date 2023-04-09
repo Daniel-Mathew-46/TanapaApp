@@ -41,7 +41,7 @@ const FormsRecordProvider = (props) => {
           ...prevStates,
           weeks: [...action.payload],
           formsCount: action.count,
-          forms: action.formsPayload,
+          forms: [...action.formsPayload],
         };
       case "SET_FORMS":
         return {
@@ -73,21 +73,22 @@ const FormsRecordProvider = (props) => {
           formsPayload: [],
         });
       } else {
-        let forms = [];
-        let formsObj = {};
-        let weeks = [];
         try {
-          weeksDocs.forEach(async (doc_) => {
-            let week = doc_.data().week;
+          const forms = [];
+          const formsObj = {};
+          const weeks = [];
+          for (let i = 0; i < weeksDocs.docs.length; i++) {
+            let doc_ = weeksDocs.docs[i];
+            let week = await doc_.data().week;
+            let forms_ = await doc_.data().forms;
             weeks.push(week);
-            formsObj[week] = await doc_.data().forms;
-          });
-          forms.push(formsObj);
+            formsObj[week] = [...forms_];
+          }
           weeks.sort(function (a, b) {
             return a - b;
           });
-
-          if (states.weeks !== weeks || states?.forms !== forms)
+          forms.push(formsObj);
+          if (states.weeks?.length !== weeks?.length)
             dispatch({
               type: "SET_WEEKS",
               count: formsCount,
@@ -103,7 +104,7 @@ const FormsRecordProvider = (props) => {
 
   useEffect(() => {
     return () => {
-      unsub();
+      unsub;
     };
   }, []);
 
