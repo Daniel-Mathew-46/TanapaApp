@@ -24,8 +24,8 @@ const FormMahudhurio = ({ route }) => {
   };
 
   const handleSubmit = () => {
-    if (week === null || typeof week === "undefined") {
-      alert("Tafadhali sema ni wiki ya ngapi!");
+    if (mahudhurioArray.length === 0) {
+      alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
     const docName =

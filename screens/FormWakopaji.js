@@ -1,28 +1,35 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, CustomInput, FormsHeader, FormsDropDown } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "react-native-vector-icons/AntDesign";
+import Iconz from "react-native-vector-icons/MaterialIcons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { submitFormData } from "../context/submits";
 import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 import moment from "moment/moment";
+// import DateTimePicker, {
+//   DateTimePickerAndroid,
+// } from "@react-native-community/datetimepicker";
 
 const RenderFields = ({
   item,
   setMemberSampleData,
   deductFromMembersToShow,
 }) => {
-  const [dateValue, setDateValue] = useState(moment().format("D/MM/YYYY"));
   let key = Object.keys(item)[0];
   key = Number(key);
   let name = item[key];
+  let todayDate = moment().format("D/MM/YYYY");
+  const [dateValue, setDateValue] = useState(todayDate);
   const [jina, setJina] = useState(name);
+  useEffect(() => {
+    setMemberSampleData(dateValue, key, "tarehe");
+  }, [dateValue]);
   return (
     <>
-      {}
       <View
         style={{
           marginTop: SIZES.large,
@@ -55,14 +62,14 @@ const RenderFields = ({
         }}
       />
       <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
+        icon={<Iconz name="date-range" size={25} color={COLORS.primary} />}
         label="Tarehe ya Mkopo"
-        placeholder={"Chagua tarehe ya Mkopo"}
-        value={`${dateValue}`}
+        placeholder={"Andika tarehe ya Mkopo"}
+        value={dateValue}
         onChangeText={(text) => {
           setDateValue(text);
-          setMemberSampleData(dateValue, key, "tarehe");
         }}
+        isNumber={true}
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
@@ -122,8 +129,8 @@ const RenderFields = ({
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="5"
-        placeholder={"Ingiza 5"}
+        label="6"
+        placeholder={"Ingiza 6"}
         onChangeText={(text) => setMemberSampleData(text, key, 6)}
         isNumber={true}
       />
@@ -231,10 +238,15 @@ const FormWakopaji = ({ route }) => {
   };
 
   const handleSubmit = () => {
-    if (week === null || typeof week === "undefined") {
-      alert("Tafadhali sema ni wiki ya ngapi!");
+    if (Object.keys(membersFilled).length === 0) {
+      alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
+    Object.values(membersFilled).forEach((memberArr) => {
+      for (let i = 0; i < memberArr.length; i++) {
+        if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+      }
+    });
     const memberDataToSubmit = { ...membersFilled };
     const docName =
       "Wakopaji_na_Marejesho_" +
@@ -276,10 +288,10 @@ const FormWakopaji = ({ route }) => {
       .catch((e) => {
         setLoading(false);
         alert(e.message);
-        console.log(e.message);
       });
   };
 
+  // console.log(membersFilled);
   return (
     <ScrollView>
       <View

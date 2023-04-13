@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React, { useContext, useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, CustomInput, FormsDropDown, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
-import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "react-native-vector-icons/AntDesign";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
@@ -18,9 +17,11 @@ const RenderFields = ({
   let intKey = Number(key);
   let name = item[key];
   const [namba_, setNamba_] = useState(key);
+  useEffect(() => {
+    setMemberSampleData(namba_, key, "namba");
+  }, [namba_]);
   return (
     <>
-      {}
       <View
         style={{
           marginTop: SIZES.large,
@@ -49,8 +50,14 @@ const RenderFields = ({
         value={namba_}
         onChangeText={(text) => {
           setNamba_(text);
-          setMemberSampleData(namba_, key, "namba");
         }}
+        isNumber={true}
+      />
+      <CustomInput
+        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
+        label="Salio Anzia"
+        placeholder={"Ingiza salio anzia!"}
+        onChangeText={(text) => setMemberSampleData(text, key, "salio_anzia")}
         isNumber={true}
       />
       <CustomInput
@@ -109,9 +116,10 @@ const FormLejaMfuko = ({ route }) => {
   const [wanachamaShown, setWanachamaShown] = useState([]);
   const fields = {
     namba: 0,
-    afya: 1,
-    elimu: 2,
-    mazingira: 3,
+    salio_anzia: 1,
+    afya: 2,
+    elimu: 3,
+    mazingira: 4,
   };
 
   const deduceMembersToShow = (index, label) => {
@@ -135,8 +143,9 @@ const FormLejaMfuko = ({ route }) => {
   //Updating values per each member filled
   const setMemberSampleData = (text, index, fieldName) => {
     let members_filled = { ...membersFilled };
+    let indexToPutText = fields[fieldName];
     if (Object.keys(members_filled).length > 0) {
-      let indexToPutText = fields[fieldName];
+      // let indexToPutText = fields[fieldName];
       let curr_data = members_filled[index];
       if (typeof curr_data === "undefined") {
         let newMemberData = [];
@@ -149,7 +158,7 @@ const FormLejaMfuko = ({ route }) => {
       setMembersFilled((prevState) => ({ ...members_filled }));
     } else {
       let newData = [];
-      let indexToPutText = fields[fieldName];
+      // let indexToPutText = fields[fieldName];
       newData[indexToPutText] = text;
       members_filled[index] = [...newData];
       setMembersFilled((prevState) => ({ ...members_filled }));
@@ -157,15 +166,18 @@ const FormLejaMfuko = ({ route }) => {
   };
 
   const handleSubmit = () => {
-    if (week === null || typeof week === "undefined") {
-      alert("Tafadhali sema ni wiki ya ngapi!");
+    if (Object.keys(membersFilled).length === 0) {
+      alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
+    Object.values(membersFilled).forEach((memberArr) => {
+      if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+    });
     const memberDataToSubmit = { ...membersFilled };
     const docName =
       "Leja_ya_Mfuko_" + katibuEmail?.split("@")[0] + "_week_" + weekNumber;
     const formData = {
-      0: ["Namba ya Mwanachama", "Afya", "Elimu", "Mazingira"],
+      0: ["Namba ya Mwanachama", "Salio Anzia", "Afya", "Elimu", "Mazingira"],
       ...memberDataToSubmit,
     };
     setLoading(true);
@@ -184,11 +196,9 @@ const FormLejaMfuko = ({ route }) => {
       .catch((e) => {
         setLoading(false);
         alert(e.message);
-        console.log(e.message);
       });
   };
 
-  console.log(membersFilled);
   return (
     <ScrollView>
       <View
@@ -212,16 +222,6 @@ const FormLejaMfuko = ({ route }) => {
             marginTop: SIZES.large,
           }}
         >
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Salio Anzia"
-            placeholder={"Ingiza salio anzia!"}
-            value={salioAnzia}
-            onChangeText={(text) => setSalioAnzia(text)}
-            isNumber={true}
-          />
           <FormsDropDown
             labelText={"Chagua Mwanachama"}
             options={idToNamesMapArray}

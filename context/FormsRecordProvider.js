@@ -54,8 +54,7 @@ const FormsRecordProvider = (props) => {
   const [states, dispatch] = useReducer(formStatesReducer_, formsStates);
   const q = query(
     collection(db, "WeeksForms"),
-    where("Katibu", "==", states.katibuData),
-    limit(10)
+    where("Katibu", "==", states.katibuData)
   );
 
   const q_ = query(collection(db, "FormDocs"));

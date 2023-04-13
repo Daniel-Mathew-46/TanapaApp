@@ -12,6 +12,7 @@ const CustomInput = ({
   isNumber,
   multiLine,
   editable,
+  onFocus,
 }) => {
   return (
     <View style={{ marginBottom: SIZES.medium }}>
@@ -50,6 +51,7 @@ const CustomInput = ({
           onChangeText={onChangeText}
           secureTextEntry={isPassword}
           keyboardType={isNumber ? "numeric" : null}
+          onFocus={onFocus}
         />
       </View>
     </View>

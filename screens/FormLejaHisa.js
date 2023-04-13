@@ -1,83 +1,223 @@
-import { View, Text, ScrollView } from "react-native";
-import React, { useState } from "react";
-// import { Button, CustomInput, FormsHeader } from "../components";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { Button, CustomInput, FormsDropDown, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
-// import Icon from "react-native-vector-icons/Ionicons";
-// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-// import { submitFormData } from "../context/submits";
+import Icon from "react-native-vector-icons/Ionicons";
+import Icons from "react-native-vector-icons/AntDesign";
+import Iconz from "react-native-vector-icons/MaterialIcons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { submitFormData } from "../context/submits";
+import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
+import moment from "moment/moment";
 
-const FormLejaHisa = ({ route }) => {
-  // const katibuEmail = route.params?.katibuEmail;
-  // const week = route.params?.week;
-  // const weekNumber = week ? Number(week) : null;
+const RenderFields = ({
+  item,
+  setMemberSampleData,
+  deductFromMembersToShow,
+}) => {
+  let key = Object.keys(item)[0];
+  key = Number(key);
+  let name = item[key];
+  let todayDate = moment().format("D/MM/YYYY");
+  const [dateValue, setDateValue] = useState(todayDate);
+  const [jina, setJina] = useState(name);
 
-  // const [jinaMwanachama, setJinaMwanachama] = useState("");
-  // const [idadiHisa, setIdadiHisa] = useState("");
-  // const [mifukoJamiiAfya, setMifukoJamiiAfya] = useState("");
-  // const [mifukoJamiiElimu, setMifukoJamiiElimu] = useState("");
-  // const [mifukoJamiiMazingira, setMifukoJamiiMazingira] = useState("");
-  // const [madeni, setMadeni] = useState("");
-  // const [gawio, setGawio] = useState("");
-  // const [salio, setSalio] = useState("");
-
-  // const [loading, setLoading] = useState(false);
-
-  // const handleSubmit = () => {
-  //   if (week === null || typeof week === "undefined") {
-  //     alert("Tafadhali sema ni wiki ya ngapi!");
-  //     return;
-  //   }
-  //   const docName =
-  //     "Kumaliza_Mzunguko_" + katibuEmail?.split("@")[0] + "_week_" + weekNumber;
-  //   const formData = {
-  //     "Jina la Mwanachama": jinaMwanachama,
-  //     "Idadi ya Hisa": idadiHisa,
-  //     "Mifuko Jamii Ya Afya": mifukoJamiiAfya,
-  //     "Mifuko Jamii Ya Elimu": mifukoJamiiElimu,
-  //     "Mifuko Jamii Ya Mazingira": mifukoJamiiMazingira,
-  //     Madeni: madeni,
-  //     Gawio: gawio,
-  //     Salio: salio,
-  //   };
-  //   setLoading(true);
-  //   submitFormData(
-  //     "FormDocs",
-  //     katibuEmail,
-  //     "Kumaliza Mzunguko",
-  //     docName,
-  //     weekNumber,
-  //     formData
-  //   )
-  //     .then(() => {
-  //       setLoading(false);
-  //       setJinaMwanachama("");
-  //       setIdadiHisa("");
-  //       setMifukoJamiiAfya("");
-  //       setMifukoJamiiElimu("");
-  //       setMifukoJamiiMazingira("");
-  //       setGawio("");
-  //       setSalio("");
-  //       alert("Umefanikiwa Kukusanya Taarifa.");
-  //     })
-  //     .catch((e) => {
-  //       setLoading(false);
-  //       alert(e.message);
-  //       console.log(e.message);
-  //     });
-  // };
+  useEffect(() => {
+    setMemberSampleData(dateValue, key, "tarehe");
+  }, [dateValue]);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
-        Fomu hii itawezeshwa hivi punde!
-      </Text>
-    </View>
+    <>
+      <View
+        style={{
+          marginTop: SIZES.large,
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.gray,
+            fontSize: SIZES.large,
+            fontWeight: "bold",
+          }}
+        >
+          {name}
+        </Text>
+        <TouchableOpacity onPress={() => deductFromMembersToShow(key)}>
+          <Icons name="minuscircle" size={20} color={COLORS.primary} />
+        </TouchableOpacity>
+      </View>
+      <CustomInput
+        icon={<Icon name="person" size={25} color={COLORS.primary} />}
+        label="Jina la Mwanachama"
+        placeholder={"Ingiza jina la Mwanachama"}
+        value={jina}
+        onChangeText={(text) => {
+          setJina(text);
+          setMemberSampleData(jina, key, "jina");
+        }}
+      />
+      <CustomInput
+        icon={<Iconz name="date-range" size={25} color={COLORS.primary} />}
+        label="Tarehe"
+        placeholder={"Andika tarehe"}
+        value={dateValue}
+        onChangeText={(text) => {
+          setDateValue(text);
+        }}
+        isNumber={true}
+      />
+      <CustomInput
+        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
+        label="Hisa Anzia"
+        placeholder={"Ingiza hisa anzia"}
+        onChangeText={(text) => {
+          setMemberSampleData(text, key, "hisa_anzia");
+        }}
+        isNumber={true}
+      />
+      <CustomInput
+        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
+        label="Idadi ya Hisa"
+        placeholder={"Ingiza idadi ya hisa"}
+        onChangeText={(text) => setMemberSampleData(text, key, "idadi_hisa")}
+        isNumber={true}
+      />
+    </>
   );
-  // (
-  // <ScrollView style={{ flex: 1 }}>
+};
 
-  {
-    /* <View
+const FormLejaHisa = ({ route }) => {
+  const { states } = useContext(KatibuTasksContexts);
+  const katibuEmail = route.params?.katibuEmail;
+  const week = route.params?.week;
+  const weekNumber = week ? Number(week) : null;
+  const idToNamesMapArray = [];
+  const membersIds =
+    states?.members?.length > 0
+      ? states.members.map((item) => item["Namba yake"])
+      : [];
+
+  const membersNames =
+    states?.members?.length > 0
+      ? states.members.map((item) => item["Jina la Mwanachama"])
+      : [];
+
+  for (let i = 0; i < states?.members?.length; i++) {
+    let obj = {};
+    let id = membersIds[i];
+    obj[id] = membersNames[i];
+    idToNamesMapArray.push(obj);
+  }
+
+  const [currMember, setCurrMember] = useState();
+  const [loading, setLoading] = useState(false);
+  const [membersFilled, setMembersFilled] = useState({});
+  const [wanachamaShown, setWanachamaShown] = useState([]);
+  const fields = {
+    jina: 0,
+    tarehe: 1,
+    hisa_anzia: 2,
+    idadi_hisa: 3,
+  };
+
+  const deduceMembersToShow = (index, label) => {
+    let indexNameMap = {};
+    indexNameMap[index] = label;
+    let arrIndexes = wanachamaShown;
+    arrIndexes.push(indexNameMap);
+    setCurrMember(index);
+    setWanachamaShown(arrIndexes);
+  };
+
+  const deductFromMembersToShow = (index) => {
+    let remArrIndexes = wanachamaShown?.filter(
+      (item) => Math.floor(Object.keys(item)[0]) !== index
+    );
+    let { [index]: deleted, ...remMembersFilled } = membersFilled;
+    setWanachamaShown(remArrIndexes);
+    setMembersFilled({ ...remMembersFilled });
+  };
+
+  //Updating values per each member filled
+  const setMemberSampleData = (text, index, fieldName) => {
+    let members_filled = { ...membersFilled };
+    if (Object.keys(members_filled).length > 0) {
+      let indexToPutText = fields[fieldName];
+      let curr_data = members_filled[index];
+      if (typeof curr_data === "undefined") {
+        let newMemberData = [];
+        newMemberData[indexToPutText] = text;
+        curr_data = [...newMemberData];
+      }
+      let dataArr = [...curr_data];
+      dataArr[indexToPutText] = text;
+      members_filled[index] = dataArr;
+      setMembersFilled((prevState) => ({ ...members_filled }));
+    } else {
+      let newData = [];
+      let indexToPutText = fields[fieldName];
+      newData[indexToPutText] = text;
+      members_filled[index] = [...newData];
+      setMembersFilled((prevState) => ({ ...members_filled }));
+    }
+  };
+
+  const handleSetName = (jina, dateValue, key) => {
+    setMemberSampleData(jina, key, "jina");
+    setMemberSampleData(dateValue, key, "tarehe");
+  };
+
+  const handleSubmit = () => {
+    if (Object.keys(membersFilled).length === 0) {
+      alert("Tafadhali jaza taarifa sahihi!");
+      return;
+    }
+    Object.values(membersFilled).forEach((memberArr) => {
+      for (let i = 0; i < memberArr.length; i++) {
+        if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+      }
+    });
+    const memberDataToSubmit = { ...membersFilled };
+    const docName =
+      "Leja_ya_Hisa_za_Mteja_" +
+      katibuEmail?.split("@")[0] +
+      "_week_" +
+      weekNumber;
+    const formData = {
+      0: [
+        "Jina la Mwanachama",
+        "Tarehe",
+        "Hisa Anzia",
+        "Idadi ya Hisa alizochukua",
+      ],
+      ...memberDataToSubmit,
+    };
+    setLoading(true);
+    submitFormData(
+      "FormDocs",
+      katibuEmail,
+      "Leja ya Hisa za Mteja",
+      docName,
+      weekNumber,
+      formData
+    )
+      .then(() => {
+        setLoading(false);
+        alert("Umefanikiwa Kukusanya Taarifa.");
+      })
+      .catch((e) => {
+        setLoading(false);
+        alert(e.message);
+      });
+  };
+
+  console.log(membersFilled);
+  return (
+    <ScrollView style={{ flex: 1 }}>
+      <View
         style={{
           width: "100%",
           paddingTop: SIZES.base,
@@ -87,10 +227,11 @@ const FormLejaHisa = ({ route }) => {
         }}
       >
         <FormsHeader
-          title={"Fomu ya kumaliza Mzunguko"}
-          subTitle={"Fomu ya kumaliza mzunguko"}
+          title={"Leja ya Hisa za Mteja"}
+          subTitle={"Fomu Leja Hisa za Mteja"}
         />
       </View>
+
       <KeyboardAwareScrollView>
         <View
           style={{
@@ -98,83 +239,22 @@ const FormLejaHisa = ({ route }) => {
             marginTop: SIZES.large,
           }}
         >
-          <CustomInput
-            icon={<Icon name="person" size={25} color={COLORS.primary} />}
-            label="Jina la Mwanachama"
-            placeholder={"Ingiza jina kamili la Mwanachama"}
-            value={jinaMwanachama}
-            onChangeText={(text) => setJinaMwanachama(text)}
+          <FormsDropDown
+            labelText={"Chagua Mwanachama"}
+            options={idToNamesMapArray}
+            value={currMember}
+            setValue={deduceMembersToShow}
           />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Idadi ya Hisa"
-            placeholder={"Ingiza idadi ya Hisa"}
-            value={idadiHisa}
-            onChangeText={(text) => setIdadiHisa(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Mifuko ya jamii ya Afya"
-            placeholder={"Ingiza mifuko ya jamii ya Afya"}
-            value={mifukoJamiiAfya}
-            onChangeText={(text) => setMifukoJamiiAfya(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Mifuko ya jamii ya Elimu"
-            placeholder={"Ingiza Mifuko ya elimu"}
-            value={mifukoJamiiElimu}
-            onChangeText={(text) => setMifukoJamiiElimu(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Mifuko ya jamii ya mazingira"
-            placeholder={"Ingiza mifuko ya jamii ya mazingira"}
-            value={mifukoJamiiMazingira}
-            onChangeText={(text) => setMifukoJamiiMazingira(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Madeni"
-            placeholder={"Ingiza Madeni"}
-            value={madeni}
-            onChangeText={(text) => setMadeni(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Gawio"
-            placeholder={"Weka Gawio"}
-            value={gawio}
-            onChangeText={(text) => setGawio(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Salio"
-            placeholder={"Weka Salio"}
-            value={salio}
-            onChangeText={(text) => setSalio(text)}
-            isNumber={true}
-          />
+          {wanachamaShown?.map((item, index) => (
+            <RenderFields
+              key={`${index} ${item}`}
+              item={item}
+              setMemberSampleData={setMemberSampleData}
+              deductFromMembersToShow={deductFromMembersToShow}
+              memberFilled={membersFilled}
+              handleSetName={handleSetName}
+            />
+          ))}
           <View
             style={{
               width: "100%",
@@ -190,10 +270,9 @@ const FormLejaHisa = ({ route }) => {
             />
           </View>
         </View>
-      </KeyboardAwareScrollView> */
-  }
-  // </ScrollView>
-  // );
+      </KeyboardAwareScrollView>
+    </ScrollView>
+  );
 };
 
 export default FormLejaHisa;

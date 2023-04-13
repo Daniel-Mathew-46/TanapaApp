@@ -44,6 +44,10 @@ const Login = ({ setUser, setUserToken }) => {
   };
 
   const onPress = () => {
+    if (email === "" || password === "") {
+      alert("Tafadhali jaza taarifa sahihi!");
+      return;
+    }
     let user = null;
     if (!goToSignUp) {
       setLoading(!loading);

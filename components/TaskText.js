@@ -1,8 +1,8 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../constants";
 
-const TaskText = ({ text, role }) => {
+const TaskText = ({ text }) => {
   return (
     <View
       style={{

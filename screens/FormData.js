@@ -27,8 +27,8 @@ const FormData = ({ route }) => {
         120, 120, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 280,
       ];
     else if (formText === "Leja ya Mfuko") {
-      widthArr = [110, 110, 110, 110];
-    } else widthArr = [];
+      widthArr = [110, 110, 110, 110, 110];
+    } else widthArr = [110, 110, 110, 110];
 
     Object.keys(data?.formData).forEach((key) => {
       if (key !== "0") tableData.push(data.formData[key]);
