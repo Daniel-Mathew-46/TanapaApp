@@ -5,8 +5,8 @@ import MakatibuRecords from "./MakatibuRecords";
 import KatibuRecordsProvider, {
   KatibuRecordsContext,
 } from "../context/KatibuRecordsProvider";
-import { View, ActivityIndicator, Text } from "react-native";
-import { COLORS, SIZES } from "../constants";
+import { View, ActivityIndicator } from "react-native";
+import { COLORS } from "../constants";
 import RegisterKatibu from "./RegisterKatibu";
 
 const CFKatibuStack = createNativeStackNavigator();
@@ -23,9 +23,9 @@ const KatibuRecordsProvide = ({ route }) => {
 const CfKatibuStack = () => {
   const { states } = useContext(KatibuRecordsContext);
 
-  const renderStack = (katibus) => {
-    if (katibus == null) {
-      return (
+  return (
+    <>
+      {states?.myKatibus === null ? (
         <View
           style={{
             alignItems: "center",
@@ -35,28 +35,11 @@ const CfKatibuStack = () => {
         >
           <ActivityIndicator size={40} color={COLORS.primary} />
         </View>
-      );
-    } else if (katibus.length == 0) {
-      return (
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+      ) : (
+        <CFKatibuStack.Navigator
+          initialRouteName="Rekodi ya Makatibu"
+          screenOptions={{ headerShown: false }}
         >
-          <Text
-            style={{
-              color: COLORS.gray,
-              fontSize: SIZES.medium,
-            }}
-          >
-            Hakuna Taarifa!
-          </Text>
-        </View>
-      );
-    } else {
-      return (
-        <CFKatibuStack.Navigator screenOptions={{ headerShown: false }}>
           <CFKatibuStack.Screen
             name="Rekodi ya Makatibu"
             component={MakatibuRecords}
@@ -72,10 +55,9 @@ const CfKatibuStack = () => {
             initialParams={{ cfEmail: states.cfEmail }}
           />
         </CFKatibuStack.Navigator>
-      );
-    }
-  };
-  return <>{renderStack(states.myKatibus)}</>;
+      )}
+    </>
+  );
 };
 
 export default KatibuRecordsProvide;

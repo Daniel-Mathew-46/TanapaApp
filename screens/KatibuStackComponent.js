@@ -7,6 +7,7 @@ import DashBoard from "./DashBoard";
 import FormLejaMfuko from "./FormLejaMfuko";
 import FormLejaHisa from "./FormLejaHisa";
 import KatibuTasksProvider from "../context/KatibuTasksProvider";
+import FormShughuli from "./FormShughuli";
 
 const KatibuStack = createNativeStackNavigator();
 
@@ -49,6 +50,11 @@ const KatibuStackComponent = ({ role, katibuEmail }) => {
       <KatibuStack.Screen
         name="LEJAHISA"
         component={FormLejaHisa}
+        initialParams={{ katibuEmail }}
+      />
+      <KatibuStack.Screen
+        name="SHUGHULI ZA WIKI"
+        component={FormShughuli}
         initialParams={{ katibuEmail }}
       />
       <KatibuStack.Screen

@@ -2,8 +2,18 @@ import { View, Text } from "react-native";
 import React from "react";
 import { SIZES } from "../constants";
 import LongCard from "./LongCard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  query,
+  orderBy,
+  limit,
+  db,
+  getDocs,
+  where,
+  collection,
+} from "../context/firebase";
 
-const GroupsInformation = () => {
+const GroupsInformation = ({ navigation, cfEmail, role }) => {
   return (
     <View
       style={{
@@ -14,12 +24,12 @@ const GroupsInformation = () => {
     >
       <View>
         <LongCard
-          count={2}
+          count={0}
           week={"Wiki hii"}
-          subText={"Fomu za taarifa za vikundi"}
+          subText={"Fomu ya taarifa za vikundi"}
         />
         <LongCard
-          count={4}
+          count={0}
           week={"Wiki hii"}
           subText={"Fomu za tathmini endelevu"}
         />

@@ -91,7 +91,7 @@ const FormsRecord = ({ navigation, route }) => {
                   fontSize: SIZES.extraLarge,
                 }}
               >
-                {`Fomu Za Week Ya ${data?.week} ulizotuma`}
+                {`Fomu Za Week Ya ${data?.week} zilizotumwa`}
               </Text>
             </View>
             <View
@@ -105,7 +105,7 @@ const FormsRecord = ({ navigation, route }) => {
                   fontSize: SIZES.large,
                 }}
               >
-                {`Rekodi za Fomu Ulizopakia Week Ya ${data?.week}`}
+                {`Rekodi za Fomu zilizopakiwa Week Ya ${data?.week}`}
               </Text>
             </View>
           </View>
@@ -132,29 +132,11 @@ const FormsRecord = ({ navigation, route }) => {
             <ActivityIndicator size={40} color={COLORS.primary} />
           </View>
         ) : (
-          // <>
-          //   {typeof states?.formDatas[0]?.[checkerForm] === "undefined" ? (
-          //     <View
-          //       style={{
-          //         flex: 1,
-          //         justifyContent: "center",
-          //         alignItems: "center",
-          //       }}
-          //     >
-          //       <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
-          //         Hakuna taarifa zozote!
-          //       </Text>
-          //     </View>
-          //   ) : (
           <FlatList
             data={forms}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-              <FormDataCard
-                text={item}
-                // data={states?.formDatas}
-                navigation={navigation}
-              />
+              <FormDataCard text={item} navigation={navigation} />
             )}
             ListHeaderComponentStyle={{ marginBottom: SIZES.base }}
             keyExtractor={(item) => item}
@@ -166,14 +148,10 @@ const FormsRecord = ({ navigation, route }) => {
                   marginTop: 10,
                   height: 200,
                 }}
-              >
-                {/* <Button text={"Pakua"} /> */}
-              </View>
+              ></View>
             }
             ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
           />
-          //   )}
-          // </>
         )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />

@@ -2,6 +2,12 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SIZES, COLORS } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 const FormCard = ({ text, options, data, navigation }) => {
   const [showoptions, setShowOptions] = useState(false);
@@ -104,17 +110,43 @@ const FormCard = ({ text, options, data, navigation }) => {
               {text}
             </Text>
           </View>
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => setShowOptions(!showoptions)}
-          >
-            <Icon name="dots-three-horizontal" size={25} color={COLORS.white} />
-          </TouchableOpacity>
+          <Menu>
+            <MenuTrigger
+              customStyles={{
+                triggerWrapper: {
+                  top: 0,
+                },
+              }}
+            >
+              <Icon
+                name="dots-three-horizontal"
+                size={24}
+                color={COLORS.white}
+              />
+            </MenuTrigger>
+            <MenuOptions optionsContainerStyle={{ maxWidth: 90, top: 4 }}>
+              <MenuOption
+                onSelect={() => navigation.navigate("FormsRecord", { data })}
+                text="Angalia"
+                customStyles={{
+                  optionText: { fontSize: SIZES.medium + 2 },
+                }}
+              />
+              <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+              <MenuOption
+                onSelect={() =>
+                  alert(
+                    `Samahani! Huduma ya kupakua fomu itakuja hivi karibuni!`
+                  )
+                }
+                text="Pakua"
+                customStyles={{
+                  optionText: { fontSize: SIZES.medium + 2 },
+                }}
+              />
+            </MenuOptions>
+          </Menu>
         </View>
-        {showoptions && showOptions(options)}
       </View>
     </View>
   );

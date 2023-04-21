@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, Text } from "react-native";
+import { View, ActivityIndicator, Text, Alert } from "react-native";
 import React, { useState, useContext } from "react";
 import { Button, FormsHeader, AttendanceRadioComponent } from "../components";
 import { SIZES, COLORS } from "../constants";
@@ -7,7 +7,7 @@ import { submitFormData } from "../context/submits";
 import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 
 const FormMahudhurio = ({ route }) => {
-  const { states } = useContext(KatibuTasksContexts);
+  const { states, dispatch } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
   const week = route.params?.week;
   const weekNumber = week ? Number(week) : null;
@@ -38,23 +38,41 @@ const FormMahudhurio = ({ route }) => {
       let jibu = mahudhurioArray[i];
       formData[jina] = jibu;
     }
-    setLoading(true);
-    submitFormData(
-      "FormDocs",
-      katibuEmail,
-      "Kadi Ya Mahudhurio Kila Wiki",
-      docName,
-      weekNumber,
-      formData
-    )
-      .then(() => {
-        setLoading(false);
-        alert("Umefanikiwa Kukusanya Taarifa.");
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert(e.message);
-      });
+
+    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
+      { text: "Hapana", onPress: () => {} },
+      {
+        text: "Ndiyo",
+        onPress: () => {
+          onSubmitConfirm();
+        },
+      },
+    ]);
+
+    const onSubmitConfirm = () => {
+      setLoading(true);
+      submitFormData(
+        "FormDocs",
+        katibuEmail,
+        "Kadi Ya Mahudhurio Kila Wiki",
+        docName,
+        weekNumber,
+        formData
+      )
+        .then(() => {
+          setLoading(false);
+          alert("Umefanikiwa Kukusanya Taarifa.");
+          dispatch({
+            type: "SET_MAHUDHURIO_FORM_STATE",
+            data: { ...formData },
+            forms_filled: [...states.formsFilled, "mahudhurio"],
+          });
+        })
+        .catch((e) => {
+          setLoading(false);
+          alert(e.message);
+        });
+    };
   };
 
   return (
@@ -112,6 +130,19 @@ const FormMahudhurio = ({ route }) => {
                   populateMahudhurio={populateMahudhurio}
                 />
               ))}
+              {states.formsFilled.includes("mahudhurio") && (
+                <View
+                  style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
+                    Fomu hii imeshajazwa!
+                  </Text>
+                </View>
+              )}
               <View
                 style={{
                   width: "100%",

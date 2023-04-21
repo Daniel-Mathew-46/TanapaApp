@@ -59,7 +59,11 @@ const RegisterKikundi = ({ route }) => {
     let unAssignedEmails = [];
     const getKatibusUnassigned = async () => {
       try {
-        const q = query(collection(db, "users"), where("assigned", "==", "no"));
+        const q = query(
+          collection(db, "users"),
+          where("assigned", "==", "no"),
+          where("createdBy", "==", cfEmail)
+        );
         const docs = await getDocs(q);
         docs.forEach((doc) => {
           let email = doc.data().email;
@@ -194,6 +198,16 @@ const RegisterKikundi = ({ route }) => {
             value={jinaKikundi}
             onChangeText={(text) => setJinaKikundi(text)}
           />
+          <CustomInput
+            icon={
+              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+            }
+            label="Namba ya usajili ya kikundi"
+            placeholder={"Ingiza namba ya usajili ya kikundi"}
+            value={nambaUsajili}
+            onChangeText={(text) => setNambaUsajili(text)}
+            isNumber={true}
+          />
 
           <DropDownComponent
             label={"Barua Pepe ya Katibu"}
@@ -220,16 +234,6 @@ const RegisterKikundi = ({ route }) => {
             placeholder={"Ingiza thamani ya hisa"}
             value={thamaniHisa}
             onChangeText={(text) => setThamaniHisa(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-            }
-            label="Namba ya usajili ya kikundi"
-            placeholder={"Ingiza namba ya usajili ya kikundi"}
-            value={nambaUsajili}
-            onChangeText={(text) => setNambaUsajili(text)}
             isNumber={true}
           />
 

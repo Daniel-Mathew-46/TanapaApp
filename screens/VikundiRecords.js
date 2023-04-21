@@ -6,13 +6,14 @@ import {
   StatusBar,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { COLORS, SIZES } from "../constants";
 import { CfDataCard } from "../components";
+import { CfFormsDataContext } from "../context/CfFormsRecordProvider";
 
 const VikundiRecords = ({ navigation, route }) => {
-  const vikundi = route.params?.vikundi;
-
+  const { statesVikundi } = useContext(CfFormsDataContext);
+  const isCFRole = route?.params?.isCFRole;
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -71,36 +72,38 @@ const VikundiRecords = ({ navigation, route }) => {
                   Orodha ya Vikundi na taarifa zake
                 </Text>
               </View>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <TouchableOpacity
+              {isCFRole && (
+                <View
                   style={{
-                    paddingHorizontal: SIZES.font,
-                    backgroundColor: COLORS.white,
-                    paddingVertical: SIZES.base,
-                    justifyContent: "center",
                     alignItems: "center",
-                    borderRadius: 5,
-                  }}
-                  onPress={() => {
-                    navigation.navigate("Sajili Kikundi", {});
+                    justifyContent: "center",
                   }}
                 >
-                  <Text
+                  <TouchableOpacity
                     style={{
-                      color: COLORS.secondary,
-                      fontSize: SIZES.font,
-                      textTransform: "uppercase",
+                      paddingHorizontal: SIZES.font,
+                      backgroundColor: COLORS.white,
+                      paddingVertical: SIZES.base,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 5,
+                    }}
+                    onPress={() => {
+                      navigation.navigate("Sajili Kikundi", {});
                     }}
                   >
-                    SAJILI
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                    <Text
+                      style={{
+                        color: COLORS.secondary,
+                        fontSize: SIZES.font,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      SAJILI
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -114,21 +117,34 @@ const VikundiRecords = ({ navigation, route }) => {
           paddingVertical: SIZES.extraLarge,
         }}
       >
-        <FlatList
-          data={vikundi}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <CfDataCard
-              key={index}
-              data={item}
-              weekText={"Weeks"}
-              navigation={navigation}
-            />
-          )}
-          ListFooterComponent={<View />}
-          ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-          ListFooterComponentStyle={{ marginBottom: "80%" }}
-        />
+        {statesVikundi?.vikundi?.length === 0 ? (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+              Hakuna Vikundi vilivyosajiliwa!
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={statesVikundi?.vikundi}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <CfDataCard
+                key={index}
+                data={item}
+                weekText={"Weeks"}
+                navigation={navigation}
+              />
+            )}
+            ListFooterComponent={<View />}
+            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+            ListFooterComponentStyle={{ marginBottom: "80%" }}
+          />
+        )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </SafeAreaView>
@@ -136,3 +152,26 @@ const VikundiRecords = ({ navigation, route }) => {
 };
 
 export default VikundiRecords;
+
+{
+  /* <FlatList
+            data={states?.members}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <MemberCard
+                data={item}
+                options={{
+                  angalia: "Angalia",
+                  badilisha: "Badilisha",
+                  futa: "Futa",
+                }}
+                navigation={navigation}
+                membersIds={membersIds}
+              />
+            )}
+            keyExtractor={(item) => item["Barua Pepe"]}
+            ListFooterComponent={<View />}
+            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+            ListFooterComponentStyle={{ marginBottom: "90%" }}
+          /> */
+}

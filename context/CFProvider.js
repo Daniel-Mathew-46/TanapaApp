@@ -11,6 +11,7 @@ import {
 export const CFDashContext = createContext(null);
 
 const CFProvider = (props) => {
+  const cfEmail = props?.cfEmail;
   const cfStats = {
     katibuCount: null,
     vikundiCount: null,
@@ -38,7 +39,10 @@ const CFProvider = (props) => {
   };
 
   const [stats, dispatch] = useReducer(cfStatsReducer, cfStats);
-  const q_ = query(collection(db, "Vikundi"));
+  const q_ = query(
+    collection(db, "Vikundi"),
+    where("createdBy", "==", cfEmail)
+  );
   const unsub = onSnapshot(q_, async (doc) => {
     const snapshot = await getCountFromServer(q_);
     let kikundiCount = await snapshot.data().count;
@@ -46,7 +50,7 @@ const CFProvider = (props) => {
       dispatch({ type: "SET_VIKUNDI_COUNT", count: kikundiCount });
   });
 
-  const q = query(collection(db, "users"), where("role", "==", "Katibu"));
+  const q = query(collection(db, "users"), where("createdBy", "==", cfEmail));
   const unsubscribe = onSnapshot(q, async (querySnapshot) => {
     const katibuCountSnapshot = await getCountFromServer(q);
     let katibuCount = await katibuCountSnapshot.data().count;

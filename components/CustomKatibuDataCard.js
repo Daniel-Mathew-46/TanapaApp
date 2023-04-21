@@ -3,70 +3,15 @@ import React, { useContext, useState } from "react";
 import Icon from "react-native-vector-icons/Entypo";
 import { assets, COLORS, SIZES } from "../constants";
 import { KatibuRecordsContext } from "../context/KatibuRecordsProvider";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 const CustomKatibuDataCard = ({ data, navigation }) => {
   const { states } = useContext(KatibuRecordsContext);
-  const [showoptions, setShowOptions] = useState(false);
-
-  const showOptions = (options, navigation) => {
-    return (
-      <View
-        style={{
-          zIndex: 1,
-          height: 60,
-          width: 100,
-          backgroundColor: COLORS.gray,
-          paddingHorizontal: SIZES.base,
-          paddingVertical: SIZES.font,
-          position: "absolute",
-          top: 50,
-          right: 10,
-          bottom: -10,
-          borderRadius: 5,
-          alignItems: "center",
-          marginBottom: SIZES.small,
-          justifyContent: "center",
-        }}
-      >
-        {options?.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={{
-              borderBottomWidth: 1,
-              width: "80%",
-              marginBottom: 4,
-            }}
-            onPress={() => {
-              setShowOptions(!showoptions);
-              switch (item) {
-                case "Angalia":
-                  navigation.navigate("Taarifa za Katibu", {
-                    data,
-                  });
-                  break;
-                case "Badilisha":
-                  navigation.navigate("Sajili Katibu", {
-                    edit: true,
-                    data,
-                    cfEmail: states.cfEmail,
-                  });
-                  break;
-              }
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.secondary,
-                fontSize: SIZES.medium,
-              }}
-            >
-              {item}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
 
   return (
     <View
@@ -127,19 +72,56 @@ const CustomKatibuDataCard = ({ data, navigation }) => {
             {data?.role}
           </Text>
         </View>
-        {
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => setShowOptions(!showoptions)}
-          >
-            <Icon name="dots-three-horizontal" size={25} color={COLORS.white} />
-          </TouchableOpacity>
-        }
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Menu>
+            <MenuTrigger
+              customStyles={{
+                triggerWrapper: {
+                  top: 1,
+                },
+              }}
+            >
+              <Icon
+                name="dots-three-horizontal"
+                size={24}
+                color={COLORS.white}
+              />
+            </MenuTrigger>
+            <MenuOptions optionsContainerStyle={{ maxWidth: 90, top: 4 }}>
+              <MenuOption
+                onSelect={() =>
+                  navigation.navigate("Taarifa za Katibu", {
+                    data,
+                  })
+                }
+                text="Angalia"
+                customStyles={{
+                  optionText: { fontSize: SIZES.medium + 2 },
+                }}
+              />
+              <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+              <MenuOption
+                onSelect={() =>
+                  navigation.navigate("Sajili Katibu", {
+                    edit: true,
+                    data,
+                    cfEmail: states.cfEmail,
+                  })
+                }
+                text="Badilisha"
+                customStyles={{
+                  optionText: { fontSize: SIZES.medium + 2 },
+                }}
+              />
+            </MenuOptions>
+          </Menu>
+        </View>
       </View>
-      {showoptions && showOptions(["Angalia", "Badilisha"], navigation)}
     </View>
   );
 };

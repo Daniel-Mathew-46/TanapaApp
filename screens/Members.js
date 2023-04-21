@@ -12,7 +12,7 @@ import { MemberCard } from "../components";
 import { KatibuDataContext } from "../context/MemberStackProvide";
 
 const Members = ({ navigation, route }) => {
-  const kikundi = route.params?.kikundi;
+  const kikundi = route.params?.kikundi?.name;
   const { states } = useContext(KatibuDataContext);
   const membersIds =
     states?.members?.length > 0
@@ -142,11 +142,6 @@ const Members = ({ navigation, route }) => {
             renderItem={({ item }) => (
               <MemberCard
                 data={item}
-                options={{
-                  angalia: "Angalia",
-                  badilisha: "Badilisha",
-                  futa: "Futa",
-                }}
                 navigation={navigation}
                 membersIds={membersIds}
               />

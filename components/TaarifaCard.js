@@ -3,6 +3,12 @@ import React, { useState } from "react";
 import { SIZES, COLORS } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
 import Icons from "react-native-vector-icons/AntDesign";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 const TaarifaCard = ({ text, options, isCF, navigation, data }) => {
   const [showoptions, setShowOptions] = useState(false);
@@ -113,19 +119,51 @@ const TaarifaCard = ({ text, options, isCF, navigation, data }) => {
           )}
 
           {isCF ? (
-            <TouchableOpacity
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              onPress={() => setShowOptions(!showoptions)}
-            >
-              <Icon
-                name="dots-three-horizontal"
-                size={25}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
+            // <TouchableOpacity
+            //   style={{
+            //     alignItems: "center",
+            //     justifyContent: "center",
+            //   }}
+            //   onPress={() => setShowOptions(!showoptions)}
+            // >
+            //   <Icon
+            //     name="dots-three-horizontal"
+            //     size={25}
+            //     color={COLORS.white}
+            //   />
+            // </TouchableOpacity>
+            <Menu>
+              <MenuTrigger
+                customStyles={{
+                  triggerWrapper: {
+                    top: 10,
+                  },
+                }}
+              >
+                <Icon
+                  name="dots-three-horizontal"
+                  size={24}
+                  color={COLORS.white}
+                />
+              </MenuTrigger>
+              <MenuOptions optionsContainerStyle={{ maxWidth: 90, top: 4 }}>
+                <MenuOption
+                  onSelect={() => alert("MemberData")}
+                  text="Angalia"
+                  customStyles={{
+                    optionText: { fontSize: SIZES.medium + 2 },
+                  }}
+                />
+                <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+                <MenuOption
+                  onSelect={() => alert("MemberData")}
+                  text="Badilisha"
+                  customStyles={{
+                    optionText: { fontSize: SIZES.medium + 2 },
+                  }}
+                />
+              </MenuOptions>
+            </Menu>
           ) : (
             <TouchableOpacity
               style={{

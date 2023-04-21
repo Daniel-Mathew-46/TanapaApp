@@ -64,13 +64,11 @@ const Item = ({ item, navigation, cfEmail }) => {
               switch (item.shughuli) {
                 case "Sajili katibu":
                   navigation.navigate("Rekodi za Makatibu", {
-                    screen: "Sajili Katibu",
                     cfEmail,
                   });
                   break;
                 case "Sajili Kikundi":
                   navigation.navigate("Rekodi za Vikundi", {
-                    screen: "Sajili Kikundi",
                     cfEmail,
                   });
                   break;

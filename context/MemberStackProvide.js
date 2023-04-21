@@ -37,7 +37,7 @@ const MemberStackProvide = (props) => {
         return {
           ...prevStates,
           members: [...action.payload],
-          kikundi: action.kikundi,
+          kikundi: { ...action.kikundi },
           loading: false,
         };
       case "SET_CHANGE":
@@ -76,12 +76,18 @@ const MemberStackProvide = (props) => {
       async (docSnapshot) => {
         const katibusKikundi = await getDocs(q_);
         if (katibusKikundi.docs.length === 0) {
-          dispatch({ type: "SET_KIKUNDI_MEMBERS", payload: [], kikundi: "" });
+          dispatch({
+            type: "SET_KIKUNDI_MEMBERS",
+            payload: [],
+            kikundi: { kikundiName: "", kikundiNamba: "" },
+          });
         } else {
           let members_ = [];
           try {
-            let kikundiDoc = katibusKikundi.docs[0].data();
-            let kikundiName = await kikundiDoc.name;
+            let {
+              ["name"]: kikundiName,
+              ["Namba ya usajili ya Kikundi"]: kikundiNamba,
+            } = katibusKikundi.docs[0].data();
             const q = query(
               collection(db, "KikundiMembers"),
               where("Kikundi Chake", "==", kikundiName)
@@ -91,26 +97,22 @@ const MemberStackProvide = (props) => {
               await dispatch({
                 type: "SET_KIKUNDI_MEMBERS",
                 payload: [],
-                kikundi: kikundiName,
+                kikundi: { name: kikundiName, namba: kikundiNamba },
               });
             } else {
               wanachamaDocs.forEach((doc) => {
                 members_.unshift(doc.data());
               });
-              await dispatch({
-                type: "SET_KIKUNDI_MEMBERS",
-                payload: members_,
-                kikundi: kikundiName,
-              });
+              if (states.members !== members_)
+                dispatch({
+                  type: "SET_KIKUNDI_MEMBERS",
+                  payload: members_,
+                  kikundi: { name: kikundiName, namba: kikundiNamba },
+                });
             }
           } catch (e) {
             console.log(e);
           }
-          if (states.members !== members_)
-            dispatch({
-              type: "SET_KIKUNDI_MEMBERS",
-              payload: members_,
-            });
         }
       },
       (error) => {

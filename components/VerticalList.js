@@ -19,14 +19,14 @@ const VerticalList = ({ role, navigation, userEmail }) => {
       }}
     >
       {role == "Admin" ? (
-        <AdminProvider>
+        <AdminProvider adminEmail={userEmail}>
           <AdminStats />
         </AdminProvider>
       ) : null}
 
       {/* Case of Community Facilitator */}
       {role == "CF" ? (
-        <CFProvider>
+        <CFProvider cfEmail={userEmail}>
           <CFStats />
         </CFProvider>
       ) : null}

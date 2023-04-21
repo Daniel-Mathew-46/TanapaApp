@@ -2,66 +2,14 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
-const MemberCard = ({ data, options, navigation, membersIds }) => {
-  const [showoptions, setShowOptions] = useState(false);
-
-  const showOptions = (options, navigation) => {
-    return (
-      <View
-        style={{
-          zIndex: 1,
-          height: 70,
-          width: 100,
-          backgroundColor: COLORS.gray,
-          paddingHorizontal: SIZES.base,
-          paddingVertical: SIZES.font,
-          position: "absolute",
-          top: 50,
-          right: 10,
-          bottom: -10,
-          borderRadius: 5,
-          alignItems: "center",
-          marginBottom: SIZES.small,
-          justifyContent: "center",
-        }}
-      >
-        {Object.keys(options).map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={{
-              borderBottomWidth: 1,
-              width: "80%",
-              marginBottom: 4,
-            }}
-            onPress={() => {
-              setShowOptions(!showoptions);
-              options[item] == "Angalia" &&
-                navigation.navigate("MemberData", { data });
-              options[item] == "Badilisha" &&
-                navigation.navigate("RegisterMwanachama", {
-                  edit: true,
-                  data,
-                  membersIds,
-                });
-              options[item] == "Futa" &&
-                navigation.navigate("MemberData", { delete: true, data });
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.secondary,
-                fontSize: SIZES.medium,
-              }}
-            >
-              {options[item]}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
-
+const MemberCard = ({ data, navigation, membersIds }) => {
   return (
     <View
       style={{
@@ -111,17 +59,51 @@ const MemberCard = ({ data, options, navigation, membersIds }) => {
             {data["Barua Pepe"]}
           </Text>
         </View>
-        <TouchableOpacity
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onPress={() => setShowOptions(!showoptions)}
-        >
-          <Icon name="dots-three-horizontal" size={25} color={COLORS.white} />
-        </TouchableOpacity>
+        <Menu>
+          <MenuTrigger
+            customStyles={{
+              triggerWrapper: {
+                top: 10,
+              },
+            }}
+          >
+            <Icon name="dots-three-horizontal" size={24} color={COLORS.white} />
+          </MenuTrigger>
+          <MenuOptions optionsContainerStyle={{ maxWidth: 90, top: 4 }}>
+            <MenuOption
+              onSelect={() => navigation.navigate("MemberData", { data })}
+              text="Angalia"
+              customStyles={{
+                optionText: { fontSize: SIZES.medium + 2 },
+              }}
+            />
+            <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+            <MenuOption
+              onSelect={() =>
+                navigation.navigate("RegisterMwanachama", {
+                  edit: true,
+                  data,
+                  membersIds,
+                })
+              }
+              text="Badilisha"
+              customStyles={{
+                optionText: { fontSize: SIZES.medium + 2 },
+              }}
+            />
+            <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+            <MenuOption
+              onSelect={() =>
+                navigation.navigate("MemberData", { delete: true, data })
+              }
+              text="Futa"
+              customStyles={{
+                optionText: { fontSize: SIZES.medium + 2 },
+              }}
+            />
+          </MenuOptions>
+        </Menu>
       </View>
-      {showoptions && showOptions(options, navigation)}
     </View>
   );
 };

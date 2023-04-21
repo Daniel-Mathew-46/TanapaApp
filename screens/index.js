@@ -34,6 +34,7 @@ import KikundiData from "./KikundiData";
 import CFData from "./CFData";
 import AdminCfStack from "./AdminCfStack";
 import CfReportsStack from "./CfReportsStack";
+import CFWeeksStack from "./CFWeeksStack";
 
 export {
   Login,
@@ -72,4 +73,5 @@ export {
   CFData,
   AdminCfStack,
   CfReportsStack,
+  CFWeeksStack,
 };

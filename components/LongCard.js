@@ -14,6 +14,7 @@ const LongCard = ({ count, week, subText }) => {
         borderRadius: 10,
         marginBottom: SIZES.font,
       }}
+      onPress={() => {}}
     >
       <View
         style={{

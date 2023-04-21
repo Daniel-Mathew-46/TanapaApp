@@ -9,20 +9,21 @@ import { View, ActivityIndicator, Text } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import FormStackProvider from "./FormsStackComponent";
 
-// import KatibuRecordsProvider from "../context/KatibuRecordsProvider";
 const CFStack = createNativeStackNavigator();
 
 const CfFormsRecordProvide = ({ route }) => {
   const cfEmail = route?.params?.user;
+  const isCFRole = route?.params?.isCFRole;
   return (
     <CfFormsRecordProvider cfEmail={cfEmail}>
-      <CfStackComponent cfEmail={cfEmail} />
+      <CfStackComponent cfEmail={cfEmail} isCFRole={isCFRole} />
     </CfFormsRecordProvider>
   );
 };
 
-const CfStackComponent = ({ cfEmail }) => {
+const CfStackComponent = ({ cfEmail, isCFRole }) => {
   const { statesVikundi } = useContext(CfFormsDataContext);
+
   return (
     <>
       {statesVikundi?.vikundi === null ? (
@@ -36,45 +37,23 @@ const CfStackComponent = ({ cfEmail }) => {
           <ActivityIndicator size={40} color={COLORS.primary} />
         </View>
       ) : (
-        <>
-          {statesVikundi?.vikundi?.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
-                Hakuna Vikundi!
-              </Text>
-            </View>
-          ) : (
-            <CFStack.Navigator
-              screenOptions={{ headerShown: false }}
-              initialRouteName={"Taarifa za Vikundi"}
-            >
-              <CFStack.Screen
-                name="Taarifa za Vikundi"
-                component={VikundiRecords}
-                initialParams={{ vikundi: statesVikundi?.vikundi }}
-              />
-              <CFStack.Screen
-                name="Details za Kikundi"
-                component={KikundiData}
-              />
-              <CFStack.Screen
-                name="Sajili Kikundi"
-                initialParams={{ cfEmail }}
-                component={RegisterKikundi}
-              />
-              <CFStack.Screen
-                name="Week Records"
-                component={FormStackProvider}
-              />
-            </CFStack.Navigator>
-          )}
-        </>
+        <CFStack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName={"Taarifa za Vikundi"}
+        >
+          <CFStack.Screen
+            name="Taarifa za Vikundi"
+            component={VikundiRecords}
+            initialParams={{ isCFRole: isCFRole }}
+          />
+          <CFStack.Screen name="Details za Kikundi" component={KikundiData} />
+          <CFStack.Screen
+            name="Sajili Kikundi"
+            initialParams={{ cfEmail }}
+            component={RegisterKikundi}
+          />
+          <CFStack.Screen name="Week Records" component={FormStackProvider} />
+        </CFStack.Navigator>
       )}
     </>
   );

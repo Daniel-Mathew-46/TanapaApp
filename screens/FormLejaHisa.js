@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { Button, CustomInput, FormsDropDown, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
@@ -90,7 +90,7 @@ const RenderFields = ({
 };
 
 const FormLejaHisa = ({ route }) => {
-  const { states } = useContext(KatibuTasksContexts);
+  const { states, dispatch } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
   const week = route.params?.week;
   const weekNumber = week ? Number(week) : null;
@@ -195,26 +195,42 @@ const FormLejaHisa = ({ route }) => {
       ],
       ...memberDataToSubmit,
     };
-    setLoading(true);
-    submitFormData(
-      "FormDocs",
-      katibuEmail,
-      "Leja ya Hisa za Mteja",
-      docName,
-      weekNumber,
-      formData
-    )
-      .then(() => {
-        setLoading(false);
-        alert("Umefanikiwa Kukusanya Taarifa.");
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert(e.message);
-      });
-  };
 
-  console.log(membersFilled);
+    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
+      { text: "Hapana", onPress: () => {} },
+      {
+        text: "Ndiyo",
+        onPress: () => {
+          onSubmitConfirm();
+        },
+      },
+    ]);
+
+    const onSubmitConfirm = () => {
+      setLoading(true);
+      submitFormData(
+        "FormDocs",
+        katibuEmail,
+        "Leja ya Hisa za Mteja",
+        docName,
+        weekNumber,
+        formData
+      )
+        .then(() => {
+          setLoading(false);
+          alert("Umefanikiwa Kukusanya Taarifa.");
+          dispatch({
+            type: "SET_LEJA_HISA_FORM_STATE",
+            data: { ...memberDataToSubmit },
+            forms_filled: [...states.formsFilled, "leja hisa"],
+          });
+        })
+        .catch((e) => {
+          setLoading(false);
+          alert(e.message);
+        });
+    };
+  };
   return (
     <ScrollView style={{ flex: 1 }}>
       <View
@@ -255,6 +271,19 @@ const FormLejaHisa = ({ route }) => {
               handleSetName={handleSetName}
             />
           ))}
+          {states.formsFilled.includes("leja hisa") && (
+            <View
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
+                Fomu hii imeshajazwa!
+              </Text>
+            </View>
+          )}
           <View
             style={{
               width: "100%",

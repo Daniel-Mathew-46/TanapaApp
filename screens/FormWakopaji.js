@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { Button, CustomInput, FormsHeader, FormsDropDown } from "../components";
 import { SIZES, COLORS } from "../constants";
@@ -153,7 +153,7 @@ const RenderFields = ({
 };
 
 const FormWakopaji = ({ route }) => {
-  const { states } = useContext(KatibuTasksContexts);
+  const { states, dispatch } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
   const week = route.params?.week;
   const weekNumber = week ? Number(week) : null;
@@ -272,26 +272,42 @@ const FormWakopaji = ({ route }) => {
       ...memberDataToSubmit,
     };
 
-    setLoading(true);
-    submitFormData(
-      "FormDocs",
-      katibuEmail,
-      "Fomu ya Wakopaji na Marejesho",
-      docName,
-      weekNumber,
-      formData
-    )
-      .then(() => {
-        setLoading(false);
-        alert("Umefanikiwa Kukusanya Taarifa.");
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert(e.message);
-      });
+    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
+      { text: "Hapana", onPress: () => {} },
+      {
+        text: "Ndiyo",
+        onPress: () => {
+          onSubmitConfirm();
+        },
+      },
+    ]);
+
+    const onSubmitConfirm = () => {
+      setLoading(true);
+      submitFormData(
+        "FormDocs",
+        katibuEmail,
+        "Fomu ya Wakopaji na Marejesho",
+        docName,
+        weekNumber,
+        formData
+      )
+        .then(() => {
+          setLoading(false);
+          alert("Umefanikiwa Kukusanya Taarifa.");
+          dispatch({
+            type: "SET_WAKOPAJI_FORM_STATE",
+            data: { ...memberDataToSubmit },
+            forms_filled: [...states.formsFilled, "wakopaji"],
+          });
+        })
+        .catch((e) => {
+          setLoading(false);
+          alert(e.message);
+        });
+    };
   };
 
-  // console.log(membersFilled);
   return (
     <ScrollView>
       <View
@@ -329,6 +345,19 @@ const FormWakopaji = ({ route }) => {
               deductFromMembersToShow={deductFromMembersToShow}
             />
           ))}
+          {states.formsFilled.includes("wakopaji") && (
+            <View
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
+                Fomu hii imeshajazwa!
+              </Text>
+            </View>
+          )}
           <View
             style={{
               width: "100%",

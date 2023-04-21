@@ -16,7 +16,6 @@ const FormData = ({ route }) => {
   const text = route?.params?.text;
   const datas = states?.formDatas;
   const data = datas[0]?.[text];
-  console.log(data);
   const isNotTableData = route.params?.isNotTableData;
   const formText = route.params?.formText;
   let widthArr;

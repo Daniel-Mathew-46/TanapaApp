@@ -1,17 +1,40 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, CustomInput, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { submitFormData } from "../context/submits";
+import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 
 const FormShughuli = ({ route }) => {
+  const { states, dispatch } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
+  const kikundi = states?.kikundi;
   const week = route.params?.week;
   const weekNumber = week ? Number(week) : null;
+  console.log(states);
+  console.log(states?.wakopajiFormData);
+  console.log(states?.lejaMfukoFormData);
+  console.log(states?.lejaHisaFormData);
+  console.log(states?.mahudhurioFormData);
+  // const membersIds =
+  //   states?.members?.length > 0
+  //     ? states.members.map((item) => item["Namba yake"])
+  //     : [];
 
+  // const membersNames =
+  //   states?.members?.length > 0
+  //     ? states.members.map((item) => item["Jina la Mwanachama"])
+  //     : [];
+
+  // for (let i = 0; i < states?.members?.length; i++) {
+  //   let obj = {};
+  //   let id = membersIds[i];
+  //   obj[id] = membersNames[i];
+  //   idToNamesMapArray.push(obj);
+  // }
   const [mahudhurioJumla, setMahudhurioJumla] = useState("");
   const [mahudhurioWaume, setMahudhurioWaume] = useState("");
   const [mahudhurioWake, setMahudhurioWake] = useState("");
@@ -33,11 +56,9 @@ const FormShughuli = ({ route }) => {
       alert("Tafadhali sema ni wiki ya ngapi!");
       return;
     }
+    // katibuEmail?.split("@")[0]
     const docName =
-      "Shughuli_za_Kikundi_" +
-      katibuEmail?.split("@")[0] +
-      "_week_" +
-      weekNumber;
+      "Shughuli_za_Kikundi_za_wiki_" + kikundi + "_week_" + weekNumber;
     const formData = {
       "Mahudhurio Jumla": mahudhurioJumla,
       "Mahudhurio Waume": mahudhurioWaume,

@@ -71,6 +71,7 @@ const AdminDataCard = ({ data, text, navigation }) => {
             navigation.navigate("Cf Vikundi", {
               kikundiName: data?.name,
               user: data?.email,
+              isCFRole: false,
             })
           }
         >

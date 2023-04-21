@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { COLORS, assets, SIZES } from "../constants";
 import { FormInput, Button, TextComponent } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
@@ -33,7 +33,8 @@ const Login = ({ setUser, setUserToken }) => {
     CF: [
       { opt: "Dashboard", icon: "view-dashboard-outline" },
       { opt: "Usajili", icon: "file-document-edit-outline" },
-      { opt: "Rekodi za Makatibu", icon: "file-document-edit-outline" },
+      // { opt: "Fomu za Wiki", icon: "file-document-edit-outline" },
+      { opt: "Rekodi za Makatibu", icon: "page-previous-outline" },
       { opt: "Rekodi za Vikundi", icon: "page-previous-outline" },
     ],
     Katibu: [

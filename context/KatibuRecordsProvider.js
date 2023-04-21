@@ -27,10 +27,10 @@ const KatibuRecordsProvider = (props) => {
           myKatibus: [...action.katibus],
         };
         break;
-      case "SET_EMPTY_MEMBERS":
+      case "SET_EMPTY_KATIBUS":
         return {
           ...prevStates,
-          katibus: [...action.katibus],
+          myKatibus: [...action.katibus],
         };
       case "SET_CHANGE":
         return {
@@ -58,7 +58,7 @@ const KatibuRecordsProvider = (props) => {
         let emails = [];
         const katibusDocs = await getDocs(q_);
         if (katibusDocs.docs.length === 0) {
-          dispatch({ type: "SET_EMPTY_MEMBERS", katibus: [] });
+          dispatch({ type: "SET_EMPTY_KATIBUS", katibus: [] });
         } else {
           try {
             for (let i = 0; i < katibusDocs.docs.length; i++) {

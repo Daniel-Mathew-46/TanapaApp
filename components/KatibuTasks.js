@@ -19,47 +19,7 @@ const KatibuTasks = ({ navigation }) => {
   const [weekNumber, setWeekNumber] = useState(null);
   const [canFillForms, setCanFillForms] = useState(null);
   const dayOfWeek = new Date().getDay();
-  // const [isWakopajiFormFilled, setWakopajiFormFilled] = useState(false)
-  // const [isLejaMfukoFormFilled, setLejaMfukoFormFilled] = useState(false)
-  // const [isLejaHisaFormFilled, setLejaHisaFormFilled] = useState(false)
-  // const [isMahudhurioFormFilled, setMahudhurioFormFilled] = useState(false)
-
-  // const filledStates = {
-  //   isWakopajiFormFilled: false,
-  //   isLejaMfukoFormFilled: false,
-  //   isLejaHisaFormFilled: false,
-  //   isMahudhurioFormFilled: false,
-  // };
-
-  // const filledStatesReducer = (prevStates, action) => {
-  //   switch (action.type) {
-  //     case "SET_WAKOPAJI_FORM_FILLED":
-  //       return {
-  //         ...prevStates,
-  //         isWakopajiFormFilled: true,
-  //       };
-  //     case "SET_LEJA_MFUKO_FORM_FILLED":
-  //       return {
-  //         ...prevStates,
-  //         isLejaMfukoFormFilled: true,
-  //       };
-  //     case "SET_LEJA_HISA_FORM_FILLED":
-  //       return {
-  //         ...prevStates,
-  //         isLejaHisaFormFilled: true,
-  //       };
-  //     case "SET_MAHUDHURIO_FORM_FILLED":
-  //       return {
-  //         ...prevStates,
-  //         isMahudhurioFormFilled: true,
-  //       };
-  //   }
-  // };
-
-  // const [filled_states, dispatch] = useReducer(
-  //   filledStatesReducer,
-  //   filledStates
-  // );
+  const date = new Date().getDate();
 
   useEffect(() => {
     const determineWeekNumber = async () => {
@@ -68,7 +28,7 @@ const KatibuTasks = ({ navigation }) => {
         const prevWeekData = await AsyncStorage.getItem("WeekData");
         const weekData = {};
         let week;
-        if (dayOfWeek === 4) {
+        if (dayOfWeek > 1 && dayOfWeek < 7) {
           if (
             JSON.parse(prevWeekData)?.week === null ||
             JSON.parse(prevWeekData)?.currKatibu !== states.katibuData
@@ -83,17 +43,22 @@ const KatibuTasks = ({ navigation }) => {
             if (weekDocs.docs.length === 0) {
               week = 1;
               weekData["week"] = week;
+              weekData["date"] = date;
               weekData["currKatibu"] = states.katibuData;
             } else {
               week = await weekDocs.docs[0].data().week;
               week = week + 1;
               weekData["week"] = week;
+              weekData["date"] = date;
               weekData["currKatibu"] = states.katibuData;
             }
           } else {
             week = JSON.parse(prevWeekData)?.week;
-            week = Number(week) + 1;
+            if (date !== JSON.parse(prevWeekData)?.date) {
+              week = Number(week) + 1;
+            }
             weekData["week"] = week;
+            weekData["date"] = date;
             weekData["currKatibu"] = states.katibuData;
           }
           await AsyncStorage.setItem("WeekData", JSON.stringify(weekData));
@@ -255,7 +220,14 @@ const KatibuTasks = ({ navigation }) => {
                 }}
               >
                 <KatibuTaskCard
+                  text={"Shughuli za kila wiki za kikundi"}
+                  toForm={"SHUGHULI ZA WIKI"}
+                  navigation={navigation}
+                  week={weekNumber}
+                />
+                <KatibuTaskCard
                   text={"Kitabu cha Hisa cha Mteja"}
+                  styles={{ marginLeft: SIZES.font }}
                   toForm={"HISA"}
                   navigation={navigation}
                   week={weekNumber}

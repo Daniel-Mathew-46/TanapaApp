@@ -4,10 +4,11 @@ import CFStatsUsajili from "../components/CFStatsUsajili";
 import CFProvider from "../context/CFProvider";
 import { COLORS } from "../constants";
 
-const RegistrationsCf = ({ navigation }) => {
+const RegistrationsCf = ({ navigation, route }) => {
+  const cfEmail = route.params?.user;
   return (
     <SafeAreaView>
-      <CFProvider>
+      <CFProvider cfEmail={cfEmail}>
         <CFStatsUsajili navigation={navigation} />
       </CFProvider>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />

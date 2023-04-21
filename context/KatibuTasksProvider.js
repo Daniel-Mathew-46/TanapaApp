@@ -9,6 +9,11 @@ const KatibuTasksProvider = (props) => {
     katibuData: katibuEmail,
     kikundi: null,
     members: null,
+    formsFilled: [],
+    wakopajiFormData: {},
+    lejaMfukoFormData: {},
+    lejaHisaFormData: {},
+    mahudhurioFormData: {},
   };
 
   const statesReducer_ = (prevStates, action) => {
@@ -19,6 +24,35 @@ const KatibuTasksProvider = (props) => {
           members: [...action.payload],
           kikundi: action.kikundi,
           loading: false,
+        };
+      case "SET_WAKOPAJI_FORM_STATE":
+        return {
+          ...prevStates,
+          wakopajiFormData: { ...action.data },
+          formsFilled: [...action.forms_filled],
+        };
+      case "SET_LEJA_MFUKO_FORM_STATE":
+        return {
+          ...prevStates,
+          lejaMfukoFormData: { ...action.data },
+          formsFilled: [...action.forms_filled],
+        };
+      case "SET_LEJA_HISA_FORM_STATE":
+        return {
+          ...prevStates,
+          lejaHisaFormData: { ...action.data },
+          formsFilled: [...action.forms_filled],
+        };
+      case "SET_MAHUDHURIO_FORM_STATE":
+        return {
+          ...prevStates,
+          lejaHisaFormData: { ...action.data },
+          formsFilled: [...action.forms_filled],
+        };
+      case "SET_SHUGHULI_FORM_STATE":
+        return {
+          ...prevStates,
+          formsFilled: [...action.forms_filled],
         };
     }
   };

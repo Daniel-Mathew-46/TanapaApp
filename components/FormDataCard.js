@@ -8,7 +8,6 @@ const FormDataCard = ({ text, data, navigation }) => {
   const weekIndex = textArray.indexOf("week");
   const formText = textArray.slice(0, weekIndex - 1).join(" ");
 
-  console.log(text);
   return (
     <View
       style={{

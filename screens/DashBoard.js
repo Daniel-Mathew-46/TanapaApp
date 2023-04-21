@@ -1,8 +1,8 @@
-import { View, Text, SafeAreaView, ScrollView, StatusBar } from "react-native";
+import { View, SafeAreaView, ScrollView, StatusBar } from "react-native";
 import React from "react";
+
 import {
   GroupsInformation,
-  Header,
   HelloText,
   HorizontalList,
   HorizontalListAdmin,
@@ -12,6 +12,7 @@ import {
   VerticalList,
 } from "../components";
 import { COLORS } from "../constants";
+import CfWeekFormDataProvider from "../context/CfWeekFormDataProvider";
 
 const DashBoard = ({ navigation, route }) => {
   role = route.params?.role;
@@ -73,10 +74,14 @@ const DashBoard = ({ navigation, route }) => {
         {role == "CF" && (
           <View>
             {/* SectionTitle for CF role*/}
-            <SectionTitle text={"Rekodi ya Taarifa za Vikundi"} />
+            <SectionTitle text={"Taarifa za Vikundi kwa wiki"} />
 
             {/* Cards Taarifa za Vikundi for CF role*/}
-            <GroupsInformation />
+            <GroupsInformation
+              navigation={navigation}
+              role={role}
+              cfEmail={userEmail}
+            />
           </View>
         )}
 

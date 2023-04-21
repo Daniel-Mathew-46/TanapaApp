@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { Button, CustomInput, FormsHeader } from "../components";
 import { SIZES, COLORS, generateChars } from "../constants";
 import { ScrollView } from "react-native";
@@ -8,6 +8,7 @@ import Icons from "react-native-vector-icons/FontAwesome";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { submitMembersData } from "../context/submits";
 import { KatibuDataContext } from "../context/MemberStackProvide";
+import RadioForm from "react-native-simple-radio-button";
 
 const RegisterMwanachama = ({ route }) => {
   const { states, dispatch } = useContext(KatibuDataContext);
@@ -20,6 +21,7 @@ const RegisterMwanachama = ({ route }) => {
   var phone = "" || data?.["Namba Ya Simu"];
   var pobox = "" || data?.["Anuani"];
   var nambayake = null || data?.["Namba yake"];
+  var gender = "" || data?.["Jinsia"];
   let change = generateChars();
 
   const [kikundi, setKikundi] = useState(kikundi_);
@@ -28,7 +30,18 @@ const RegisterMwanachama = ({ route }) => {
   const [baruaPepe, setBaruaPepe] = useState(email);
   const [nambaSimu, setNambaSimu] = useState(phone);
   const [anuani, setAnuani] = useState(pobox);
+  const [jinsia, setJinsia] = useState(gender);
   const [loading, setLoading] = useState(false);
+  var radioButtons = [
+    {
+      label: "Mume",
+      value: "Me",
+    },
+    {
+      label: "Mke",
+      value: "Ke",
+    },
+  ];
 
   const handleSubmit = () => {
     if (!route.params?.edit) {
@@ -58,6 +71,7 @@ const RegisterMwanachama = ({ route }) => {
       "Namba Ya Simu": nambaSimu,
       Anuani: anuani,
       "Namba yake": Math.floor(nambaUanachama),
+      Jinsia: jinsia,
     };
     let currMembers = states?.members;
     if (route.params?.edit) {
@@ -113,6 +127,7 @@ const RegisterMwanachama = ({ route }) => {
     }
   };
 
+  console.log(jinsia);
   return (
     <ScrollView>
       <View
@@ -163,6 +178,30 @@ const RegisterMwanachama = ({ route }) => {
             placeholder={"Ingiza jina la Mwanachama"}
             onChangeText={(text) => setJinaMwanachama(text)}
           />
+          {!edit && (
+            <View style={{ paddingLeft: 3 }}>
+              <Text style={{ fontSize: 18 }}>Jinsia</Text>
+              <View
+                style={{
+                  width: "100%",
+                  paddingVertical: SIZES.small,
+                  paddingHorizontal: SIZES.base,
+                  paddingRight: SIZES.extraLarge + 5,
+                }}
+              >
+                <RadioForm
+                  radio_props={radioButtons}
+                  initial={"Me"}
+                  onPress={(value) => setJinsia(value)}
+                  buttonColor={COLORS.gray}
+                  selectedButtonColor={COLORS.primary}
+                  selectedLabelColor={COLORS.primary}
+                  buttonSize={12}
+                  labelStyle={{ fontSize: 18 }}
+                />
+              </View>
+            </View>
+          )}
           <CustomInput
             icon={<Icon name="mail-outline" size={25} color={COLORS.primary} />}
             label="Barua pepe ya Mwanachama"

@@ -3,7 +3,7 @@ import React from "react";
 import { COLORS, SIZES } from "../constants";
 import { Dropdown } from "react-native-element-dropdown";
 
-const FormsDropDown = ({ labelText, options, value, setValue }) => {
+const FormsDropDown = ({ labelText, options, value, setValue, isKatibu }) => {
   const optionsArray = options?.map((item) => {
     let key = Object.keys(item)[0];
     let label = item[key];
@@ -32,7 +32,7 @@ const FormsDropDown = ({ labelText, options, value, setValue }) => {
         data={optionsArray}
         labelField="label"
         valueField="value"
-        placeholder={"chagua Katibu"}
+        placeholder={"Chagua Mwanachama"}
         value={value}
         onChange={(item) => {
           setValue(item.value, item.label);

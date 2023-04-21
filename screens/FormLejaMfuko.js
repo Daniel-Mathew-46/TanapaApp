@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Button, CustomInput, FormsDropDown, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
@@ -88,7 +88,7 @@ const RenderFields = ({
 };
 
 const FormLejaMfuko = ({ route }) => {
-  const { states } = useContext(KatibuTasksContexts);
+  const { states, dispatch } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
   const week = route.params?.week;
   const weekNumber = week ? Number(week) : null;
@@ -171,7 +171,9 @@ const FormLejaMfuko = ({ route }) => {
       return;
     }
     Object.values(membersFilled).forEach((memberArr) => {
-      if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+      for (let i = 0; i < memberArr.length; i++) {
+        if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+      }
     });
     const memberDataToSubmit = { ...membersFilled };
     const docName =
@@ -180,23 +182,39 @@ const FormLejaMfuko = ({ route }) => {
       0: ["Namba ya Mwanachama", "Salio Anzia", "Afya", "Elimu", "Mazingira"],
       ...memberDataToSubmit,
     };
-    setLoading(true);
-    submitFormData(
-      "FormDocs",
-      katibuEmail,
-      "Leja ya Mfuko wa Jamii",
-      docName,
-      weekNumber,
-      formData
-    )
-      .then(() => {
-        setLoading(false);
-        alert("Umefanikiwa Kukusanya Taarifa.");
-      })
-      .catch((e) => {
-        setLoading(false);
-        alert(e.message);
-      });
+    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
+      { text: "Hapana", onPress: () => {} },
+      {
+        text: "Ndiyo",
+        onPress: () => {
+          onSubmitConfirm();
+        },
+      },
+    ]);
+    const onSubmitConfirm = () => {
+      setLoading(true);
+      submitFormData(
+        "FormDocs",
+        katibuEmail,
+        "Leja ya Mfuko wa Jamii",
+        docName,
+        weekNumber,
+        formData
+      )
+        .then(() => {
+          dispatch({
+            type: "SET_LEJA_MFUKO_FORM_STATE",
+            data: { ...memberDataToSubmit },
+            forms_filled: [...states.formsFilled, "leja mfuko"],
+          });
+          setLoading(false);
+          alert("Umefanikiwa Kukusanya Taarifa.");
+        })
+        .catch((e) => {
+          setLoading(false);
+          alert(e.message);
+        });
+    };
   };
 
   return (
@@ -236,6 +254,19 @@ const FormLejaMfuko = ({ route }) => {
               deductFromMembersToShow={deductFromMembersToShow}
             />
           ))}
+          {states.formsFilled.includes("leja mfuko") && (
+            <View
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
+                Fomu hii imeshajazwa!
+              </Text>
+            </View>
+          )}
           <View
             style={{
               width: "100%",
