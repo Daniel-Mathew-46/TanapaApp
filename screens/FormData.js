@@ -27,7 +27,13 @@ const FormData = ({ route }) => {
       ];
     else if (formText === "Leja ya Mfuko") {
       widthArr = [110, 110, 110, 110, 110];
-    } else widthArr = [110, 110, 110, 110];
+    } else if (formText === "Leja ya Hisa za Mteja") {
+      widthArr = [110, 110, 110, 110];
+    } else
+      widthArr = [
+        110, 130, 130, 130, 110, 110, 110, 110, 130, 130, 130, 110, 120, 110,
+        110,
+      ];
 
     Object.keys(data?.formData).forEach((key) => {
       if (key !== "0") tableData.push(data.formData[key]);

@@ -79,6 +79,7 @@ const FormInput = ({
                 marginLeft: 10,
                 marginRight: -30,
                 overflow: "hidden",
+                width: 220
               }}
               placeholder={placeholder}
               secureTextEntry={hideText}

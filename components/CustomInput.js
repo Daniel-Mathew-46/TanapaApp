@@ -13,6 +13,7 @@ const CustomInput = ({
   multiLine,
   editable,
   onFocus,
+  onBlur,
 }) => {
   return (
     <View style={{ marginBottom: SIZES.medium }}>
@@ -52,6 +53,7 @@ const CustomInput = ({
           secureTextEntry={isPassword}
           keyboardType={isNumber ? "numeric" : null}
           onFocus={onFocus}
+          onBlur={onBlur}
         />
       </View>
     </View>

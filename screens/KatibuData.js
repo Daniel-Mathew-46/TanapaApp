@@ -68,7 +68,7 @@ const KatibuData = ({ route }) => {
           }}
         >
           {Object.keys(data).map((item, index) => {
-            if (item !== "userId" && item !== "createdBy" && item !== "role") {
+            if (item !== "userId" && item !== "createdBy" && item !== "role" && item !== "kikundi") {
               return (
                 <Text
                   key={index}
@@ -86,7 +86,7 @@ const KatibuData = ({ route }) => {
                       marginBottom: SIZES.medium,
                     }}
                   >
-                    {data[item]}
+                    {Array.isArray(data[item]) ? data[item].join(", ") : data[item]}
                   </Text>
                 </Text>
               );

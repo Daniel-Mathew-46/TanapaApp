@@ -3,61 +3,14 @@ import React, { useState } from "react";
 import { assets, COLORS, SIZES } from "../constants";
 import Icon from "react-native-vector-icons/Entypo";
 import Icons from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
-const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
-  const [showoptions, setShowOptions] = useState(false);
-
-  const showOptions = (options, navigation) => {
-    return (
-      <View
-        style={{
-          zIndex: 1,
-          height: 70,
-          width: 100,
-          backgroundColor: COLORS.gray,
-          paddingHorizontal: SIZES.base,
-          paddingVertical: SIZES.font,
-          position: "absolute",
-          top: 50,
-          right: 10,
-          bottom: -10,
-          borderRadius: 5,
-          alignItems: "center",
-          marginBottom: SIZES.small,
-          justifyContent: "center",
-        }}
-      >
-        {Object.keys(options).map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={{
-              borderBottomWidth: 1,
-              width: "80%",
-              marginBottom: 4,
-            }}
-            onPress={() => {
-              setShowOptions(!showoptions);
-              options[item] == "Angalia" &&
-                navigation.navigate("Taarifa za CF", { data });
-              options[item] == "Badilisha" &&
-                navigation.navigate("Register CF", { edit: true, data });
-              // options[item] == "Futa" &&
-              //   navigation.navigate("MemberData", { delete: true, data });
-            }}
-          >
-            <Text
-              style={{
-                color: COLORS.secondary,
-                fontSize: SIZES.medium,
-              }}
-            >
-              {options[item]}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
+const DataCard = ({ data, hasAvatar, weekText, navigation }) => {
 
   return (
     <View
@@ -69,7 +22,7 @@ const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
     >
       <View
         style={{
-          paddingVertical: SIZES.font,
+          paddingVertical: SIZES.font - 2,
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: SIZES.font,
@@ -122,15 +75,39 @@ const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
           </Text>
         </View>
         {hasAvatar ? (
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
+          <Menu>
+          <MenuTrigger
+            customStyles={{
+              triggerWrapper: {
+                top: 14,
+                alignSelf: "center"
+              },
             }}
-            onPress={() => setShowOptions(!showoptions)}
           >
             <Icon name="dots-three-horizontal" size={25} color={COLORS.white} />
-          </TouchableOpacity>
+          </MenuTrigger>
+          <MenuOptions optionsContainerStyle={{ maxWidth: 90, top: 4 }}>
+            <MenuOption
+              onSelect={() => navigation.navigate("Taarifa za CF", { data })}
+              text="Angalia"
+              customStyles={{
+                optionText: { fontSize: SIZES.medium + 2 },
+              }}
+            />
+            <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+            <MenuOption
+              onSelect={() =>
+                navigation.navigate("Register CF", { edit: true, data })
+              }
+              text="Badilisha"
+              customStyles={{
+                optionText: { fontSize: SIZES.medium + 2 },
+              }}
+            />
+            <View style={{ height: 1, backgroundColor: "#7F8487" }} />
+            
+          </MenuOptions>
+        </Menu>
         ) : (
           <TouchableOpacity
             style={{
@@ -155,7 +132,6 @@ const DataCard = ({ data, options, hasAvatar, weekText, navigation }) => {
           </TouchableOpacity>
         )}
       </View>
-      {showoptions && showOptions(options, navigation)}
     </View>
   );
 };

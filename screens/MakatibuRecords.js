@@ -151,36 +151,3 @@ const MakatibuRecords = ({ navigation, route }) => {
 
 export default MakatibuRecords;
 
-{
-  /* <View>
-      <View
-        style={{
-          width: "100%",
-          paddingHorizontal: SIZES.font,
-          paddingVertical: SIZES.large,
-        }}
-      >
-        <FlatList
-            data={states?.members}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <MemberCard
-                data={item}
-                options={{
-                  angalia: "Angalia",
-                  badilisha: "Badilisha",
-                  futa: "Futa",
-                }}
-                navigation={navigation}
-                membersIds={membersIds}
-              />
-            )}
-            keyExtractor={(item) => item["Barua Pepe"]}
-            ListFooterComponent={<View />}
-            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-            ListFooterComponentStyle={{ marginBottom: "90%" }}
-          />
-      </View>
-      <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
-    </View> */
-}

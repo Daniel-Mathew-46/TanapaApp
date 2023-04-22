@@ -28,7 +28,7 @@ const KatibuTasks = ({ navigation }) => {
         const prevWeekData = await AsyncStorage.getItem("WeekData");
         const weekData = {};
         let week;
-        if (dayOfWeek > 1 && dayOfWeek < 7) {
+        if (dayOfWeek >= 0 && dayOfWeek < 7) {
           if (
             JSON.parse(prevWeekData)?.week === null ||
             JSON.parse(prevWeekData)?.currKatibu !== states.katibuData

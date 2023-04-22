@@ -123,11 +123,6 @@ const CFRecords = ({ navigation }) => {
               key={index}
               hasAvatar={true}
               data={item}
-              options={{
-                angalia: "Angalia",
-                badilisha: "Badilisha",
-                // futa: "Futa",
-              }}
               navigation={navigation}
             />
           )}

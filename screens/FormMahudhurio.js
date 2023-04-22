@@ -18,6 +18,7 @@ const FormMahudhurio = ({ route }) => {
   const mahudhurioArray = states?.members ? [] : [];
   const formData = {};
   const [loading, setLoading] = useState(false);
+  const [formdata, setformdata] = useState(formData);
 
   const populateMahudhurio = (value, index) => {
     mahudhurioArray[index] = value || "Hapana";
@@ -38,7 +39,7 @@ const FormMahudhurio = ({ route }) => {
       let jibu = mahudhurioArray[i];
       formData[jina] = jibu;
     }
-
+    // setformdata(formData);
     Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
       { text: "Hapana", onPress: () => {} },
       {

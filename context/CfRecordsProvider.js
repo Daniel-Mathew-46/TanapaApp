@@ -43,11 +43,6 @@ const CfRecordsProvider = (props) => {
           ...prevStates,
           change: action.change,
         };
-      //   case "ADD_KATIBU":
-      //     return {
-      //       ...prevStates,
-      //       myKatibus: [...prevStates.myKatibus, action.katibu],
-      //     };
     }
   };
 

@@ -127,7 +127,6 @@ const RegisterMwanachama = ({ route }) => {
     }
   };
 
-  console.log(jinsia);
   return (
     <ScrollView>
       <View
