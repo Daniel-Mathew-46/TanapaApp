@@ -15,11 +15,11 @@ const CfRecordsProvide = ({ route }) => {
   const adminEmail = route.params?.user;
   return (
     <CfRecordsProvider adminEmail={adminEmail}>
-      <AdminCfStack />
+      <AdminCfStack adminEmail={adminEmail} />
     </CfRecordsProvider>
   );
 };
-const AdminCfStack = () => {
+const AdminCfStack = ({ adminEmail }) => {
   const { states } = useContext(CFRecordsContext);
   return (
     <>
@@ -34,40 +34,24 @@ const AdminCfStack = () => {
           <ActivityIndicator size={40} color={COLORS.primary} />
         </View>
       ) : (
-        <>
-          {states?.myCfs?.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
-                Hakuna CF wowote!
-              </Text>
-            </View>
-          ) : (
-            <AdminCFStack.Navigator
-              screenOptions={{ headerShown: false }}
-              initialRouteName="Rekodi za MaCf"
-            >
-              <AdminCFStack.Screen
-                name="Rekodi za MaCf"
-                component={CFRecords}
-                initialParams={{
-                  adminEmail: states.adminEmail,
-                }}
-              />
-              <AdminCFStack.Screen
-                name="Register CF"
-                component={RegistrationAdmin}
-                initialParams={{ adminEmail: states.adminEmail }}
-              />
-              <AdminCFStack.Screen name="Taarifa za CF" component={CFData} />
-            </AdminCFStack.Navigator>
-          )}
-        </>
+        <AdminCFStack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="Rekodi za MaCf"
+        >
+          <AdminCFStack.Screen
+            name="Rekodi za MaCf"
+            component={CFRecords}
+            initialParams={{
+              adminEmail: states.adminEmail,
+            }}
+          />
+          <AdminCFStack.Screen
+            name="Register CF"
+            component={RegistrationAdmin}
+            initialParams={{ adminEmail: states.adminEmail }}
+          />
+          <AdminCFStack.Screen name="Taarifa za CF" component={CFData} />
+        </AdminCFStack.Navigator>
       )}
     </>
   );

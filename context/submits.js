@@ -62,7 +62,7 @@ export const submitFormData = async (
 
 //Submit Members Data
 export const submitMembersData = async (
-  formerEmail = null,
+  formerPhone = null,
   kikundi,
   formData,
   update = false,
@@ -74,7 +74,7 @@ export const submitMembersData = async (
     const docs = await getDocs(
       query(
         collection(db, "KikundiMembers"),
-        where("Barua Pepe", "==", formerEmail)
+        where("Namba Ya Simu", "==", formerPhone)
       )
     );
     const _doc = docs.docs[0];
@@ -102,9 +102,9 @@ export const submitMembersData = async (
 };
 
 //Delete Member
-export const deleteMember = async (email) => {
+export const deleteMember = async (phone) => {
   const docs = await getDocs(
-    query(collection(db, "KikundiMembers"), where("Barua Pepe", "==", email))
+    query(collection(db, "KikundiMembers"), where("Namba Ya Simu", "==", phone))
   );
   const _doc = docs.docs[0];
   const deleteMember = async (docId) => {
@@ -117,10 +117,10 @@ export const deleteMember = async (email) => {
   await deleteMember(_doc.id);
 };
 
-//updateMember
-export const updateKatibu = async (email, formData, change, dispatch) => {
+//updateKatibu
+export const updateKatibu = async (phone, formData, change, dispatch) => {
   const docs = await getDocs(
-    query(collection(db, "users"), where("email", "==", email))
+    query(collection(db, "users"), where("phone", "==", phone))
   );
   const _doc = docs.docs[0];
   const updateKatibuInfo = async (docId) => {
@@ -138,3 +138,28 @@ export const updateKatibu = async (email, formData, change, dispatch) => {
   };
   updateKatibuInfo(_doc.id);
 };
+
+//updateCF
+export const updateCF = async (email, formData, change, dispatch) => {
+  const docs = await getDocs(
+    query(collection(db, "users"), where("email", "==", email))
+  );
+  const _doc = docs.docs[0];
+  const updateCFInfo = async (docId) => {
+    try {
+      await updateDoc(doc(db, "users", docId), {
+        ...formData,
+      });
+      await dispatch({
+        type: "SET_CHANGE",
+        change: change,
+      });
+    } catch (e) {
+      console.log(e.message)
+      alert(e.message);
+    }
+  };
+  updateCFInfo(_doc.id);
+};
+
+

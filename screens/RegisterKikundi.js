@@ -28,6 +28,8 @@ const RegisterKikundi = ({ route }) => {
   const [kata, setKata] = useState("");
   const [thamaniHisa, setThamaniHisa] = useState("");
   const [nambaUsajili, setNambaUsajili] = useState("");
+  const [bima, setBima] = useState("");
+  const [riba, setRiba] = useState("");
   const [loading, setLoading] = useState(false);
   const [katibu, setKatibu] = useState(null);
 
@@ -56,7 +58,7 @@ const RegisterKikundi = ({ route }) => {
 
   useEffect(() => {
     dispatch({ type: "activate_fetch_login" });
-    let unAssignedEmails = [];
+    let unAssignedNames = [];
     const getKatibusUnassigned = async () => {
       try {
         const q = query(
@@ -66,10 +68,10 @@ const RegisterKikundi = ({ route }) => {
         );
         const docs = await getDocs(q);
         docs.forEach((doc) => {
-          let email = doc.data().email;
-          unAssignedEmails.push(email);
+          let name = doc.data().name;
+          unAssignedNames.push(name);
         });
-        dispatch({ type: "set_katibus", payload: unAssignedEmails });
+        dispatch({ type: "set_katibus", payload: unAssignedNames });
       } catch (e) {
         console.log(e.message);
       }
@@ -77,10 +79,10 @@ const RegisterKikundi = ({ route }) => {
     getKatibusUnassigned();
   }, []);
 
-  const submitToFirebase = (email, kikundiName, data) => {
+  const submitToFirebase = (name, kikundiName, data) => {
     setLoading(true);
 
-    const submitData = async (email, kikundiName, data) => {
+    const submitData = async (name, kikundiName, data) => {
       try {
         const docRef = doc(db, "Vikundi", kikundiName);
         const kikundi = await getDoc(docRef);
@@ -91,17 +93,17 @@ const RegisterKikundi = ({ route }) => {
           await setDoc(docRef, {
             ...data,
           });
-          return email;
+          return name;
         }
       } catch (e) {
         setLoading(false);
         alert(e.message.split(" ")[2]);
       }
     };
-    const updateUser = async (email) => {
+    const updateUser = async (name) => {
       //We update users assigned property
       const docs = await getDocs(
-        query(collection(db, "users"), where("email", "==", email))
+        query(collection(db, "users"), where("name", "==", name))
       );
       const _doc = docs.docs[0];
       const updateUserAssigned = async (docId) => {
@@ -115,9 +117,9 @@ const RegisterKikundi = ({ route }) => {
       };
       await updateUserAssigned(_doc.id);
     };
-    submitData(email, kikundiName, data)
-      .then((email) => {
-        updateUser(email);
+    submitData(name, kikundiName, data)
+      .then((name) => {
+        updateUser(name);
       })
       .then(() => {
         setLoading(false);
@@ -126,6 +128,8 @@ const RegisterKikundi = ({ route }) => {
         setKata("");
         setThamaniHisa("");
         setNambaUsajili("");
+        setBima("")
+        setRiba("")
       })
       .catch((e) => {
         alert(e.message.split(" ")[2]);
@@ -143,12 +147,18 @@ const RegisterKikundi = ({ route }) => {
       alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
+    if(isNaN(thamaniHisa) || isNaN(riba) || isNaN(bima)) {
+      alert("Thamani ya Hisa au Riba au Bima sio sahihi!");
+      return;
+    }
     const formData = {
       name: jinaKikundi,
       Katibu: katibu,
       "Kata ya Kikundi": kata,
       "Thamani ya Hisa ya Kikundi": thamaniHisa,
       "Namba ya usajili ya Kikundi": nambaUsajili,
+      "Asilimia ya Bima": bima,
+      "Asilimia ya Riba": riba,
       createdBy: cfEmail,
     };
 
@@ -234,6 +244,28 @@ const RegisterKikundi = ({ route }) => {
             placeholder={"Ingiza thamani ya hisa"}
             value={thamaniHisa}
             onChangeText={(text) => setThamaniHisa(text)}
+            isNumber={true}
+          />
+
+<CustomInput
+            icon={
+              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+            }
+            label="Asilimia ya Bima ya Kikundi (%)"
+            placeholder={"Ingiza asilimia ya bima(%)"}
+            value={bima}
+            onChangeText={(text) => setBima(text)}
+            isNumber={true}
+          />
+
+<CustomInput
+            icon={
+              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+            }
+            label="Asilimia ya Riba ya Kikundi(%)"
+            placeholder={"Ingiza asilimia ya riba(%)"}
+            value={riba}
+            onChangeText={(text) => setRiba(text)}
             isNumber={true}
           />
 

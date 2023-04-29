@@ -8,12 +8,11 @@ const KatibuTasksProvider = (props) => {
   const initialStates = {
     katibuData: katibuEmail,
     kikundi: null,
+    kikundiData: {},
     members: null,
-    formsFilled: [],
-    wakopajiFormData: {},
-    lejaMfukoFormData: {},
-    lejaHisaFormData: {},
-    mahudhurioFormData: {},
+    canFillForms: null,
+    weekNumber: null,
+    prevWeekData: {},
   };
 
   const statesReducer_ = (prevStates, action) => {
@@ -23,7 +22,15 @@ const KatibuTasksProvider = (props) => {
           ...prevStates,
           members: [...action.payload],
           kikundi: action.kikundi,
+          kikundiData: { ...action.kikundiData },
           loading: false,
+        };
+      case "SET_PREVWEEK_DATA":
+        return {
+          ...prevStates,
+          prevWeekData: { ...action.prevWeekData },
+          canFillForms: true,
+          weekNumber: action.prevWeekData.weekNumber + 1,
         };
       case "SET_WAKOPAJI_FORM_STATE":
         return {
@@ -46,8 +53,7 @@ const KatibuTasksProvider = (props) => {
       case "SET_MAHUDHURIO_FORM_STATE":
         return {
           ...prevStates,
-          mahudhurioFormData: { ...action.data },
-          formsFilled: [...action.forms_filled],
+          prevWeekData: { ...action.data },
         };
       case "SET_SHUGHULI_FORM_STATE":
         return {
@@ -71,9 +77,11 @@ const KatibuTasksProvider = (props) => {
     async (docSnapshot) => {
       let members_ = [];
       let kikundi = "";
+      let kikundiData = {};
       const katibusKikundi = await getDocs(q_);
       if (katibusKikundi.docs.length === 0) {
         kikundi = "";
+        kikundiData = {};
       } else {
         try {
           let kikundiDoc = katibusKikundi.docs[0].data();
@@ -85,11 +93,13 @@ const KatibuTasksProvider = (props) => {
           const wanachamaDocs = await getDocs(q);
           if (wanachamaDocs.docs.length === 0) {
             kikundi = kikundiName;
+            kikundiData = { ...kikundiDoc };
           } else {
             wanachamaDocs.forEach((doc) => {
               members_.unshift(doc.data());
             });
             kikundi = kikundiName;
+            kikundiData = { ...kikundiDoc };
           }
         } catch (e) {
           console.log(e);
@@ -99,6 +109,7 @@ const KatibuTasksProvider = (props) => {
             type: "SET_KIKUNDI_MEMBERS",
             payload: members_,
             kikundi: kikundi,
+            kikundiData,
           });
       }
     },

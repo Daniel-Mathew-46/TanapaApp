@@ -7,12 +7,10 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   auth,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   query,
   collection,
   db,
   where,
-  addDoc,
   getDocs,
 } from "../context/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,7 +18,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Login = ({ setUser, setUserToken }) => {
   const [goToSignUp, setGoToSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [fullname, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -44,15 +41,57 @@ const Login = ({ setUser, setUserToken }) => {
     ],
   };
 
+  const storeInAsyncStorage = async (user, role_) => {
+    await AsyncStorage.setItem(
+      "user",
+      JSON.stringify({
+        user: user,
+        role: role_,
+        roles: role_to_options[role_],
+      })
+    );
+    await setUserToken({
+      user: user,
+      role: role_,
+      roles: role_to_options[role_],
+    });
+  }
+
   const onPress = () => {
     if (email === "" || password === "") {
       alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
     let user = null;
-    if (!goToSignUp) {
       setLoading(!loading);
-      signInWithEmailAndPassword(auth, email, password)
+
+      if(email.indexOf("@") === -1) {
+        const signInWithGivenCredentials = async ( email, password) => {
+          try {
+            const q = query(
+              collection(db, "users"),
+              where("name", "==", email),
+              where("password", "==", password)
+            );
+            const userDocs = await getDocs(q);
+            if(userDocs.docs.length === 0){
+              alert("Email/Jina au password sio sahihi!");
+              setLoading(false)
+              return;
+            }
+            const {name:user_name, role: role_} = userDocs.docs[0].data()
+            storeInAsyncStorage(user_name, role_)
+            setLoading(false)
+          }
+          catch (e) {
+            console.log(e.message)
+            alert(e.message)
+          }
+        }
+        signInWithGivenCredentials(email, password)
+      }
+      else {
+        signInWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
           user = userCredentials.user;
           setUser(user);
@@ -65,20 +104,8 @@ const Login = ({ setUser, setUserToken }) => {
               const docs = await getDocs(q);
               const doc = docs.docs[0].data();
               let role_ = await doc.role;
+              storeInAsyncStorage(user.email, role_)
               setLoading(false);
-              await AsyncStorage.setItem(
-                "user",
-                JSON.stringify({
-                  user: user.email,
-                  role: role_,
-                  roles: role_to_options[role_],
-                })
-              );
-              await setUserToken({
-                user: user.email,
-                role: role_,
-                roles: role_to_options[role_],
-              });
             } catch (e) {
               alert(e.message);
             }
@@ -89,34 +116,7 @@ const Login = ({ setUser, setUserToken }) => {
           setLoading(false);
           alert(error.message);
         });
-    } else {
-      setLoading(!loading);
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-          setLoading(false);
-          const user = userCredentials.user;
-          const addData = async (user) => {
-            try {
-              await addDoc(collection(db, "users"), {
-                userId: user.uid,
-                name: fullname,
-                email,
-                password,
-                role: "Katibu",
-              });
-            } catch (e) {
-              alert(e.message);
-            }
-          };
-          addData(user);
-          alert("Umefanikiwa Kusajili");
-          setGoToSignUp(false);
-        })
-        .catch((error) => {
-          setLoading(false);
-          alert(error.message);
-        });
-    }
+      }
   };
 
   return (
@@ -161,8 +161,8 @@ const Login = ({ setUser, setUserToken }) => {
           )}
 
           <FormInput
-            label={"Barua Pepe"}
-            placeholder={"Ingiza barua pepe"}
+            label={"Barua Pepe/Jina"}
+            placeholder={"Ingiza baruapepe/Jina"}
             icon={<Icon name="mail" size={25} color={COLORS.gray} />}
             isPasswordInput={false}
             onChangeText={(email) => setEmail(email)}

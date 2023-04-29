@@ -14,7 +14,7 @@ import {
   addDoc,
 } from "../context/firebase";
 import { CFRecordsContext } from "../context/CfRecordsProvider";
-import { updateKatibu } from "../context/submits";
+import { updateCF } from "../context/submits";
 
 const RegistrationAdmin = ({ route }) => {
   const edit = route.params?.edit;
@@ -33,7 +33,6 @@ const RegistrationAdmin = ({ route }) => {
   const [fullname, setFullName] = useState(name);
   const [email, setEmail] = useState(cfEmail);
   const [phone, setPhone] = useState(cfPhone);
-  const [anuani, setAnuani] = useState(cfAnuani);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState(passw);
   const [confPasswd, setConfPasswd] = useState("");
@@ -44,18 +43,16 @@ const RegistrationAdmin = ({ route }) => {
       name: fullname,
       email,
       phone,
-      anuani,
       password,
     };
     setLoading(true);
     if (edit) {
-      updateKatibu(data?.["email"], formData, change, dispatch)
+      updateCF(data?.["email"], formData, change, dispatch)
         .then(() => {
           setLoading(false);
           alert("Umefanikiwa Kubadilisha taarifa za CF");
           setFullName("");
           setEmail("");
-          setAnuani("");
           setUsername("");
           setPhone("");
         })
@@ -89,7 +86,6 @@ const RegistrationAdmin = ({ route }) => {
           });
           setFullName("");
           setEmail("");
-          setAnuani("");
           setUsername("");
           setPhone("");
           setPassword("");
@@ -191,17 +187,6 @@ const RegistrationAdmin = ({ route }) => {
               setPhone(number);
             }}
             isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="location-outline" size={25} color={COLORS.primary} />
-            }
-            label="Anuani Ya Makazi"
-            placeholder={"Ingiza anuani ya makazi"}
-            value={anuani}
-            onChangeText={(text) => {
-              setAnuani(text);
-            }}
           />
           <CustomInput
             icon={<Icon name="person" size={25} color={COLORS.primary} />}

@@ -1,8 +1,7 @@
 import { View, Text, ActivityIndicator } from "react-native";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SIZES, COLORS } from "../constants";
 import KatibuTaskCard from "./KatibuTaskCard";
-import { KatibuDataContext } from "../context/MemberStackProvide";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   query,
@@ -12,71 +11,62 @@ import {
   getDocs,
   where,
   collection,
+  doc,
+  getDoc,
 } from "../context/firebase";
+import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 
 const KatibuTasks = ({ navigation }) => {
-  const { states } = useContext(KatibuDataContext);
-  const [weekNumber, setWeekNumber] = useState(null);
-  const [canFillForms, setCanFillForms] = useState(null);
-  const dayOfWeek = new Date().getDay();
-  const date = new Date().getDate();
+  const { states, dispatch } = useContext(KatibuTasksContexts);
+  // const [weekNumber, setWeekNumber] = useState(states?.weekNumber);
+  // const [canFillForms, setCanFillForms] = useState(null);
+  // const dayOfWeek = new Date().getDay();
+  // const date = new Date().getDate();
+  const katibuItemName = "WeekData " + states.katibuData;
 
+  //Fetching all the necessary data we need(last week's data)
   useEffect(() => {
     const determineWeekNumber = async () => {
       // await AsyncStorage.removeItem("WeekData", () => console.log("removed!"));
       try {
-        const prevWeekData = await AsyncStorage.getItem("WeekData");
-        const weekData = {};
-        let week;
-        if (dayOfWeek >= 0 && dayOfWeek < 7) {
-          if (
-            JSON.parse(prevWeekData)?.week === null ||
-            JSON.parse(prevWeekData)?.currKatibu !== states.katibuData
-          ) {
-            const q_ = query(
-              collection(db, "WeeksForms"),
-              where("Katibu", "==", states.katibuData),
-              orderBy("week", "desc"),
-              limit(3)
-            );
-            const weekDocs = await getDocs(q_);
-            if (weekDocs.docs.length === 0) {
-              week = 1;
-              weekData["week"] = week;
-              weekData["date"] = date;
-              weekData["currKatibu"] = states.katibuData;
-            } else {
-              week = await weekDocs.docs[0].data().week;
-              week = week + 1;
-              weekData["week"] = week;
-              weekData["date"] = date;
-              weekData["currKatibu"] = states.katibuData;
-            }
+        const prevWeekData = await AsyncStorage.getItem(katibuItemName);
+        if (
+          JSON.parse(prevWeekData)?.week === null ||
+          JSON.parse(prevWeekData)?.currKatibu !== states.katibuData
+        ) {
+          const docRef = doc(db, "KatibuWeeksData", states.katibuData);
+          const weekDataDocSnap = await getDoc(docRef);
+          if (weekDataDocSnap.exists()) {
+            console.log("This katibus Data exists!Found");
+            let weekNumberFetched = 4;
+            setWeekNumber(weekNumberFetched);
           } else {
-            week = JSON.parse(prevWeekData)?.week;
-            if (date !== JSON.parse(prevWeekData)?.date) {
-              week = Number(week) + 1;
-            }
-            weekData["week"] = week;
-            weekData["date"] = date;
-            weekData["currKatibu"] = states.katibuData;
+            //No weeks found for this katibu. Its his first week
+            let globalPrevWeekDataObj = {
+              kikundi_data: { ...states.kikundiData },
+              weekNumber: 0,
+              kadiYaMahudhurio: {},
+              LejaYaMfukoWaJamii: {},
+              LejaYaHisa: {},
+              ShughuliYaKikundiKwaWiki: {},
+            };
+            console.log("Its his first week");
+            dispatch({
+              type: "SET_PREVWEEK_DATA",
+              prevWeekData: globalPrevWeekDataObj,
+            });
           }
-          await AsyncStorage.setItem("WeekData", JSON.stringify(weekData));
-          setWeekNumber(week);
-          setCanFillForms(true);
-        } else {
-          setCanFillForms(false);
         }
       } catch (e) {
         console.log(e.message);
       }
     };
     determineWeekNumber();
-  }, [dayOfWeek]);
+  }, []);
 
   return (
     <>
-      {canFillForms === null ? (
+      {states?.canFillForms === null ? (
         <View
           style={{
             alignItems: "center",
@@ -88,7 +78,7 @@ const KatibuTasks = ({ navigation }) => {
         </View>
       ) : (
         <>
-          {canFillForms === false ? (
+          {states?.canFillForms === false ? (
             <View
               style={{
                 flex: 1,
@@ -141,8 +131,8 @@ const KatibuTasks = ({ navigation }) => {
                       marginLeft: SIZES.base - 3,
                     }}
                   >
-                    {weekNumber !== null ? (
-                      `Week ${weekNumber}`
+                    {states?.weekNumber !== null ? (
+                      `Week ${states?.weekNumber}`
                     ) : (
                       <Text
                         style={{
@@ -170,19 +160,17 @@ const KatibuTasks = ({ navigation }) => {
                   width: "100%",
                 }}
               >
-                <KatibuTaskCard
+                {/* <KatibuTaskCard
                   text={"Fomu ya wakopaji na marejesho"}
                   toForm={"WAKOPAJI"}
                   navigation={navigation}
                   week={weekNumber}
-                />
+                /> */}
                 <KatibuTaskCard
-                  text={"Kadi ya mahudhurio ya kila wiki"}
-                  styles={{ marginLeft: SIZES.font }}
-                  toForm={"MAHUDHURIO"}
+                  text={"Kujaza fomu za wiki hii"}
+                  styles={{ width: "96%", marginHorizontal: SIZES.font }}
+                  toForm={"BeginFill"}
                   navigation={navigation}
-                  week={weekNumber}
-                  members={states?.members}
                 />
               </View>
 
@@ -196,22 +184,22 @@ const KatibuTasks = ({ navigation }) => {
                 }}
               >
                 <KatibuTaskCard
-                  text={"Leja ya Mfuko wa Jamii wa Kikundi"}
-                  toForm={"LEJAMFUKO"}
+                  text={"Kitabu cha Hisa cha Mteja"}
+                  styles={{ width: "96%", marginHorizontal: SIZES.font }}
+                  toForm={"HISA"}
                   navigation={navigation}
-                  week={weekNumber}
                 />
-                <KatibuTaskCard
+                {/* <KatibuTaskCard
                   text={"Leja ya Hisa za Mteja"}
                   styles={{ marginLeft: SIZES.font }}
                   toForm={"LEJAHISA"}
                   navigation={navigation}
                   week={weekNumber}
-                />
+                /> */}
               </View>
 
               {/* Render the other 2 */}
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -232,7 +220,7 @@ const KatibuTasks = ({ navigation }) => {
                   navigation={navigation}
                   week={weekNumber}
                 />
-              </View>
+              </View> */}
             </View>
           )}
         </>

@@ -139,14 +139,15 @@ const Members = ({ navigation, route }) => {
           <FlatList
             data={states?.members}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <MemberCard
+              key={index}
                 data={item}
                 navigation={navigation}
                 membersIds={membersIds}
               />
             )}
-            keyExtractor={(item) => item["Barua Pepe"]}
+            keyExtractor={(item) => item["Namba Ya Simu"]}
             ListFooterComponent={<View />}
             ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
             ListFooterComponentStyle={{ marginBottom: "90%" }}

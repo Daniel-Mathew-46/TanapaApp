@@ -64,7 +64,6 @@ const Item = ({ item, navigation, adminEmail }) => {
               switch (item.shughuli) {
                 case "Sajili Community Facilitator":
                   navigation.navigate("Rekodi za MaCF", {
-                    screen: "Register CF",
                     adminEmail,
                   });
                   break;

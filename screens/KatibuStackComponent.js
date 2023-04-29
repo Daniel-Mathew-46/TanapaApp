@@ -8,8 +8,9 @@ import FormLejaMfuko from "./FormLejaMfuko";
 import FormLejaHisa from "./FormLejaHisa";
 import KatibuTasksProvider from "../context/KatibuTasksProvider";
 import FormShughuli from "./FormShughuli";
+import FormFilling from "./FormFilling";
 
-const KatibuStack = createNativeStackNavigator();
+export const KatibuStack = createNativeStackNavigator();
 
 const KatibuTasksProvide = ({ route }) => {
   var role = route.params?.role;
@@ -30,6 +31,11 @@ const KatibuStackComponent = ({ role, katibuEmail }) => {
       <KatibuStack.Screen
         name="KatibuDashboard"
         component={DashBoard}
+        initialParams={{ role, user: katibuEmail }}
+      />
+      <KatibuStack.Screen
+        name="BeginFill"
+        component={FormFilling}
         initialParams={{ role, user: katibuEmail }}
       />
       <KatibuStack.Screen

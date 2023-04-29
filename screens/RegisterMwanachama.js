@@ -17,9 +17,7 @@ const RegisterMwanachama = ({ route }) => {
   const edit = route.params?.edit;
   const data = route.params?.data;
   var jina = "" || data?.["Jina la Mwanachama"];
-  var email = "" || data?.["Barua Pepe"];
   var phone = "" || data?.["Namba Ya Simu"];
-  var pobox = "" || data?.["Anuani"];
   var nambayake = null || data?.["Namba yake"];
   var gender = "" || data?.["Jinsia"];
   let change = generateChars();
@@ -27,9 +25,7 @@ const RegisterMwanachama = ({ route }) => {
   const [kikundi, setKikundi] = useState(kikundi_);
   const [nambaUanachama, setNambaUanachama] = useState(nambayake);
   const [jinaMwanachama, setJinaMwanachama] = useState(jina);
-  const [baruaPepe, setBaruaPepe] = useState(email);
   const [nambaSimu, setNambaSimu] = useState(phone);
-  const [anuani, setAnuani] = useState(pobox);
   const [jinsia, setJinsia] = useState(gender);
   const [loading, setLoading] = useState(false);
   var radioButtons = [
@@ -58,25 +54,25 @@ const RegisterMwanachama = ({ route }) => {
       kikundi === "" ||
       nambaUanachama === "" ||
       jinaMwanachama === "" ||
-      baruaPepe === "" ||
-      nambaSimu === "" ||
-      anuani === ""
+      nambaSimu === ""
     ) {
       alert("Tafadhali ingiza taarifa sahihi");
       return;
     }
+    if (nambaSimu.length !== 10 || isNaN(nambaSimu)) {
+      alert("Namba ya Simu siyo sahihi!");
+      return;
+    }
     const formData = {
       "Jina la Mwanachama": jinaMwanachama,
-      "Barua Pepe": baruaPepe,
       "Namba Ya Simu": nambaSimu,
-      Anuani: anuani,
       "Namba yake": Math.floor(nambaUanachama),
       Jinsia: jinsia,
     };
     let currMembers = states?.members;
     if (route.params?.edit) {
       var _currMembers = [...currMembers].filter(
-        (item) => item?.["Barua Pepe"] !== data?.["Barua Pepe"]
+        (item) => item?.["Namba Ya Simu"] !== data?.["Namba Ya Simu"]
       );
       _currMembers.unshift({
         ...formData,
@@ -86,7 +82,7 @@ const RegisterMwanachama = ({ route }) => {
     setLoading(true);
     if (route.params?.edit) {
       submitMembersData(
-        data?.["Barua Pepe"],
+        data?.["Namba Ya Simu"],
         data?.["Kikundi Chake"],
         formData,
         (update = true),
@@ -98,9 +94,7 @@ const RegisterMwanachama = ({ route }) => {
           setLoading(false);
           alert("Umefanikiwa Kubadili Taarifa.");
           setJinaMwanachama(formData["Jina la Mwanachama"]);
-          setBaruaPepe(formData["Barua Pepe"]);
           setNambaSimu(formData["Namba Ya Simu"]);
-          setAnuani(formData.Anuani);
         })
         .catch((e) => {
           setLoading(false);
@@ -112,9 +106,8 @@ const RegisterMwanachama = ({ route }) => {
           setLoading(false);
           alert("Umefanikiwa Kukusanya Taarifa.");
           setJinaMwanachama("");
-          setBaruaPepe("");
           setNambaSimu("");
-          setAnuani("");
+          setNambaUanachama("");
           dispatch({
             type: "SET_CHANGE",
             change: change,
@@ -177,6 +170,14 @@ const RegisterMwanachama = ({ route }) => {
             placeholder={"Ingiza jina la Mwanachama"}
             onChangeText={(text) => setJinaMwanachama(text)}
           />
+          <CustomInput
+            icon={<Icons name="phone" size={25} color={COLORS.primary} />}
+            label="Namba ya Simu"
+            placeholder={"Ingiza namba ya simu"}
+            value={nambaSimu}
+            onChangeText={(text) => setNambaSimu(text)}
+            isNumber={true}
+          />
           {!edit && (
             <View style={{ paddingLeft: 3 }}>
               <Text style={{ fontSize: 18 }}>Jinsia</Text>
@@ -201,30 +202,6 @@ const RegisterMwanachama = ({ route }) => {
               </View>
             </View>
           )}
-          <CustomInput
-            icon={<Icon name="mail-outline" size={25} color={COLORS.primary} />}
-            label="Barua pepe ya Mwanachama"
-            placeholder={"Ingiza barua pepe"}
-            value={baruaPepe}
-            onChangeText={(text) => setBaruaPepe(text)}
-          />
-          <CustomInput
-            icon={<Icons name="phone" size={25} color={COLORS.primary} />}
-            label="Namba ya Simu"
-            placeholder={"Ingiza namba ya simu"}
-            value={nambaSimu}
-            onChangeText={(text) => setNambaSimu(text)}
-            isNumber={true}
-          />
-          <CustomInput
-            icon={
-              <Icon name="location-outline" size={25} color={COLORS.primary} />
-            }
-            value={anuani}
-            label="Anuani Ya Makazi"
-            placeholder={"Ingiza anuani ya makazi"}
-            onChangeText={(text) => setAnuani(text)}
-          />
 
           <View
             style={{

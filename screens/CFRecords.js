@@ -115,21 +115,34 @@ const CFRecords = ({ navigation }) => {
           paddingVertical: SIZES.extraLarge,
         }}
       >
-        <FlatList
-          data={states?.myCfs}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <DataCard
-              key={index}
-              hasAvatar={true}
-              data={item}
-              navigation={navigation}
-            />
-          )}
-          ListFooterComponent={<View />}
-          ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
-          ListFooterComponentStyle={{ marginBottom: "80%" }}
-        />
+        {states?.myCfs?.length === 0 ? (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: COLORS.gray, fontSize: SIZES.medium }}>
+              Hakuna CF wowote!
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={states?.myCfs}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <DataCard
+                key={index}
+                hasAvatar={true}
+                data={item}
+                navigation={navigation}
+              />
+            )}
+            ListFooterComponent={<View />}
+            ItemSeparatorComponent={<View style={{ marginBottom: 40 }} />}
+            ListFooterComponentStyle={{ marginBottom: "80%" }}
+          />
+        )}
       </View>
       <StatusBar barStyle={"dark-content"} backgroundColor={COLORS.primary} />
     </SafeAreaView>

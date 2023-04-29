@@ -92,8 +92,10 @@ const RenderFields = ({
 const FormLejaHisa = ({ route }) => {
   const { states, dispatch } = useContext(KatibuTasksContexts);
   const katibuEmail = route.params?.katibuEmail;
-  const week = route.params?.week;
-  const weekNumber = week ? Number(week) : null;
+  const week = states.weekNumber;
+  // const kadiYaMahudhurioPrevWeek = { ...states.prevWeekData };
+  const prevWeekData = { ...states.prevWeekData, weekNumber: Number(week) };
+  const kadiYaMahudhurioPrevWeek = route.params?.kadiYaMahudhurioPrevWeek;
   const idToNamesMapArray = [];
   const membersIds =
     states?.members?.length > 0
@@ -112,6 +114,9 @@ const FormLejaHisa = ({ route }) => {
     idToNamesMapArray.push(obj);
   }
 
+  // console.log(week);
+  console.log(kadiYaMahudhurioPrevWeek);
+
   const [currMember, setCurrMember] = useState();
   const [loading, setLoading] = useState(false);
   const [membersFilled, setMembersFilled] = useState({});
@@ -129,7 +134,7 @@ const FormLejaHisa = ({ route }) => {
     let arrIndexes = wanachamaShown;
     arrIndexes.push(indexNameMap);
     setCurrMember(index);
-    setWanachamaShown(arrIndexes);
+    setWanachamaShown(arrIndexes.reverse());
   };
 
   const deductFromMembersToShow = (index) => {
@@ -165,11 +170,6 @@ const FormLejaHisa = ({ route }) => {
     }
   };
 
-  const handleSetName = (jina, dateValue, key) => {
-    setMemberSampleData(jina, key, "jina");
-    setMemberSampleData(dateValue, key, "tarehe");
-  };
-
   const handleSubmit = () => {
     if (Object.keys(membersFilled).length === 0) {
       alert("Tafadhali jaza taarifa sahihi!");
@@ -181,11 +181,11 @@ const FormLejaHisa = ({ route }) => {
       }
     });
     const memberDataToSubmit = { ...membersFilled };
-    const docName =
-      "Leja_ya_Hisa_za_Mteja_" +
-      katibuEmail?.split("@")[0] +
-      "_week_" +
-      weekNumber;
+    // const docName =
+    //   "Leja_ya_Hisa_za_Mteja_" +
+    //   katibuEmail?.split("@")[0] +
+    //   "_week_" +
+    //   weekNumber;
     const formData = {
       0: [
         "Jina la Mwanachama",
@@ -206,30 +206,30 @@ const FormLejaHisa = ({ route }) => {
       },
     ]);
 
-    const onSubmitConfirm = () => {
-      setLoading(true);
-      submitFormData(
-        "FormDocs",
-        katibuEmail,
-        "Leja ya Hisa za Mteja",
-        docName,
-        weekNumber,
-        formData
-      )
-        .then(() => {
-          setLoading(false);
-          alert("Umefanikiwa Kukusanya Taarifa.");
-          dispatch({
-            type: "SET_LEJA_HISA_FORM_STATE",
-            data: { ...memberDataToSubmit },
-            forms_filled: [...states.formsFilled, "leja hisa"],
-          });
-        })
-        .catch((e) => {
-          setLoading(false);
-          alert(e.message);
-        });
-    };
+    // const onSubmitConfirm = () => {
+    //   setLoading(true);
+    //   submitFormData(
+    //     "FormDocs",
+    //     katibuEmail,
+    //     "Leja ya Hisa za Mteja",
+    //     docName,
+    //     weekNumber,
+    //     formData
+    //   )
+    //     .then(() => {
+    //       setLoading(false);
+    //       alert("Umefanikiwa Kukusanya Taarifa.");
+    //       dispatch({
+    //         type: "SET_LEJA_HISA_FORM_STATE",
+    //         data: { ...memberDataToSubmit },
+    //         forms_filled: [...states.formsFilled, "leja hisa"],
+    //       });
+    //     })
+    //     .catch((e) => {
+    //       setLoading(false);
+    //       alert(e.message);
+    //     });
+    // };
   };
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -255,48 +255,39 @@ const FormLejaHisa = ({ route }) => {
             marginTop: SIZES.large,
           }}
         >
-          <FormsDropDown
+          {/* <FormsDropDown
             labelText={"Chagua Mwanachama"}
             options={idToNamesMapArray}
             value={currMember}
             setValue={deduceMembersToShow}
-          />
-          {wanachamaShown?.map((item, index) => (
+          /> */}
+          {idToNamesMapArray.map((item, index) => (
             <RenderFields
               key={`${index} ${item}`}
               item={item}
               setMemberSampleData={setMemberSampleData}
               deductFromMembersToShow={deductFromMembersToShow}
               memberFilled={membersFilled}
-              handleSetName={handleSetName}
             />
           ))}
-          {states.formsFilled.includes("leja hisa") && (
-            <View
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
-                Fomu hii imeshajazwa!
-              </Text>
-            </View>
-          )}
           <View
             style={{
               width: "100%",
               justifyContent: "center",
-              alignItems: "center",
+              alignItems: "flex-end",
               marginBottom: SIZES.base,
             }}
           >
-            <Button
-              text={"Kusanya Taarifa"}
-              loading={loading}
-              onPress={handleSubmit}
-            />
+            <TouchableOpacity
+            // onPress={beforeMoveToNextForm}
+            >
+              <Text
+                style={{
+                  color: COLORS.primary,
+                  fontSize: SIZES.large,
+                }}
+              >{`Fomu inayofuata >>`}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAwareScrollView>

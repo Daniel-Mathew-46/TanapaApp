@@ -3,28 +3,19 @@ import React from "react";
 import { COLORS, SIZES } from "../constants";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const KatibuTaskCard = ({
-  text,
-  styles,
-  toForm,
-  navigation,
-  week,
-  members,
-}) => {
+const KatibuTaskCard = ({ text, styles, toForm, navigation, week }) => {
   return (
     <View
       style={{
         width: "50%",
-        paddingHorizontal: SIZES.base,
+        paddingHorizontal: SIZES.font,
         paddingVertical: SIZES.font,
         backgroundColor: COLORS.primary,
         borderRadius: 5,
         ...styles,
       }}
     >
-      <TouchableOpacity
-        onPress={() => navigation.navigate(toForm, { week, members })}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate(toForm)}>
         <View
           style={{
             alignItems: "center",
@@ -41,7 +32,7 @@ const KatibuTaskCard = ({
         >
           <Text
             style={{
-              textAlign: "left",
+              textAlign: "center",
               color: COLORS.white,
               fontSize: SIZES.medium,
             }}

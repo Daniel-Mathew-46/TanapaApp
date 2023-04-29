@@ -9,7 +9,7 @@ import {
   getCountFromServer,
 } from "./firebase";
 
-export const CFRecordsContext = createContext(null);
+export const CFRecordsContext = createContext(null); 
 const CfRecordsProvider = (props) => {
   const adminEmail = props?.adminEmail;
   //   const cFsDataArray = [];
@@ -32,7 +32,6 @@ const CfRecordsProvider = (props) => {
           ...prevStates,
           myCfs: [...action.cFs],
         };
-        break;
       case "SET_EMPTY_CFS":
         return {
           ...prevStates,

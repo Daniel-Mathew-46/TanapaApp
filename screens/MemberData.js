@@ -27,9 +27,9 @@ const MemberData = ({ route }) => {
       setLoading(true);
       let currMembers = states?.members;
       currMembers = currMembers.filter(
-        (item) => item["Barua Pepe"] !== data?.["Barua Pepe"]
+        (item) => item["Namba Ya Simu"] !== data?.["Namba Ya Simu"]
       );
-      deleteMember(data?.["Barua Pepe"])
+      deleteMember(data?.["Namba Ya Simu"])
         .then(() => {
           alert("Umefanikiwa Kufuta Taarifa.");
           setLoading(false);
