@@ -41,14 +41,12 @@ const KatibuTasksProvider = (props) => {
       case "SET_LEJA_MFUKO_FORM_STATE":
         return {
           ...prevStates,
-          lejaMfukoFormData: { ...action.data },
-          formsFilled: [...action.forms_filled],
+          prevWeekData: { ...action.data },
         };
       case "SET_LEJA_HISA_FORM_STATE":
         return {
           ...prevStates,
-          lejaHisaFormData: { ...action.data },
-          formsFilled: [...action.forms_filled],
+          prevWeekData: { ...action.data },
         };
       case "SET_MAHUDHURIO_FORM_STATE":
         return {

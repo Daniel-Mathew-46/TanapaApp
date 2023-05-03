@@ -1,30 +1,28 @@
 import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { Button, CustomInput, FormsDropDown, FormsHeader } from "../components";
+import { CustomInput, FormsDropDown, FormsHeader } from "../components";
 import { SIZES, COLORS } from "../constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "react-native-vector-icons/AntDesign";
 import Iconz from "react-native-vector-icons/MaterialIcons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { submitFormData } from "../context/submits";
 import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 import moment from "moment/moment";
 
 const RenderFields = ({
   item,
   setMemberSampleData,
+  week,
   deductFromMembersToShow,
 }) => {
   let key = Object.keys(item)[0];
   key = Number(key);
   let name = item[key];
-  let todayDate = moment().format("D/MM/YYYY");
-  const [dateValue, setDateValue] = useState(todayDate);
   const [jina, setJina] = useState(name);
 
   useEffect(() => {
-    setMemberSampleData(dateValue, key, "tarehe");
-  }, [dateValue]);
+    setMemberSampleData(jina, key, "jina");
+  }, [jina]);
 
   return (
     <>
@@ -45,7 +43,7 @@ const RenderFields = ({
         >
           {name}
         </Text>
-        <TouchableOpacity onPress={() => deductFromMembersToShow(key)}>
+        <TouchableOpacity onPress={() => deductFromMembersToShow(key, name)}>
           <Icons name="minuscircle" size={20} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
@@ -56,18 +54,8 @@ const RenderFields = ({
         value={jina}
         onChangeText={(text) => {
           setJina(text);
-          setMemberSampleData(jina, key, "jina");
         }}
-      />
-      <CustomInput
-        icon={<Iconz name="date-range" size={25} color={COLORS.primary} />}
-        label="Tarehe"
-        placeholder={"Andika tarehe"}
-        value={dateValue}
-        onChangeText={(text) => {
-          setDateValue(text);
-        }}
-        isNumber={true}
+        editable={false}
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
@@ -77,11 +65,13 @@ const RenderFields = ({
           setMemberSampleData(text, key, "hisa_anzia");
         }}
         isNumber={true}
+        editable={week === 1}
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Idadi ya Hisa"
-        placeholder={"Ingiza idadi ya hisa"}
+        label="Hisa"
+        editable={week !== 1}
+        placeholder={"Ingiza hisa"}
         onChangeText={(text) => setMemberSampleData(text, key, "idadi_hisa")}
         isNumber={true}
       />
@@ -89,13 +79,13 @@ const RenderFields = ({
   );
 };
 
-const FormLejaHisa = ({ route }) => {
+const FormLejaHisa = ({ route, navigation: { navigate } }) => {
   const { states, dispatch } = useContext(KatibuTasksContexts);
-  const katibuEmail = route.params?.katibuEmail;
-  const week = states.weekNumber;
-  // const kadiYaMahudhurioPrevWeek = { ...states.prevWeekData };
+  const week = Number(states.weekNumber);
+  const data = route.params?.data;
   const prevWeekData = { ...states.prevWeekData, weekNumber: Number(week) };
-  const kadiYaMahudhurioPrevWeek = route.params?.kadiYaMahudhurioPrevWeek;
+  const kadiYaMahudhurioFilled = data.KadiYaMahudhurio;
+  const lejaYaHisaPrevWeeks = { ...prevWeekData.LejaYaHisa };
   const idToNamesMapArray = [];
   const membersIds =
     states?.members?.length > 0
@@ -115,42 +105,53 @@ const FormLejaHisa = ({ route }) => {
   }
 
   // console.log(week);
-  console.log(kadiYaMahudhurioPrevWeek);
+  console.log(kadiYaMahudhurioFilled);
+  // console.log(idToNamesMapArray);
 
+  const todayDate = moment().format("D/MM/YYYY");
   const [currMember, setCurrMember] = useState();
-  const [loading, setLoading] = useState(false);
   const [membersFilled, setMembersFilled] = useState({});
   const [wanachamaShown, setWanachamaShown] = useState([]);
+  const [dropdownOptions, setDropdownOptions] = useState([
+    ...idToNamesMapArray,
+  ]);
   const fields = {
     jina: 0,
-    tarehe: 1,
-    hisa_anzia: 2,
-    idadi_hisa: 3,
+    hisa_anzia: 1,
+    idadi_hisa: 2,
   };
 
-  const deduceMembersToShow = (index, label) => {
+  const deduceMembersToShow = (index, label, remOptions) => {
     let indexNameMap = {};
     indexNameMap[index] = label;
     let arrIndexes = wanachamaShown;
     arrIndexes.push(indexNameMap);
+    setDropdownOptions(remOptions);
     setCurrMember(index);
-    setWanachamaShown(arrIndexes.reverse());
+    setWanachamaShown(arrIndexes);
   };
 
-  const deductFromMembersToShow = (index) => {
+  const deductFromMembersToShow = (index, name) => {
     let remArrIndexes = wanachamaShown?.filter(
       (item) => Math.floor(Object.keys(item)[0]) !== index
     );
+    let remOptions = [...dropdownOptions];
+    remOptions.push({ [index]: name });
     let { [index]: deleted, ...remMembersFilled } = membersFilled;
     setWanachamaShown(remArrIndexes);
     setMembersFilled({ ...remMembersFilled });
+    setDropdownOptions(remOptions);
   };
 
   //Updating values per each member filled
   const setMemberSampleData = (text, index, fieldName) => {
+    if (fieldName !== "jina" && isNaN(text)) {
+      alert("Tafadhali ingiza tarakimu!");
+      return;
+    }
     let members_filled = { ...membersFilled };
+    let indexToPutText = fields[fieldName];
     if (Object.keys(members_filled).length > 0) {
-      let indexToPutText = fields[fieldName];
       let curr_data = members_filled[index];
       if (typeof curr_data === "undefined") {
         let newMemberData = [];
@@ -163,73 +164,99 @@ const FormLejaHisa = ({ route }) => {
       setMembersFilled((prevState) => ({ ...members_filled }));
     } else {
       let newData = [];
-      let indexToPutText = fields[fieldName];
       newData[indexToPutText] = text;
       members_filled[index] = [...newData];
       setMembersFilled((prevState) => ({ ...members_filled }));
     }
   };
 
-  const handleSubmit = () => {
+  console.log(membersFilled);
+
+  const beforeMoveToNextForm = () => {
     if (Object.keys(membersFilled).length === 0) {
       alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
-    Object.values(membersFilled).forEach((memberArr) => {
-      for (let i = 0; i < memberArr.length; i++) {
-        if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+
+    if (Number(week) === 1) {
+      for (let i = 0; i < Object.values(membersFilled).length; i++) {
+        let memberArr = Object.values(membersFilled)[i];
+        if (typeof memberArr[1] === "undefined") {
+          alert(`Tafadhali jaza taarifa sahihi kwa ${memberArr[0]}`);
+          return;
+        }
+
+        if (memberArr[1] === "" || /\s/.test(memberArr[1])) {
+          alert(`Tafadhali jaza taarifa sahihi kwa ${memberArr[0]}.`);
+          return;
+        }
+        memberArr[2] = memberArr[1];
       }
+    } else {
+      for (let i = 0; i < Object.values(membersFilled).length; i++) {
+        let memberArr = Object.values(membersFilled)[i];
+        if (typeof memberArr[2] === "undefined") {
+          alert(`Tafadhali jaza taarifa sahihi kwa mwanachama ${memberArr[0]}`);
+          return;
+        }
+        if (memberArr[2] === "" || /\s/.test(memberArr[1])) {
+          alert(`Tafadhali jaza taarifa sahihi kwa mwanachama${memberArr[0]}.`);
+          return;
+        }
+        memberArr[1] = 0;
+      }
+    }
+
+    let jumla_hisa_wiki = 0;
+    let jumla_hisa_cumulative =
+      { ...lejaYaHisaPrevWeeks[(week - 1).toString()]?.["cumulativeJumla"] } ||
+      {};
+
+    //Calculating total hisa for a mwanachama and extend the array
+    Object.keys(membersFilled).forEach((memberId) => {
+      let prevWeekHisasTaken = jumla_hisa_cumulative[memberId] || 0;
+
+      let thisWeekHisaSum =
+        Math.floor(prevWeekHisasTaken) +
+        Math.floor(membersFilled[memberId]?.[2]);
+      jumla_hisa_cumulative[memberId] = thisWeekHisaSum;
     });
-    const memberDataToSubmit = { ...membersFilled };
-    // const docName =
-    //   "Leja_ya_Hisa_za_Mteja_" +
-    //   katibuEmail?.split("@")[0] +
-    //   "_week_" +
-    //   weekNumber;
-    const formData = {
-      0: [
-        "Jina la Mwanachama",
-        "Tarehe",
-        "Hisa Anzia",
-        "Idadi ya Hisa alizochukua",
-      ],
-      ...memberDataToSubmit,
+    Object.values(membersFilled).forEach((memberArr) => {
+      jumla_hisa_wiki += Math.floor(memberArr[2]);
+    });
+
+    const thisWeeksData = {
+      Tarehe: todayDate,
+      0: ["Jina la Mwanachama", "Hisa Anzia", "Hisa"],
+      ...membersFilled,
+      jumlaYaWiki: jumla_hisa_wiki,
+      cumulativeJumla: jumla_hisa_cumulative,
     };
 
-    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
-      { text: "Hapana", onPress: () => {} },
-      {
-        text: "Ndiyo",
-        onPress: () => {
-          onSubmitConfirm();
+    lejaYaHisaPrevWeeks[week] = thisWeeksData;
+    Alert.alert(
+      "Uhakiki",
+      "Umehakiki taarifa kabla ya kwenda fomu inayofuata?",
+      [
+        { text: "Hapana", onPress: () => {} },
+        {
+          text: "Ndiyo",
+          onPress: () => {
+            onToNextFormConfirm();
+          },
         },
-      },
-    ]);
+      ]
+    );
 
-    // const onSubmitConfirm = () => {
-    //   setLoading(true);
-    //   submitFormData(
-    //     "FormDocs",
-    //     katibuEmail,
-    //     "Leja ya Hisa za Mteja",
-    //     docName,
-    //     weekNumber,
-    //     formData
-    //   )
-    //     .then(() => {
-    //       setLoading(false);
-    //       alert("Umefanikiwa Kukusanya Taarifa.");
-    //       dispatch({
-    //         type: "SET_LEJA_HISA_FORM_STATE",
-    //         data: { ...memberDataToSubmit },
-    //         forms_filled: [...states.formsFilled, "leja hisa"],
-    //       });
-    //     })
-    //     .catch((e) => {
-    //       setLoading(false);
-    //       alert(e.message);
-    //     });
-    // };
+    const onToNextFormConfirm = () => {
+      // dispatch({
+      //   type: "SET_LEJA_HISA_FORM_STATE",
+      //   data: { ...prevWeekData },
+      // });
+      let dataCopy = { ...data };
+      dataCopy["LejaYaHisa"] = lejaYaHisaPrevWeeks;
+      navigate("LEJAMFUKO", { data: dataCopy });
+    };
   };
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -255,19 +282,27 @@ const FormLejaHisa = ({ route }) => {
             marginTop: SIZES.large,
           }}
         >
-          {/* <FormsDropDown
+          <CustomInput
+            icon={<Iconz name="date-range" size={25} color={COLORS.primary} />}
+            label="Tarehe"
+            placeholder={"Andika tarehe"}
+            value={todayDate}
+            editable={false}
+            isNumber={true}
+          />
+          <FormsDropDown
             labelText={"Chagua Mwanachama"}
-            options={idToNamesMapArray}
+            options={dropdownOptions}
             value={currMember}
             setValue={deduceMembersToShow}
-          /> */}
-          {idToNamesMapArray.map((item, index) => (
+          />
+          {wanachamaShown.map((item, index) => (
             <RenderFields
               key={`${index} ${item}`}
               item={item}
               setMemberSampleData={setMemberSampleData}
               deductFromMembersToShow={deductFromMembersToShow}
-              memberFilled={membersFilled}
+              week={Number(week)}
             />
           ))}
           <View
@@ -275,12 +310,10 @@ const FormLejaHisa = ({ route }) => {
               width: "100%",
               justifyContent: "center",
               alignItems: "flex-end",
-              marginBottom: SIZES.base,
+              marginBottom: SIZES.font,
             }}
           >
-            <TouchableOpacity
-            // onPress={beforeMoveToNextForm}
-            >
+            <TouchableOpacity onPress={beforeMoveToNextForm}>
               <Text
                 style={{
                   color: COLORS.primary,

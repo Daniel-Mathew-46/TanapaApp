@@ -1,33 +1,32 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { Button, CustomInput, FormsHeader, FormsDropDown } from "../components";
+import { CustomInput, FormsHeader, FormsDropDown } from "../components";
 import { SIZES, COLORS } from "../constants";
 import { ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "react-native-vector-icons/AntDesign";
 import Iconz from "react-native-vector-icons/MaterialIcons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { submitFormData } from "../context/submits";
 import { KatibuTasksContexts } from "../context/KatibuTasksProvider";
 import moment from "moment/moment";
-// import DateTimePicker, {
-//   DateTimePickerAndroid,
-// } from "@react-native-community/datetimepicker";
+import { intervalToDuration } from "date-fns";
 
 const RenderFields = ({
   item,
   setMemberSampleData,
   deductFromMembersToShow,
+  jumlaZaWanachama,
 }) => {
   let key = Object.keys(item)[0];
   key = Number(key);
   let name = item[key];
-  let todayDate = moment().format("D/MM/YYYY");
-  const [dateValue, setDateValue] = useState(todayDate);
+  let jumlaDataObj = jumlaZaWanachama[key];
   const [jina, setJina] = useState(name);
+
   useEffect(() => {
-    setMemberSampleData(dateValue, key, "tarehe");
-  }, [dateValue]);
+    setMemberSampleData(jina, key, "jina");
+  }, [jina]);
+
   return (
     <>
       <View
@@ -47,7 +46,7 @@ const RenderFields = ({
         >
           {name}
         </Text>
-        <TouchableOpacity onPress={() => deductFromMembersToShow(key)}>
+        <TouchableOpacity onPress={() => deductFromMembersToShow(key, name)}>
           <Icons name="minuscircle" size={20} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
@@ -58,19 +57,10 @@ const RenderFields = ({
         value={jina}
         onChangeText={(text) => {
           setJina(text);
-          setMemberSampleData(jina, key, "jina");
         }}
+        editable={false}
       />
-      <CustomInput
-        icon={<Iconz name="date-range" size={25} color={COLORS.primary} />}
-        label="Tarehe ya Mkopo"
-        placeholder={"Andika tarehe ya Mkopo"}
-        value={dateValue}
-        onChangeText={(text) => {
-          setDateValue(text);
-        }}
-        isNumber={true}
-      />
+
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
         label="Kiasi cha Mkopo"
@@ -94,70 +84,38 @@ const RenderFields = ({
       />
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="1"
-        placeholder={"Ingiza 1"}
-        onChangeText={(text) => setMemberSampleData(text, key, 1)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="2"
-        placeholder={"Ingiza 2"}
-        onChangeText={(text) => setMemberSampleData(text, key, 2)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="3"
-        placeholder={"Ingiza 3"}
-        onChangeText={(text) => setMemberSampleData(text, key, 3)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="4"
-        placeholder={"Ingiza 4"}
-        onChangeText={(text) => setMemberSampleData(text, key, 4)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="5"
-        placeholder={"Ingiza 5"}
-        onChangeText={(text) => setMemberSampleData(text, key, 5)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="6"
-        placeholder={"Ingiza 6"}
-        onChangeText={(text) => setMemberSampleData(text, key, 6)}
-        isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
         label="Jumla"
         placeholder={"Weka Jumla"}
+        value={jumlaDataObj.jumla.toString()}
         onChangeText={(text) => setMemberSampleData(text, key, "jumla")}
         isNumber={true}
-      />
-      <CustomInput
-        icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
-        label="Maelezo"
-        placeholder={"Andika Maelezo"}
-        onChangeText={(text) => setMemberSampleData(text, key, "maelezo")}
-        multiLine={true}
+        editable={false}
       />
     </>
   );
 };
 
-const FormWakopaji = ({ route }) => {
+const FormWakopaji = ({ route, navigation: { navigate } }) => {
+  const todayDate = moment().format("D/MM/YYYY");
   const { states, dispatch } = useContext(KatibuTasksContexts);
-  const katibuEmail = route.params?.katibuEmail;
-  const week = route.params?.week;
-  const weekNumber = week ? Number(week) : null;
+  const week = Number(states.weekNumber);
+  const data = route.params?.data;
+  const lejaYaMfukoWaJamiiFilled = data?.LejaYaMfukoWaJamii;
+  const prevWeekData = { ...states.prevWeekData, weekNumber: Number(week) };
+  const wakopajiPrevWeeks = { ...prevWeekData.WakopajiNaMarejesho };
   const idToNamesMapArray = [];
+
+  //Filter Wanachama without Madeni Only
+  // const prevWeekWakopajiData = { ...wakopajiPrevWeeks[week - 1] };
+  let jumlaZaWanachamaCopy = {};
+  let computedJumlaWiki = false;
+  let ribaTotal = 0;
+  let bimaTotal = 0;
+  const prevWeekWakopajiData = {
+    1: ["Muka Bidu", "8/01/2023", 0, 5, 5000],
+    2: ["Maisha Ally", "8/01/2023", 50000, 5, 5000],
+  };
+
   const membersIds =
     states?.members?.length > 0
       ? states.members.map((item) => item["Namba yake"])
@@ -171,50 +129,74 @@ const FormWakopaji = ({ route }) => {
   for (let i = 0; i < states?.members?.length; i++) {
     let obj = {};
     let id = membersIds[i];
-    obj[id] = membersNames[i];
-    idToNamesMapArray.push(obj);
+    let memberData = prevWeekWakopajiData[id] || [];
+    if (!(memberData[2] > 0)) {
+      jumlaZaWanachamaCopy[id] = {};
+      obj[id] = membersNames[i];
+      idToNamesMapArray.push(obj);
+    }
   }
 
+  const [jumlaZaWanachama, setJumlaZaWanachama] = useState({});
   const [currMember, setCurrMember] = useState();
-  const [loading, setLoading] = useState(false);
   const [membersFilled, setMembersFilled] = useState({});
   const [wanachamaShown, setWanachamaShown] = useState([]);
+  const [dropdownOptions, setDropdownOptions] = useState([
+    ...idToNamesMapArray,
+  ]);
   const fields = {
     jina: 0,
-    tarehe: 1,
-    kiasi: 2,
-    riba: 3,
-    bima: 4,
-    1: 5,
-    2: 6,
-    3: 7,
-    4: 8,
-    5: 9,
-    6: 10,
-    jumla: 11,
-    maelezo: 12,
+    kiasi: 1,
+    riba: 2,
+    bima: 3,
+    jumla: 4,
+    maelezo: 5,
   };
 
-  const deduceMembersToShow = (index, label) => {
+  useEffect(() => {
+    if (idToNamesMapArray.length > 0) {
+      idToNamesMapArray?.forEach((item) => {
+        let id = Object.keys(item)[0];
+        jumlaZaWanachamaCopy[id] = { kiasi: 0, riba: 0, bima: 0, jumla: 0 };
+      });
+      setJumlaZaWanachama({ ...jumlaZaWanachamaCopy });
+    }
+  }, []);
+
+  console.log(jumlaZaWanachama);
+
+  const deduceMembersToShow = (index, label, remOptions) => {
     let indexNameMap = {};
     indexNameMap[index] = label;
     let arrIndexes = wanachamaShown;
     arrIndexes.push(indexNameMap);
+    setDropdownOptions(remOptions);
     setCurrMember(index);
     setWanachamaShown(arrIndexes);
   };
 
-  const deductFromMembersToShow = (index) => {
+  const deductFromMembersToShow = (index, name) => {
     let remArrIndexes = wanachamaShown?.filter(
       (item) => Math.floor(Object.keys(item)[0]) !== index
     );
+    let remOptions = [...dropdownOptions];
+    remOptions.push({ [index]: name });
+    let jumlaZaWanachamaFilled = { ...jumlaZaWanachama };
+    jumlaZaWanachamaFilled[index] = { kiasi: 0, riba: 0, bima: 0, jumla: 0 };
     let { [index]: deleted, ...remMembersFilled } = membersFilled;
     setWanachamaShown(remArrIndexes);
     setMembersFilled({ ...remMembersFilled });
+    setDropdownOptions(remOptions);
+    setJumlaZaWanachama({ ...jumlaZaWanachamaFilled });
   };
 
   //Updating values per each member filled
   const setMemberSampleData = (text, index, fieldName) => {
+    if (fieldName !== "jina" && isNaN(text)) {
+      alert("Tafadhali ingiza tarakimu!");
+      return;
+    }
+
     let members_filled = { ...membersFilled };
     if (Object.keys(members_filled).length > 0) {
       let indexToPutText = fields[fieldName];
@@ -228,84 +210,227 @@ const FormWakopaji = ({ route }) => {
       dataArr[indexToPutText] = text;
       members_filled[index] = dataArr;
       setMembersFilled((prevState) => ({ ...members_filled }));
+      if (fieldName === "kiasi") {
+        let jumlaZaWanachamaObjData = { ...jumlaZaWanachama };
+        let jumlaZaMwanachamaObjData = {
+          ...jumlaZaWanachama[index.toString()],
+        };
+        let kiasiNumber = Number(text);
+        let bima = jumlaZaMwanachamaObjData?.["bima"];
+        let riba = jumlaZaMwanachamaObjData?.["riba"];
+        let amountRibaToAdd = (riba / 100) * kiasiNumber;
+        let totalSum = kiasiNumber + amountRibaToAdd + bima;
+        jumlaZaMwanachamaObjData["kiasi"] = kiasiNumber;
+        jumlaZaMwanachamaObjData["jumla"] = totalSum;
+        jumlaZaWanachamaObjData[index] = jumlaZaMwanachamaObjData;
+        setJumlaZaWanachama({ ...jumlaZaWanachamaObjData });
+      }
+      if (fieldName === "riba") {
+        let jumlaZaWanachamaObjData = { ...jumlaZaWanachama };
+        let jumlaZaMwanachamaObjData = {
+          ...jumlaZaWanachama[index.toString()],
+        };
+        let ribaNumber = Number(text);
+        let bima = jumlaZaMwanachamaObjData?.["bima"];
+        let kiasi = jumlaZaMwanachamaObjData?.["kiasi"];
+        let amountRibaToAdd = (ribaNumber / 100) * kiasi;
+        let totalSum = kiasi + amountRibaToAdd + bima;
+        jumlaZaMwanachamaObjData["riba"] = ribaNumber;
+        jumlaZaMwanachamaObjData["jumla"] = totalSum;
+        jumlaZaWanachamaObjData[index] = jumlaZaMwanachamaObjData;
+        setJumlaZaWanachama({ ...jumlaZaWanachamaObjData });
+      }
+      if (fieldName === "bima") {
+        let jumlaZaWanachamaObjData = { ...jumlaZaWanachama };
+        let jumlaZaMwanachamaObjData = {
+          ...jumlaZaWanachama[index.toString()],
+        };
+        let bimaNumber = Number(text);
+        let kiasi = jumlaZaMwanachamaObjData?.["kiasi"];
+        let riba = jumlaZaMwanachamaObjData?.["riba"];
+        let amountRibaToAdd = (riba / 100) * kiasi;
+        let totalSum = kiasi + amountRibaToAdd + bimaNumber;
+        jumlaZaMwanachamaObjData["bima"] = bimaNumber;
+        jumlaZaMwanachamaObjData["jumla"] = totalSum;
+        jumlaZaWanachamaObjData[index] = jumlaZaMwanachamaObjData;
+        setJumlaZaWanachama({ ...jumlaZaWanachamaObjData });
+      }
     } else {
       let newData = [];
       let indexToPutText = fields[fieldName];
       newData[indexToPutText] = text;
       members_filled[index] = [...newData];
       setMembersFilled((prevState) => ({ ...members_filled }));
+      if (fieldName === "kiasi") {
+        let jumlaZaWanachamaObjData = { ...jumlaZaWanachama };
+        let jumlaZaMwanachamaObjData = {
+          ...jumlaZaWanachama[index.toString()],
+        };
+        let kiasiNumber = Number(text);
+        let bima = jumlaZaMwanachamaObjData?.["bima"];
+        let riba = jumlaZaMwanachamaObjData?.["riba"];
+        let amountRibaToAdd = (riba / 100) * kiasiNumber;
+        let totalSum = kiasiNumber + amountRibaToAdd + bima;
+        jumlaZaMwanachamaObjData["kiasi"] = kiasiNumber;
+        jumlaZaMwanachamaObjData["jumla"] = totalSum;
+        jumlaZaWanachamaObjData[index] = jumlaZaMwanachamaObjData;
+        setJumlaZaWanachama({ ...jumlaZaWanachamaObjData });
+      }
+      if (fieldName === "riba") {
+        let jumlaZaWanachamaObjData = { ...jumlaZaWanachama };
+        let jumlaZaMwanachamaObjData = {
+          ...jumlaZaWanachama[index.toString()],
+        };
+        let ribaNumber = Number(text);
+        let bima = jumlaZaMwanachamaObjData?.["bima"];
+        let kiasi = jumlaZaMwanachamaObjData?.["kiasi"];
+        let amountRibaToAdd = (ribaNumber / 100) * kiasi;
+        let totalSum = kiasi + amountRibaToAdd + bima;
+        jumlaZaMwanachamaObjData["riba"] = ribaNumber;
+        jumlaZaMwanachamaObjData["jumla"] = totalSum;
+        jumlaZaWanachamaObjData[index] = jumlaZaMwanachamaObjData;
+        setJumlaZaWanachama({ ...jumlaZaWanachamaObjData });
+      }
+      if (fieldName === "bima") {
+        let jumlaZaWanachamaObjData = { ...jumlaZaWanachama };
+        let jumlaZaMwanachamaObjData = {
+          ...jumlaZaWanachama[index.toString()],
+        };
+        let bimaNumber = Number(text);
+        let kiasi = jumlaZaMwanachamaObjData?.["kiasi"];
+        let riba = jumlaZaMwanachamaObjData?.["riba"];
+        let amountRibaToAdd = (riba / 100) * kiasi;
+        let totalSum = kiasi + amountRibaToAdd + bimaNumber;
+        jumlaZaMwanachamaObjData["bima"] = bimaNumber;
+        jumlaZaMwanachamaObjData["jumla"] = totalSum;
+        jumlaZaWanachamaObjData[index] = jumlaZaMwanachamaObjData;
+        setJumlaZaWanachama({ ...jumlaZaWanachamaObjData });
+      }
     }
   };
 
-  const handleSubmit = () => {
-    if (Object.keys(membersFilled).length === 0) {
-      alert("Tafadhali jaza taarifa sahihi!");
-      return;
-    }
-    Object.values(membersFilled).forEach((memberArr) => {
-      for (let i = 0; i < memberArr.length; i++) {
-        if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+  console.log(membersFilled);
+
+  const beforeMoveToNextForm = () => {
+    if (
+      idToNamesMapArray.length === 0 ||
+      (idToNamesMapArray.length > 0 && Object.keys(membersFilled).length === 0)
+    ) {
+      Alert.alert(
+        "Uhakiki",
+        "Kwa kukubali kwenda fomu nyingine, mfumo utachukulia kwamba hakuna wakopaji siku ya leo?",
+        [
+          { text: "Hapana", onPress: () => {} },
+          {
+            text: "Ndiyo",
+            onPress: () => {
+              navigate("MAREJESHO", { data: {} });
+            },
+          },
+        ]
+      );
+    } else {
+      //Sanitize the values received to get clean values
+      for (let i = 0; i < Object.values(membersFilled).length; i++) {
+        let memberArr = Object.values(membersFilled)[i];
+        if (
+          typeof memberArr[1] === "undefined" ||
+          typeof memberArr[2] === "undefined" ||
+          typeof memberArr[3] === "undefined"
+        ) {
+          alert(
+            `Mwanachama ${memberArr[0]} hajajaziwa kiasi au riba au bima. Tafadhali jaza taarifa sahihi.`
+          );
+          return;
+        }
+
+        if (
+          memberArr[1] === "" ||
+          /\s/.test(memberArr[1]) ||
+          memberArr[2] === "" ||
+          /\s/.test(memberArr[2]) ||
+          memberArr[3] === "" ||
+          /\s/.test(memberArr[3])
+        ) {
+          alert(
+            `Tafadhali jaza taarifa sahihi kwa Mwanachama ${memberArr[0]}.`
+          );
+          return;
+        }
+        if (memberArr[1] === 0) {
+          alert(
+            `Kiasi cha mkopo cha ${memberArr[0]} hakiwezi kikawa 0. Kama hakopi usimuongeze kwenye orodha!.`
+          );
+          return;
+        }
       }
-    });
-    const memberDataToSubmit = { ...membersFilled };
-    const docName =
-      "Wakopaji_na_Marejesho_" +
-      katibuEmail?.split("@")[0] +
-      "_week_" +
-      weekNumber;
-    const formData = {
-      0: [
-        "Jina",
-        "Tarehe ya Mkopo",
-        "Kiasi",
-        "Riba",
-        "Bima",
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        "Jumla",
-        "Maelezo",
-      ],
-      ...memberDataToSubmit,
-    };
 
-    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
-      { text: "Hapana", onPress: () => {} },
-      {
-        text: "Ndiyo",
-        onPress: () => {
-          onSubmitConfirm();
-        },
-      },
-    ]);
+      //Structure data as the way they are going to be stored in firebase.
+      for (let i = 0; i < Object.keys(membersFilled).length; i++) {
+        let key = Object.keys(membersFilled)[i];
+        let memberArr = membersFilled[key];
+        if (memberArr.length !== 12) {
+          memberArr.splice(1, 0, todayDate);
+          memberArr.splice(
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            jumlaZaWanachama[key]["jumla"]
+          );
+        }
+      }
 
-    const onSubmitConfirm = () => {
-      setLoading(true);
-      submitFormData(
-        "FormDocs",
-        katibuEmail,
-        "Fomu ya Wakopaji na Marejesho",
-        docName,
-        weekNumber,
-        formData
-      )
-        .then(() => {
-          setLoading(false);
-          alert("Umefanikiwa Kukusanya Taarifa.");
-          dispatch({
-            type: "SET_WAKOPAJI_FORM_STATE",
-            data: { ...memberDataToSubmit },
-            forms_filled: [...states.formsFilled, "wakopaji"],
-          });
-        })
-        .catch((e) => {
-          setLoading(false);
-          alert(e.message);
-        });
-    };
+      for (let i = 0; i < Object.keys(membersFilled).length; i++) {
+        let key = Object.keys(membersFilled)[i];
+        let memberArr = membersFilled[key];
+        if (!computedJumlaWiki) {
+          ribaTotal += Number(memberArr[3]);
+          bimaTotal += Number(memberArr[4]);
+        }
+      }
+
+      computedJumlaWiki = true;
+
+      const thisWeeksData = {
+        0: [
+          "Jina la Mwanachama",
+          "Tarehe Ya Mkopo",
+          "Kiasi Cha Mkopo",
+          "Riba",
+          " Bima",
+          "Jumla",
+        ],
+        ...membersFilled,
+        jumlaYaWiki: { riba: ribaTotal, bima: bimaTotal },
+      };
+
+      wakopajiPrevWeeks[week] = thisWeeksData;
+
+      Alert.alert(
+        "Uhakiki",
+        "Umehakiki taarifa kabla ya kwenda fomu inayofuata?",
+        [
+          { text: "Hapana", onPress: () => {} },
+          {
+            text: "Ndiyo",
+            onPress: () => {
+              onToNextFormConfirm();
+            },
+          },
+        ]
+      );
+
+      const onToNextFormConfirm = () => {
+        let dataCopy = { ...data };
+        dataCopy["FomuYaWakopaji"] = wakopajiPrevWeeks;
+        navigate("MAREJESHO", { data: dataCopy });
+      };
+    }
   };
 
   return (
@@ -319,10 +444,7 @@ const FormWakopaji = ({ route }) => {
           backgroundColor: COLORS.primary,
         }}
       >
-        <FormsHeader
-          title={"Fomu Wakopaji na Marejesho"}
-          subTitle={"Fomu ya wakopaji na marejesho"}
-        />
+        <FormsHeader title={"Fomu Ya Wakopaji"} subTitle={"Fomu ya wakopaji"} />
       </View>
       <KeyboardAwareScrollView>
         <View
@@ -331,9 +453,17 @@ const FormWakopaji = ({ route }) => {
             marginTop: SIZES.large,
           }}
         >
+          <CustomInput
+            icon={<Iconz name="date-range" size={25} color={COLORS.primary} />}
+            label="Tarehe "
+            placeholder={"Andika tarehe"}
+            value={todayDate}
+            editable={false}
+            isNumber={true}
+          />
           <FormsDropDown
             labelText={"Chagua Mwanachama"}
-            options={idToNamesMapArray}
+            options={dropdownOptions}
             value={currMember}
             setValue={deduceMembersToShow}
           />
@@ -343,34 +473,25 @@ const FormWakopaji = ({ route }) => {
               item={item}
               setMemberSampleData={setMemberSampleData}
               deductFromMembersToShow={deductFromMembersToShow}
+              jumlaZaWanachama={jumlaZaWanachama}
             />
           ))}
-          {states.formsFilled.includes("wakopaji") && (
-            <View
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: COLORS.gray, fontSize: SIZES.large }}>
-                Fomu hii imeshajazwa!
-              </Text>
-            </View>
-          )}
           <View
             style={{
               width: "100%",
               justifyContent: "center",
-              alignItems: "center",
-              marginBottom: SIZES.base,
+              alignItems: "flex-end",
+              marginBottom: SIZES.font,
             }}
           >
-            <Button
-              text={"Kusanya Taarifa"}
-              loading={loading}
-              onPress={handleSubmit}
-            />
+            <TouchableOpacity onPress={beforeMoveToNextForm}>
+              <Text
+                style={{
+                  color: COLORS.primary,
+                  fontSize: SIZES.large,
+                }}
+              >{`Fomu inayofuata >>`}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAwareScrollView>

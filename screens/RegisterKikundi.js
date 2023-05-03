@@ -30,6 +30,7 @@ const RegisterKikundi = ({ route }) => {
   const [nambaUsajili, setNambaUsajili] = useState("");
   const [bima, setBima] = useState("");
   const [riba, setRiba] = useState("");
+  const [kiasiJamii, setKiasiJamii] = useState("");
   const [loading, setLoading] = useState(false);
   const [katibu, setKatibu] = useState(null);
 
@@ -128,8 +129,9 @@ const RegisterKikundi = ({ route }) => {
         setKata("");
         setThamaniHisa("");
         setNambaUsajili("");
-        setBima("")
-        setRiba("")
+        setKiasiJamii("");
+        setBima("");
+        setRiba("");
       })
       .catch((e) => {
         alert(e.message.split(" ")[2]);
@@ -147,7 +149,7 @@ const RegisterKikundi = ({ route }) => {
       alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
-    if(isNaN(thamaniHisa) || isNaN(riba) || isNaN(bima)) {
+    if (isNaN(thamaniHisa) || isNaN(riba) || isNaN(bima)) {
       alert("Thamani ya Hisa au Riba au Bima sio sahihi!");
       return;
     }
@@ -159,6 +161,7 @@ const RegisterKikundi = ({ route }) => {
       "Namba ya usajili ya Kikundi": nambaUsajili,
       "Asilimia ya Bima": bima,
       "Asilimia ya Riba": riba,
+      "Kiasi cha fedha ya jamii": kiasiJamii,
       createdBy: cfEmail,
     };
 
@@ -246,8 +249,17 @@ const RegisterKikundi = ({ route }) => {
             onChangeText={(text) => setThamaniHisa(text)}
             isNumber={true}
           />
-
-<CustomInput
+          <CustomInput
+            icon={
+              <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+            }
+            label="Kiasi cha fedha ya jamii"
+            placeholder={"Ingiza kiasi cha jamii"}
+            value={bima}
+            onChangeText={(text) => setKiasiJamii(text)}
+            isNumber={true}
+          />
+          <CustomInput
             icon={
               <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
             }
@@ -258,7 +270,7 @@ const RegisterKikundi = ({ route }) => {
             isNumber={true}
           />
 
-<CustomInput
+          <CustomInput
             icon={
               <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
             }

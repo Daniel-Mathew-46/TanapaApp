@@ -45,8 +45,9 @@ const KatibuTasks = ({ navigation }) => {
             let globalPrevWeekDataObj = {
               kikundi_data: { ...states.kikundiData },
               weekNumber: 0,
-              kadiYaMahudhurio: {},
+              KadiYaMahudhurio: {},
               LejaYaMfukoWaJamii: {},
+              WakopajiNaMarejesho: {},
               LejaYaHisa: {},
               ShughuliYaKikundiKwaWiki: {},
             };

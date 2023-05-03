@@ -15,10 +15,9 @@ import { TimelineMap } from "../constants/timeline";
 
 const FormMahudhurio = ({ route, navigation: { navigate } }) => {
   const { states, dispatch } = useContext(KatibuTasksContexts);
-  const katibuEmail = route.params?.katibuEmail;
-  const week = states.weekNumber;
+  const week = Number(states.weekNumber);
   const prevWeekData = { ...states.prevWeekData, weekNumber: Number(week) };
-  const kadiYaMahudhurioPrevWeek = { ...prevWeekData.kadiYaMahudhurio };
+  const kadiYaMahudhurioPrevWeek = { ...prevWeekData.KadiYaMahudhurio };
   let todayDate = moment().format("D/MM/YYYY");
   const membersNames =
     states?.members?.length > 0
@@ -27,7 +26,7 @@ const FormMahudhurio = ({ route, navigation: { navigate } }) => {
   const mahudhurioArray = states?.members ? [] : [];
   const formData = {};
 
-  console.log(week);
+  // console.log(week);
   console.log(kadiYaMahudhurioPrevWeek);
 
   const populateMahudhurio = (value, index) => {
@@ -39,15 +38,18 @@ const FormMahudhurio = ({ route, navigation: { navigate } }) => {
       alert("Tafadhali jaza taarifa sahihi!");
       return;
     }
-    // const docName =
-    //   "Kadi_Ya_Mahudhurio_" +
-    //   katibuEmail?.split("@")[0] +
-    //   "_week_" +
-    //   weekNumber;
     for (i = 0; i < states?.members?.length; i++) {
       let jina = membersNames[i];
       let jibu = mahudhurioArray[i];
       formData[jina] = jibu;
+    }
+    for (let i = 0; i < Object.keys(formData).length; i++) {
+      let jina = Object.keys(formData)[i];
+      let mahudhurioYake = formData[jina];
+      if (typeof mahudhurioYake === "undefined") {
+        alert(`${jina} hajajazwa!`);
+        return;
+      }
     }
 
     // setformdata(formData);
@@ -104,16 +106,16 @@ const FormMahudhurio = ({ route, navigation: { navigate } }) => {
       let mahudhurio_jumla = wake + waume;
       let cumulativeJumla = cumulativeWake + cumulativeWaume;
       let thisWeeksData = {};
-      thisWeeksData["date"] = todayDate;
+      thisWeeksData["Tarehe"] = todayDate;
       thisWeeksData["mahudhurio"] = { ...formData };
       thisWeeksData["mahudhurioJumla"] = [waume, wake, mahudhurio_jumla];
       let cumulativeJumlaArray = [
-        cumulativeWake + wake,
         cumulativeWaume + waume,
+        cumulativeWake + wake,
         cumulativeJumla + mahudhurio_jumla,
       ];
 
-      if (TimelineMap.hasOwnProperty(week)) {
+      if (TimelineMap.hasOwnProperty(week + 1)) {
         let mwezi = TimelineMap[week];
         thisWeeksData["cumulativeJumla"] = [...cumulativeJumlaArray];
         thisWeeksData[mwezi] = [...cumulativeJumlaArray];
@@ -122,38 +124,15 @@ const FormMahudhurio = ({ route, navigation: { navigate } }) => {
         thisWeeksData["cumulativeJumla"] = [...cumulativeJumlaArray];
         kadiYaMahudhurioPrevWeek[week] = thisWeeksData;
       }
-      prevWeekData["kadiYaMahudhurio"] = kadiYaMahudhurioPrevWeek;
+      // prevWeekData["KadiYaMahudhurio"] = kadiYaMahudhurioPrevWeek;
       console.log(kadiYaMahudhurioPrevWeek);
       dispatch({
         type: "SET_MAHUDHURIO_FORM_STATE",
         data: { ...prevWeekData },
       });
-      navigate("LEJAHISA", { kadiYaMahudhurioPrevWeek });
+      let data = { KadiYaMahudhurio: kadiYaMahudhurioPrevWeek };
+      navigate("LEJAHISA", { data });
     };
-    // const onSubmitConfirm = () => {
-    //   setLoading(true);
-    //   submitFormData(
-    //     "FormDocs",
-    //     katibuEmail,
-    //     "Kadi Ya Mahudhurio Kila Wiki",
-    //     docName,
-    //     weekNumber,
-    //     formData
-    //   )
-    //     .then(() => {
-    //       setLoading(false);
-    //       alert("Umefanikiwa Kukusanya Taarifa.");
-    // dispatch({
-    //   type: "SET_MAHUDHURIO_FORM_STATE",
-    //   data: { ...formData },
-    //   forms_filled: [...states.formsFilled, "mahudhurio"],
-    // });
-    //     })
-    //     .catch((e) => {
-    //       setLoading(false);
-    //       alert(e.message);
-    //     });
-    // };
   };
 
   return (

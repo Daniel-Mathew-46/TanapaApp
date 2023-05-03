@@ -9,6 +9,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview"
 import { submitMembersData } from "../context/submits";
 import { KatibuDataContext } from "../context/MemberStackProvide";
 import RadioForm from "react-native-simple-radio-button";
+import moment from "moment/moment";
 
 const RegisterMwanachama = ({ route }) => {
   const { states, dispatch } = useContext(KatibuDataContext);
@@ -16,10 +17,12 @@ const RegisterMwanachama = ({ route }) => {
   const membersIds = route.params?.membersIds;
   const edit = route.params?.edit;
   const data = route.params?.data;
+  let todayDate = moment().format("D/MM/YYYY");
   var jina = "" || data?.["Jina la Mwanachama"];
   var phone = "" || data?.["Namba Ya Simu"];
   var nambayake = null || data?.["Namba yake"];
   var gender = "" || data?.["Jinsia"];
+  var tareheusajili = data?.["Tarehe ya kusajiliwa"] || todayDate;
   let change = generateChars();
 
   const [kikundi, setKikundi] = useState(kikundi_);
@@ -43,9 +46,12 @@ const RegisterMwanachama = ({ route }) => {
     if (!route.params?.edit) {
       if (
         isNaN(nambaUanachama) ||
+        Math.floor(nambaUanachama) === 0 ||
         membersIds.includes(Math.floor(nambaUanachama))
       ) {
-        alert("Ingiza namba ya uanachama sahihi na ambayo haijatumika.");
+        alert(
+          "Ingiza namba ya uanachama sahihi, isiwe (0) na ambayo haijatumika."
+        );
         return;
       }
     }
@@ -68,6 +74,7 @@ const RegisterMwanachama = ({ route }) => {
       "Namba Ya Simu": nambaSimu,
       "Namba yake": Math.floor(nambaUanachama),
       Jinsia: jinsia,
+      "Tarehe ya kusajiliwa": tareheusajili,
     };
     let currMembers = states?.members;
     if (route.params?.edit) {

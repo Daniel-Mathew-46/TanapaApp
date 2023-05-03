@@ -9,6 +9,7 @@ import FormLejaHisa from "./FormLejaHisa";
 import KatibuTasksProvider from "../context/KatibuTasksProvider";
 import FormShughuli from "./FormShughuli";
 import FormFilling from "./FormFilling";
+import FormMarejesho from "./FormMarejesho";
 
 export const KatibuStack = createNativeStackNavigator();
 
@@ -41,6 +42,11 @@ const KatibuStackComponent = ({ role, katibuEmail }) => {
       <KatibuStack.Screen
         name="WAKOPAJI"
         component={FormWakopaji}
+        initialParams={{ katibuEmail }}
+      />
+      <KatibuStack.Screen
+        name="MAREJESHO"
+        component={FormMarejesho}
         initialParams={{ katibuEmail }}
       />
       <KatibuStack.Screen
