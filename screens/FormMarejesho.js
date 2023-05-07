@@ -118,6 +118,17 @@ const RenderFields = ({
         isNumber={true}
         editable={false}
       />
+      {(debtDurationMonths === 3 || debtDurationMonths === 6) && (
+        <CustomInput
+          icon={
+            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+          }
+          label="Ongezeko la Riba"
+          placeholder={"Ingiza riba"}
+          onChangeText={(text) => setMemberSampleData(text, key, "riba")}
+          isNumber={true}
+        />
+      )}
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
         label="Bima"
@@ -126,18 +137,7 @@ const RenderFields = ({
         isNumber={true}
         editable={false}
       />
-      {(debtDurationMonths == 3 || debtDurationMonths == 6) && (
-        <CustomInput
-          icon={
-            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
-          }
-          label="Riba"
-          placeholder={"Ingiza riba"}
-          onChangeText={(text) => setMemberSampleData(text, key, "riba")}
-          isNumber={true}
-        />
-      )}
-      {debtDurationMonths < 2 ? (
+      {debtDurationMonths === 1 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
@@ -147,7 +147,8 @@ const RenderFields = ({
           onChangeText={(text) => setMemberSampleData(text, key, 1)}
           isNumber={true}
         />
-      ) : (
+      )}
+      {debtDurationMonths > 1 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
@@ -159,79 +160,126 @@ const RenderFields = ({
           editable={false}
         />
       )}
-      {debtDurationMonths >= 2 && (
+      {debtDurationMonths === 2 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
           }
           label="2"
-          value={`${memberData[6].toString() || 0}`}
           placeholder={"Ingiza 2"}
           onChangeText={(text) => setMemberSampleData(text, key, 2)}
           isNumber={true}
-          editable={!(debtDurationMonths !== 2)}
         />
       )}
-      {debtDurationMonths >= 3 && (
+      {debtDurationMonths > 2 && (
+        <CustomInput
+          icon={
+            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+          }
+          label="2"
+          value={memberData[6].toString()}
+          placeholder={"Ingiza 2"}
+          isNumber={true}
+          editable={false}
+        />
+      )}
+      {debtDurationMonths === 3 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
           }
           label="3"
-          value={`${memberData[7].toString() || 0}`}
           placeholder={"Ingiza 3"}
           onChangeText={(text) => setMemberSampleData(text, key, 3)}
           isNumber={true}
-          editable={!(debtDurationMonths !== 3)}
         />
       )}
-      {debtDurationMonths >= 4 && (
+      {debtDurationMonths > 3 && (
+        <CustomInput
+          icon={
+            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+          }
+          label="3"
+          value={memberData[7].toString()}
+          placeholder={"Ingiza 3"}
+          isNumber={true}
+          editable={false}
+        />
+      )}
+      {debtDurationMonths === 4 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
           }
           label="4"
-          value={`${memberData[8].toString() || 0}`}
           placeholder={"Ingiza 4"}
           onChangeText={(text) => setMemberSampleData(text, key, 4)}
           isNumber={true}
-          editable={!(debtDurationMonths !== 4)}
         />
       )}
-      {debtDurationMonths >= 5 && (
+      {debtDurationMonths > 4 && (
+        <CustomInput
+          icon={
+            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+          }
+          label="4"
+          value={memberData[8].toString()}
+          placeholder={"Ingiza 4"}
+          isNumber={true}
+          editable={false}
+        />
+      )}
+      {debtDurationMonths === 5 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
           }
           label="5"
-          value={`${memberData[9].toString() || 0}`}
           placeholder={"Ingiza 5"}
           onChangeText={(text) => setMemberSampleData(text, key, 5)}
           isNumber={true}
-          editable={!(debtDurationMonths !== 5)}
         />
       )}
-      {debtDurationMonths >= 6 && (
+      {debtDurationMonths > 5 && (
+        <CustomInput
+          icon={
+            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+          }
+          label="5"
+          value={memberData[9].toString()}
+          placeholder={"Ingiza 5"}
+          isNumber={true}
+          editable={false}
+        />
+      )}
+      {debtDurationMonths === 6 && (
         <CustomInput
           icon={
             <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
           }
           label="6"
-          value={`${memberData[10].toString() || 0}`}
           placeholder={"Ingiza 6"}
           onChangeText={(text) => setMemberSampleData(text, key, 6)}
           isNumber={true}
-          editable={!(debtDurationMonths !== 6)}
+        />
+      )}
+      {debtDurationMonths > 6 && (
+        <CustomInput
+          icon={
+            <Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />
+          }
+          label="6"
+          value={memberData[10].toString()}
+          placeholder={"Ingiza 6"}
+          isNumber={true}
+          editable={false}
         />
       )}
       <CustomInput
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
         label="Jumla ya marejesho mpaka sasa"
         placeholder={"Weka Jumla"}
-        value={wanachamaMikopoPaymentData[key][6].toString()}
-        onChangeText={(text) =>
-          setMemberSampleData(text, key, "jumlamarejesho")
-        }
+        value={wanachamaMikopoPaymentData[key][7].toString()}
         isNumber={true}
         editable={false}
       />
@@ -239,7 +287,7 @@ const RenderFields = ({
         icon={<Icon name="md-pencil-sharp" size={25} color={COLORS.primary} />}
         label="Jumla baada ya marejesho"
         placeholder={"Weka Jumla"}
-        value={wanachamaMikopoPaymentData[key][7].toString()}
+        value={wanachamaMikopoPaymentData[key][8].toString()}
         onChangeText={(text) => setMemberSampleData(text, key, "jumla")}
         isNumber={true}
         editable={false}
@@ -255,14 +303,14 @@ const RenderFields = ({
   );
 };
 
-const FormMarejesho = ({ route }) => {
+const FormMarejesho = ({ route, navigation: { navigate } }) => {
   const todayDate = moment().format("D/MM/YYYY");
   const { states, dispatch } = useContext(KatibuTasksContexts);
   const week = Number(states.weekNumber);
   const data = route.params?.data;
   const fomuYaWakopaji = data?.FomuYaWakopaji;
   const prevWeekData = { ...states.prevWeekData, weekNumber: Number(week) };
-  const marejeshoPrevWeeks = { ...prevWeekData.WakopajiNaMarejesho };
+  const WakopajiNaMarejeshoPrevWeeks = { ...prevWeekData.WakopajiNaMarejesho };
   const idToNamesMapArray = [];
   const [wanachamaMikopoPaymentData, setWanachamaMikopoPaymentData] = useState(
     {}
@@ -274,17 +322,17 @@ const FormMarejesho = ({ route }) => {
   const prevWeekWakopajiData = {
     2: [
       "Maisha Ally",
-      "8/04/2023",
+      "8/02/2023",
       50000,
       5,
       5000,
+      10000,
       0,
       0,
       0,
       0,
       0,
-      0,
-      57500,
+      47500,
       "Amemaliza",
     ],
   };
@@ -317,39 +365,24 @@ const FormMarejesho = ({ route }) => {
   };
   idToNamesMapArray?.forEach((item) => {
     let id = Object.keys(item)[0];
-    memberMkopoPaymentDataNonState[0] = prevWeekWakopajiData[id]?.[5] || 0;
-    memberMkopoPaymentDataNonState[1] = prevWeekWakopajiData[id]?.[6] || 0;
-    memberMkopoPaymentDataNonState[2] = prevWeekWakopajiData[id]?.[7] || 0;
-    memberMkopoPaymentDataNonState[3] = prevWeekWakopajiData[id]?.[8] || 0;
-    memberMkopoPaymentDataNonState[4] = prevWeekWakopajiData[id]?.[9] || 0;
-    memberMkopoPaymentDataNonState[5] = prevWeekWakopajiData[id]?.[10] || 0;
-    memberMkopoPaymentDataNonState[6] =
-      memberMkopoPaymentDataNonState[0] +
+    memberMkopoPaymentDataNonState[0] = prevWeekWakopajiData[id]?.[3] || 0;
+    memberMkopoPaymentDataNonState[1] = prevWeekWakopajiData[id]?.[5] || 0;
+    memberMkopoPaymentDataNonState[2] = prevWeekWakopajiData[id]?.[6] || 0;
+    memberMkopoPaymentDataNonState[3] = prevWeekWakopajiData[id]?.[7] || 0;
+    memberMkopoPaymentDataNonState[4] = prevWeekWakopajiData[id]?.[8] || 0;
+    memberMkopoPaymentDataNonState[5] = prevWeekWakopajiData[id]?.[9] || 0;
+    memberMkopoPaymentDataNonState[6] = prevWeekWakopajiData[id]?.[10] || 0;
+    memberMkopoPaymentDataNonState[7] =
       memberMkopoPaymentDataNonState[1] +
       memberMkopoPaymentDataNonState[2] +
       memberMkopoPaymentDataNonState[3] +
       memberMkopoPaymentDataNonState[4] +
-      memberMkopoPaymentDataNonState[5];
-    memberMkopoPaymentDataNonState[7] = prevWeekWakopajiData[id]?.[11] || 0;
+      memberMkopoPaymentDataNonState[5] +
+      memberMkopoPaymentDataNonState[6];
+    memberMkopoPaymentDataNonState[8] = prevWeekWakopajiData[id]?.[11] || 0;
+    memberMkopoPaymentDataNonState[9] = prevWeekWakopajiData[id]?.[12] || "";
     wanachamaMikopoPaymentDataCopyNonState[id] = memberMkopoPaymentDataNonState;
   });
-
-  // let wakopajiDebtPeriods = {};
-
-  // if (Object.keys(wakopajiTareheZaMikopo).length > 0) {
-  //   for (let i = 0; i < Object.keys(wakopajiTareheZaMikopo).length; i++) {
-  //     let memberId = Object.keys(wakopajiTareheZaMikopo)[i];
-  //     let tareheYaMkopo = wakopajiTareheZaMikopo[memberId];
-  //     let memberDebtPeriod = getDaysSinceDebtDate(tareheYaMkopo, todayDate);
-  //     if (memberDebtPeriod > 6) {
-  //       memberDebtPeriod =
-  //         wakopajiPrevWeeks[(week - 1).toString()]?.["AwamuMpya"]?.[memberId];
-  //     }
-  //     wakopajiDebtPeriods[memberId] = memberDebtPeriod;
-  //   }
-  // }
-
-  // var duration = getDaysSinceDebtDate("2/03/2023", todayDate);
 
   // console.log(wakopajiTareheZaMikopo);
   // console.log("Wakooppaijaid moitnhs", wakopajiDebtPeriods);
@@ -364,17 +397,8 @@ const FormMarejesho = ({ route }) => {
   ]);
   const fields = {
     jina: 0,
-    kiasi: 1,
-    riba: 2,
-    bima: 3,
-    1: 5,
-    2: 6,
-    3: 7,
-    4: 8,
-    5: 9,
-    6: 10,
-    jumla: 11,
-    maelezo: 12,
+    riba: 1,
+    maelezo: 2,
   };
 
   useEffect(() => {
@@ -383,20 +407,22 @@ const FormMarejesho = ({ route }) => {
       let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
       idToNamesMapArray?.forEach((item) => {
         let id = Object.keys(item)[0];
-        memberMkopoPaymentData[0] = prevWeekWakopajiData[id]?.[5] || 0;
-        memberMkopoPaymentData[1] = prevWeekWakopajiData[id]?.[6] || 0;
-        memberMkopoPaymentData[2] = prevWeekWakopajiData[id]?.[7] || 0;
-        memberMkopoPaymentData[3] = prevWeekWakopajiData[id]?.[8] || 0;
-        memberMkopoPaymentData[4] = prevWeekWakopajiData[id]?.[9] || 0;
-        memberMkopoPaymentData[5] = prevWeekWakopajiData[id]?.[10] || 0;
-        memberMkopoPaymentData[6] =
-          memberMkopoPaymentData[0] +
+        memberMkopoPaymentData[0] = prevWeekWakopajiData[id]?.[3] || 0;
+        memberMkopoPaymentData[1] = prevWeekWakopajiData[id]?.[5] || 0;
+        memberMkopoPaymentData[2] = prevWeekWakopajiData[id]?.[6] || 0;
+        memberMkopoPaymentData[3] = prevWeekWakopajiData[id]?.[7] || 0;
+        memberMkopoPaymentData[4] = prevWeekWakopajiData[id]?.[8] || 0;
+        memberMkopoPaymentData[5] = prevWeekWakopajiData[id]?.[9] || 0;
+        memberMkopoPaymentData[6] = prevWeekWakopajiData[id]?.[10] || 0;
+        memberMkopoPaymentData[7] =
           memberMkopoPaymentData[1] +
           memberMkopoPaymentData[2] +
           memberMkopoPaymentData[3] +
           memberMkopoPaymentData[4] +
-          memberMkopoPaymentData[5];
-        memberMkopoPaymentData[7] = prevWeekWakopajiData[id]?.[11] || 0;
+          memberMkopoPaymentData[5] +
+          memberMkopoPaymentData[6];
+        memberMkopoPaymentData[8] = prevWeekWakopajiData[id]?.[11] || 0;
+        memberMkopoPaymentData[9] = prevWeekWakopajiData[id]?.[12] || "";
         wanachamaMikopoPaymentDataCopy[id] = memberMkopoPaymentData;
       });
       setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
@@ -429,7 +455,7 @@ const FormMarejesho = ({ route }) => {
 
   //Updating values per each member filled
   const setMemberSampleData = (text, index, fieldName) => {
-    if (fieldName !== "jina" && isNaN(text)) {
+    if (fieldName !== "jina" && fieldName !== "maelezo" && isNaN(text)) {
       alert("Tafadhali ingiza tarakimu!");
       return;
     }
@@ -447,26 +473,61 @@ const FormMarejesho = ({ route }) => {
       members_filled[index] = dataArr;
       setMembersFilled((prevState) => ({ ...members_filled }));
       //Updating wanachamapayment data
-      if (fieldName !== "jina") {
+      if (fieldName !== "jina" && fieldName !== "maelezo") {
         // wanachamaMikopoPaymentDataCopyNonState
         let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
         let mwanachamaMikopoPaymentData = [
           ...wanachamaMikopoPaymentDataCopy[index],
         ];
-        let rejeshoLeo = Number(text);
-        let mweziHuu =
-          wanachamaMikopoPaymentDataCopyNonState[index][fieldName - 1];
-        let totalMweziHuu = rejeshoLeo + mweziHuu;
+        let ribaIliyokuwepo = wanachamaMikopoPaymentDataCopyNonState[index][0];
+        let kiasiChaMkopo = wanachamaMikopoPaymentDataCopyNonState[index][8];
+        let totalMweziHuu = 0;
+        if (fieldName === "riba") {
+          let ribaMpya = Number(text);
+          let amountRibaMpyaToAdd = (ribaMpya / 100) * kiasiChaMkopo;
+          kiasiChaMkopo = kiasiChaMkopo + amountRibaMpyaToAdd;
+          mwanachamaMikopoPaymentData[0] = ribaMpya + ribaIliyokuwepo;
+        } else {
+          let rejeshoLeo = Number(text);
+          let mweziHuu =
+            wanachamaMikopoPaymentDataCopyNonState[index][fieldName];
+          totalMweziHuu = rejeshoLeo + mweziHuu;
+        }
         let jumlaYaMarejesho =
-          wanachamaMikopoPaymentDataCopyNonState[index][6] + totalMweziHuu;
-        let jumlaBaadaYaMarejesho =
-          wanachamaMikopoPaymentDataCopyNonState[index][7] - jumlaYaMarejesho;
-        mwanachamaMikopoPaymentData[fieldName - 1] = totalMweziHuu;
-        mwanachamaMikopoPaymentData[6] = jumlaYaMarejesho;
-        mwanachamaMikopoPaymentData[7] = jumlaBaadaYaMarejesho;
+          wanachamaMikopoPaymentDataCopyNonState[index][7] + totalMweziHuu;
+        let jumlaBaadaYaMarejesho = kiasiChaMkopo - jumlaYaMarejesho;
+        mwanachamaMikopoPaymentData[fieldName] = totalMweziHuu;
+        mwanachamaMikopoPaymentData[7] = jumlaYaMarejesho;
+        mwanachamaMikopoPaymentData[8] = jumlaBaadaYaMarejesho;
         wanachamaMikopoPaymentDataCopy[index] = mwanachamaMikopoPaymentData;
         setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
       }
+      if (fieldName === "maelezo") {
+        let maelezo = text;
+        let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
+        let mwanachamaMikopoPaymentData = [
+          ...wanachamaMikopoPaymentDataCopy[index],
+        ];
+        mwanachamaMikopoPaymentData[9] = maelezo;
+        wanachamaMikopoPaymentDataCopy[index] = mwanachamaMikopoPaymentData;
+        setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
+      }
+      // if (fieldName === "riba") {
+      //   // wanachamaMikopoPaymentDataCopyNonState
+      //   let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
+      //   let mwanachamaMikopoPaymentData = [
+      //     ...wanachamaMikopoPaymentDataCopy[index],
+      //   ];
+      //   let ribaMpya = Number(text);
+      //   let ribaIliyokuwepo = wanachamaMikopoPaymentDataCopyNonState[index][0];
+      //   let kiasiChaMkopo = wanachamaMikopoPaymentDataCopyNonState[index][8];
+      //   let amountRibaMpyaToAdd = (ribaMpya / 100) * kiasiChaMkopo;
+      //   let totalSum = kiasiChaMkopo + amountRibaMpyaToAdd;
+      //   mwanachamaMikopoPaymentData[0] = ribaMpya + ribaIliyokuwepo;
+      //   mwanachamaMikopoPaymentData[8] = totalSum;
+      //   wanachamaMikopoPaymentDataCopy[index] = mwanachamaMikopoPaymentData;
+      //   setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
+      // }
     } else {
       let newData = [];
       let indexToPutText = fields[fieldName];
@@ -474,94 +535,171 @@ const FormMarejesho = ({ route }) => {
       members_filled[index] = [...newData];
       setMembersFilled((prevState) => ({ ...members_filled }));
       //Updating wanachamapayment data
-      if (fieldName !== "jina") {
+      if (fieldName !== "jina" && fieldName !== "maelezo") {
+        // wanachamaMikopoPaymentDataCopyNonState
         let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
         let mwanachamaMikopoPaymentData = [
           ...wanachamaMikopoPaymentDataCopy[index],
         ];
-        let rejeshoLeo = Number(text);
-        let mweziHuu =
-          wanachamaMikopoPaymentDataCopyNonState[index][fieldName - 1];
-        let totalMweziHuu = rejeshoLeo + mweziHuu;
+        let ribaIliyokuwepo = wanachamaMikopoPaymentDataCopyNonState[index][0];
+        let kiasiChaMkopo = wanachamaMikopoPaymentDataCopyNonState[index][8];
+        let totalMweziHuu = 0;
+        if (fieldName === "riba") {
+          let ribaMpya = Number(text);
+          let amountRibaMpyaToAdd = (ribaMpya / 100) * kiasiChaMkopo;
+          kiasiChaMkopo = kiasiChaMkopo + amountRibaMpyaToAdd;
+          mwanachamaMikopoPaymentData[0] = ribaMpya + ribaIliyokuwepo;
+        } else {
+          let rejeshoLeo = Number(text);
+          let mweziHuu =
+            wanachamaMikopoPaymentDataCopyNonState[index][fieldName];
+          totalMweziHuu = rejeshoLeo + mweziHuu;
+        }
         let jumlaYaMarejesho =
-          wanachamaMikopoPaymentDataCopyNonState[index][6] + totalMweziHuu;
-        let jumlaBaadaYaMarejesho =
-          wanachamaMikopoPaymentDataCopyNonState[index][7] - jumlaYaMarejesho;
-        mwanachamaMikopoPaymentData[fieldName - 1] = totalMweziHuu;
-        mwanachamaMikopoPaymentData[6] = jumlaYaMarejesho;
-        mwanachamaMikopoPaymentData[7] = jumlaBaadaYaMarejesho;
+          wanachamaMikopoPaymentDataCopyNonState[index][7] + totalMweziHuu;
+        let jumlaBaadaYaMarejesho = kiasiChaMkopo - jumlaYaMarejesho;
+        mwanachamaMikopoPaymentData[fieldName] = totalMweziHuu;
+        mwanachamaMikopoPaymentData[7] = jumlaYaMarejesho;
+        mwanachamaMikopoPaymentData[8] = jumlaBaadaYaMarejesho;
         wanachamaMikopoPaymentDataCopy[index] = mwanachamaMikopoPaymentData;
         setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
       }
+      if (fieldName === "maelezo") {
+        let maelezo = text;
+        let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
+        let mwanachamaMikopoPaymentData = [
+          ...wanachamaMikopoPaymentDataCopy[index],
+        ];
+        mwanachamaMikopoPaymentData[9] = maelezo;
+        wanachamaMikopoPaymentDataCopy[index] = mwanachamaMikopoPaymentData;
+        setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
+      }
+      // if (fieldName === "riba") {
+      //   // wanachamaMikopoPaymentDataCopyNonState
+      //   let wanachamaMikopoPaymentDataCopy = { ...wanachamaMikopoPaymentData };
+      //   let mwanachamaMikopoPaymentData = [
+      //     ...wanachamaMikopoPaymentDataCopy[index],
+      //   ];
+      //   let ribaMpya = Number(text);
+      //   let ribaIliyokuwepo = wanachamaMikopoPaymentDataCopyNonState[index][0];
+      //   let kiasiChaMkopo = wanachamaMikopoPaymentDataCopyNonState[index][8];
+      //   let amountRibaMpyaToAdd = (ribaMpya / 100) * kiasiChaMkopo;
+      //   let totalSum = kiasiChaMkopo + amountRibaMpyaToAdd;
+      //   mwanachamaMikopoPaymentData[0] = ribaMpya + ribaIliyokuwepo;
+      //   mwanachamaMikopoPaymentData[8] = totalSum;
+      //   wanachamaMikopoPaymentDataCopy[index] = mwanachamaMikopoPaymentData;
+      //   setWanachamaMikopoPaymentData({ ...wanachamaMikopoPaymentDataCopy });
+      // }
     }
   };
 
-  // console.log(membersFilled);
+  console.log(membersFilled);
 
   const beforeMoveToNextForm = () => {
-    if (Object.keys(membersFilled).length === 0) {
-      alert("Tafadhali jaza taarifa sahihi!");
-      return;
-    }
-    Object.values(membersFilled).forEach((memberArr) => {
-      for (let i = 0; i < memberArr.length; i++) {
-        if (typeof memberArr[i] === "undefined") memberArr.fill(" ", i, i + 1);
+    if (
+      idToNamesMapArray.length === 0 ||
+      (idToNamesMapArray.length > 0 && Object.keys(membersFilled).length === 0)
+    ) {
+      Alert.alert(
+        "Uhakiki",
+        "Kwa kukubali kwenda fomu nyingine, mfumo utachukulia kwamba hakuna wakopaji siku ya leo?",
+        [
+          { text: "Hapana", onPress: () => {} },
+          {
+            text: "Ndiyo",
+            onPress: () => {
+              navigate("SHUGHULI ZA WIKI", { data: {} });
+            },
+          },
+        ]
+      );
+    } else {
+      const memberDataToSubmit = {};
+      for (let i = 0; i < Object.keys(membersFilled).length; i++) {
+        let key = Object.keys(membersFilled)[i];
+        let mwanachamaData = [...prevWeekWakopajiData[key]];
+        let mwanachamaFilledData = [...wanachamaMikopoPaymentData[key]];
+        mwanachamaData[3] = mwanachamaFilledData[0];
+        mwanachamaData[5] = mwanachamaFilledData[1];
+        mwanachamaData[6] = mwanachamaFilledData[2];
+        mwanachamaData[7] = mwanachamaFilledData[2];
+        mwanachamaData[8] = mwanachamaFilledData[4];
+        mwanachamaData[9] = mwanachamaFilledData[5];
+        mwanachamaData[10] = mwanachamaFilledData[6];
+        mwanachamaData[11] = mwanachamaFilledData[8];
+        mwanachamaData[12] = mwanachamaFilledData[9];
+        memberDataToSubmit[key] = mwanachamaData;
       }
-    });
 
-    // const formData = {
-    //   0: [
-    //     "Jina",
-    //     "Tarehe ya Mkopo",
-    //     "Kiasi",
-    //     "Riba",
-    //     "Bima",
-    //     1,
-    //     2,
-    //     3,
-    //     4,
-    //     5,
-    //     6,
-    //     "Jumla",
-    //     "Maelezo",
-    //   ],
-    //   ...memberDataToSubmit,
-    // };
+      console.log(memberDataToSubmit);
 
-    Alert.alert("Uhakiki", "Umehakiki Taarifa kwa usahihi?", [
-      { text: "Hapana", onPress: () => {} },
-      {
-        text: "Ndiyo",
-        onPress: () => {
-          onToNextFormConfirm();
-        },
-      },
-    ]);
+      const { 0: tableHeaders, ...newWakopaji } = fomuYaWakopaji[week];
 
-    const onToNextFormConfirm = () => {
-      //   setLoading(true);
-      //   submitFormData(
-      //     "FormDocs",
-      //     katibuEmail,
-      //     "Fomu ya Wakopaji na Marejesho",
-      //     docName,
-      //     weekNumber,
-      //     formData
-      //   )
-      //     .then(() => {
-      //       setLoading(false);
-      //       alert("Umefanikiwa Kukusanya Taarifa.");
-      //       dispatch({
-      //         type: "SET_WAKOPAJI_FORM_STATE",
-      //         data: { ...memberDataToSubmit },
-      //         forms_filled: [...states.formsFilled, "wakopaji"],
-      //       });
-      //     })
-      //     .catch((e) => {
-      //       setLoading(false);
-      //       alert(e.message);
-      //     });
-    };
+      const thisWeeksData = {
+        0: [
+          "Jina la Mwanachama",
+          "Tarehe Ya Mkopo",
+          "Kiasi Cha Mkopo",
+          "Riba",
+          " Bima",
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          "Jumla",
+          "Maelezo",
+        ],
+        ...memberDataToSubmit,
+        ...newWakopaji,
+      };
+
+      // console.log(thisWeeksData);
+      WakopajiNaMarejeshoPrevWeeks[week] = thisWeeksData;
+
+      Alert.alert(
+        "Uhakiki",
+        "Umehakiki taarifa kabla ya kwenda fomu inayofuata?",
+        [
+          { text: "Hapana", onPress: () => {} },
+          {
+            text: "Ndiyo",
+            onPress: () => {
+              onToNextFormConfirm();
+            },
+          },
+        ]
+      );
+      const onToNextFormConfirm = () => {
+        let dataCopy = { ...data };
+        dataCopy["WakopajiNaMarejesho"] = WakopajiNaMarejeshoPrevWeeks;
+        navigate("SHUGHULI ZA WIKI", { data: dataCopy });
+      };
+    }
+
+    //   setLoading(true);
+    //   submitFormData(
+    //     "FormDocs",
+    //     katibuEmail,
+    //     "Fomu ya Wakopaji na Marejesho",
+    //     docName,
+    //     weekNumber,
+    //     formData
+    //   )
+    //     .then(() => {
+    //       setLoading(false);
+    //       alert("Umefanikiwa Kukusanya Taarifa.");
+    //       dispatch({
+    //         type: "SET_WAKOPAJI_FORM_STATE",
+    //         data: { ...memberDataToSubmit },
+    //         forms_filled: [...states.formsFilled, "wakopaji"],
+    //       });
+    //     })
+    //     .catch((e) => {
+    //       setLoading(false);
+    //       alert(e.message);
+    //     });
   };
 
   return (

@@ -380,7 +380,8 @@ const FormWakopaji = ({ route, navigation: { navigate } }) => {
             0,
             0,
             0,
-            jumlaZaWanachama[key]["jumla"]
+            jumlaZaWanachama[key]["jumla"],
+            ""
           );
         }
       }
@@ -403,7 +404,14 @@ const FormWakopaji = ({ route, navigation: { navigate } }) => {
           "Kiasi Cha Mkopo",
           "Riba",
           " Bima",
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
           "Jumla",
+          "Maelezo",
         ],
         ...membersFilled,
         jumlaYaWiki: { riba: ribaTotal, bima: bimaTotal },
